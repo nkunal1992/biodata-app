@@ -237,6 +237,17 @@
       "double": "Double line",
       "ornate": "Ornate",
       "floral": "Floral"
+    },
+    "icon": "Auspicious icon",
+    "mantra": "Mantra presets",
+    "icons": {
+      "none": "None",
+      "om": "ॐ Om",
+      "swastik": "Swastik",
+      "kalash": "Kalash",
+      "diya": "Diya",
+      "lotus": "Lotus",
+      "ganesha": "Ganesh Ji"
     }
   },
   "templates": {

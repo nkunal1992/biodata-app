@@ -9,6 +9,7 @@ import {
   SectionHeading,
   scriptFont,
   PageFrame,
+  IconMark,
 } from "../components";
 
 export function RoyalTemplate({
@@ -44,6 +45,12 @@ export function RoyalTemplate({
           }}
         >
           <View style={{ flex: 1 }}>
+            <IconMark
+              icon={data.invocationIcon}
+              color="#e8c06f"
+              size={16}
+              style={{ marginBottom: 3 }}
+            />
             {data.invocation.trim() ? (
               <Text
                 style={{

@@ -68,7 +68,7 @@ export function BanarasiTemplate({
         
             <ButtiRow color="#a16207" />
             <View style={{ alignItems: "center", marginBottom: 2 }}>
-              <Invocation text={data.invocation} theme={theme} />
+              <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
               >

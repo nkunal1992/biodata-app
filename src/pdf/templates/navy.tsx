@@ -8,6 +8,7 @@ import {
   PhotoFrame,
   scriptFont,
   PageFrame,
+  IconMark,
 } from "../components";
 
 export function NavyTemplate({
@@ -62,6 +63,7 @@ export function NavyTemplate({
               >
                 {name}
               </Text>
+              <IconMark icon={data.invocationIcon} color="#b45309" size={15} style={{ marginBottom: 2 }} />
               {data.invocation.trim() ? (
                 <Text
                   style={{

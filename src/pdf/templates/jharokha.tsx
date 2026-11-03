@@ -55,7 +55,7 @@ export function JharokhaTemplate({
         <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={16}>
           <JaaliBand color="#b45309" />
           <View style={{ alignItems: "center", marginBottom: 4 }}>
-            <Invocation text={data.invocation} theme={theme} />
+            <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
             {data.photo ? (
               <View
                 style={{

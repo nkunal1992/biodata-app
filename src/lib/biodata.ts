@@ -37,6 +37,15 @@ export type FrameStyle =
   | "arch"
   | "ornate";
 
+export type InvocationIcon =
+  | "none"
+  | "om"
+  | "swastik"
+  | "kalash"
+  | "diya"
+  | "lotus"
+  | "ganesha";
+
 export type PageBorderStyle =
   | "template"
   | "none"
@@ -116,6 +125,8 @@ export interface BiodataData {
   photoFrame?: FrameStyle;
   /** Page border override; 'template' keeps each design's signature border. */
   pageBorder?: PageBorderStyle;
+  /** Auspicious icon drawn above the invocation line. */
+  invocationIcon?: InvocationIcon;
   /** Downscaled JPEG data URL — excluded from share links. */
   photo?: string;
   invocation: string;

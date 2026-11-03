@@ -1,6 +1,6 @@
-import { Circle, Image, Path, Svg, Text, View } from "@react-pdf/renderer";
+import { Circle, Image, Path, Rect, Svg, Text, View } from "@react-pdf/renderer";
 import type { Style } from "@react-pdf/types";
-import type { FrameStyle, PageBorderStyle } from "@/lib/biodata";
+import type { FrameStyle, InvocationIcon, PageBorderStyle } from "@/lib/biodata";
 
 /** Per-template palette + fonts (fonts come from docLabels(locale).fonts). */
 export interface Theme {
@@ -122,16 +122,29 @@ export function Invocation({
   text,
   theme,
   fontSize = 11,
+  icon,
+  iconSize = 18,
+  iconColor,
   style,
 }: {
   text: string;
   theme: Theme;
   fontSize?: number;
+  icon?: InvocationIcon;
+  iconSize?: number;
+  iconColor?: string;
   style?: Style;
 }) {
-  if (!text.trim()) return null;
+  if (!text.trim() && (!icon || icon === "none")) return null;
   return (
-    <Text
+    <View style={{ alignItems: "center" }}>
+      <IconMark
+        icon={icon}
+        size={iconSize}
+        color={iconColor ?? theme.primary}
+        style={{ marginBottom: 2 }}
+      />
+      <Text
       style={[
         {
           textAlign: "center",
@@ -142,9 +155,10 @@ export function Invocation({
         },
         style,
       ]}
-    >
-      {text}
-    </Text>
+      >
+        {text}
+      </Text>
+    </View>
   );
 }
 
@@ -384,6 +398,171 @@ export function DoubleBorder({
       >
         {children}
       </View>
+    </View>
+  );
+}
+
+// ── Auspicious icons (drawn above the invocation line) ────────────
+
+export function KalashMark({
+  size = 56,
+  leaf = "#15803d",
+  coconut = "#92400e",
+  coconutLight = "#b45309",
+  rim = "#d97706",
+  pot = "#b91c1c",
+  mark = "#fcd34d",
+}: {
+  size?: number;
+  leaf?: string;
+  coconut?: string;
+  coconutLight?: string;
+  rim?: string;
+  pot?: string;
+  mark?: string;
+}) {
+  return (
+    <Svg width={size} height={size * 1.25} viewBox="0 0 60 75">
+      <Path d="M30 20 Q16 12 10 6" stroke={leaf} strokeWidth={2} fill="none" />
+      <Path d="M30 20 Q44 12 50 6" stroke={leaf} strokeWidth={2} fill="none" />
+      <Path d="M30 20 Q30 8 30 3" stroke={leaf} strokeWidth={2} fill="none" />
+      <Circle cx={30} cy={19} r={7.5} fill={coconut} />
+      <Circle cx={30} cy={16.5} r={2.5} fill={coconutLight} />
+      <Rect x={14} y={26} width={32} height={6} rx={2.5} fill={rim} />
+      <Path
+        d="M14 32 Q8 44 12 57 Q17 71 30 71 Q43 71 48 57 Q52 44 46 32 Z"
+        fill={pot}
+      />
+      <Circle cx={30} cy={50} r={6} fill={mark} />
+      <Path d="M30 45.5 L34 50 L30 54.5 L26 50 Z" fill={pot} />
+    </Svg>
+  );
+}
+
+function Swastik({ size, color }: { size: number; color: string }) {
+  const t = size / 8;
+  return (
+    <Svg width={size} height={size} viewBox="0 0 48 48">
+      <Rect x={22} y={6} width={t} height={16} fill={color} />
+      <Rect x={26 - 16 / 2 + 5} y={18} width={16} height={t} fill={color} />
+      <Rect x={22} y={26} width={t} height={16} fill={color} />
+      <Rect x={6} y={22} width={16} height={t} fill={color} />
+      <Circle cx={14} cy={14} r={2.4} fill={color} />
+      <Circle cx={34} cy={14} r={2.4} fill={color} />
+      <Circle cx={14} cy={34} r={2.4} fill={color} />
+      <Circle cx={34} cy={34} r={2.4} fill={color} />
+    </Svg>
+  );
+}
+
+function Diya({ size, color }: { size: number; color: string }) {
+  return (
+    <Svg width={size} height={size * 0.75} viewBox="0 0 48 36">
+      <Path
+        d="M24 4 Q28 10 24 14 Q20 10 24 4 Z"
+        fill={color}
+        opacity={0.9}
+      />
+      <Path
+        d="M24 8 Q26.5 11 24 13 Q21.5 11 24 8 Z"
+        fill="#fcd34d"
+      />
+      <Path
+        d="M6 22 Q24 16 42 22 Q42 32 24 32 Q6 32 6 22 Z"
+        fill={color}
+      />
+      <Path
+        d="M6 22 Q24 16 42 22 Q24 27 6 22 Z"
+        fill={color}
+        opacity={0.75}
+      />
+    </Svg>
+  );
+}
+
+function Lotus({ size, color }: { size: number; color: string }) {
+  return (
+    <Svg width={size} height={size * 0.72} viewBox="0 0 52 38">
+      <Path d="M26 4 Q30 14 26 22 Q22 14 26 4 Z" fill={color} />
+      <Path d="M13 8 Q20 15 24 23 Q14 21 13 8 Z" fill={color} opacity={0.75} />
+      <Path d="M39 8 Q32 15 28 23 Q38 21 39 8 Z" fill={color} opacity={0.75} />
+      <Path d="M4 14 Q13 20 21 26 Q9 27 4 14 Z" fill={color} opacity={0.5} />
+      <Path d="M48 14 Q39 20 31 26 Q43 27 48 14 Z" fill={color} opacity={0.5} />
+      <Path
+        d="M8 30 Q26 38 44 30 Q40 36 26 36 Q12 36 8 30 Z"
+        fill={color}
+        opacity={0.8}
+      />
+    </Svg>
+  );
+}
+
+function Ganesha({ size, color }: { size: number; color: string }) {
+  return (
+    <Svg width={size} height={size * 1.05} viewBox="0 0 56 58">
+      {/* crown */}
+      <Path d="M28 1 L32 8 L24 8 Z" fill={color} />
+      <Circle cx={28} cy={9.5} r={2} fill={color} />
+      {/* ears */}
+      <Path d="M13 15 Q2 18 4 29 Q14 29 17 21 Z" fill={color} />
+      <Path d="M43 15 Q54 18 52 29 Q42 29 39 21 Z" fill={color} />
+      {/* head */}
+      <Circle cx={28} cy={17} r={11} fill={color} />
+      {/* tilak */}
+      <Path d="M28 11 L30 14 L28 15.5 L26 14 Z" fill="#fcd34d" />
+      {/* trunk curving left */}
+      <Path
+        d="M28 24 Q28 38 20 42 Q14 44 13 39 Q17 40 19 37 Q22 33 22 27"
+        stroke={color}
+        strokeWidth={6.5}
+        fill="none"
+        strokeLinecap="round"
+      />
+      {/* tusks */}
+      <Path d="M21 26 Q18 30 15 31 Q19 32 22 29 Z" fill={color} opacity={0.85} />
+      {/* body */}
+      <Path d="M14 40 Q10 54 28 55 Q46 54 42 40 Q36 47 28 47 Q20 47 14 40 Z" fill={color} />
+    </Svg>
+  );
+}
+
+/** Renders the auspicious icon; 'om' uses the Devanagari glyph. */
+export function IconMark({
+  icon,
+  size = 18,
+  color,
+  style,
+}: {
+  icon?: InvocationIcon;
+  size?: number;
+  color: string;
+  style?: Style;
+}) {
+  if (!icon || icon === "none") return null;
+  return (
+    <View style={[style ?? {}]}>
+      {icon === "om" ? (
+        <Text
+          style={{
+            fontFamily: "NotoSansDevanagari",
+            fontSize: size * 1.15,
+            color,
+            textAlign: "center",
+          }}
+        >
+          ॐ
+        </Text>
+      ) : icon === "swastik" ? (
+        <Swastik size={size} color={color} />
+      ) : icon === "kalash" ? (
+        <KalashMark size={size} />
+      ) : icon === "diya" ? (
+        <Diya size={size} color={color} />
+      ) : icon === "lotus" ? (
+        <Lotus size={size} color={color} />
+      ) : (
+        <Ganesha size={size} color={color} />
+      )}
     </View>
   );
 }
