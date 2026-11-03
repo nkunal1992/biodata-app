@@ -62,6 +62,9 @@ export function buildSections(
     { label: f.gotra, value: v(data.astro.gotra) },
     { label: f.rashi, value: v(data.astro.rashi) },
     { label: f.nakshatra, value: v(data.astro.nakshatra) },
+    { label: f.charan, value: v(data.astro.charan) },
+    { label: f.gana, value: v(data.astro.gana) },
+    { label: f.nadi, value: v(data.astro.nadi) },
     {
       label: f.manglik,
       value: data.astro.manglik ? o.manglik[data.astro.manglik] : "",
@@ -98,6 +101,8 @@ export function buildSections(
       value: combine(v(data.family.motherName), v(data.family.motherOccupation)),
     },
     { label: f.siblings, value: v(data.family.siblings) },
+    { label: f.mama, value: v(data.family.mama) },
+    { label: f.grandfather, value: v(data.family.grandfather) },
     {
       label: f.familyType,
       value: data.family.familyType ? o.familyType[data.family.familyType] : "",

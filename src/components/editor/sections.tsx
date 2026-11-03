@@ -38,6 +38,9 @@ const ASTRO: FieldDef[] = [
   { name: "gotra" },
   { name: "rashi" },
   { name: "nakshatra" },
+  { name: "charan" },
+  { name: "gana" },
+  { name: "nadi" },
   { name: "manglik", type: "select", optionsKey: "manglik" },
   { name: "motherTongue" },
   { name: "kuldevta" },
@@ -57,6 +60,8 @@ const FAMILY: FieldDef[] = [
   { name: "motherName" },
   { name: "motherOccupation" },
   { name: "siblings", span: true },
+  { name: "mama" },
+  { name: "grandfather" },
   { name: "familyType", type: "select", optionsKey: "familyType" },
   { name: "nativePlace" },
 ];

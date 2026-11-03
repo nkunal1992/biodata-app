@@ -9,6 +9,12 @@ import { ModernTemplate } from "./templates/modern";
 import { FloralTemplate } from "./templates/floral";
 import { EmeraldTemplate } from "./templates/emerald";
 import { MandalaTemplate } from "./templates/mandala";
+import { PeacockTemplate } from "./templates/peacock";
+import { JharokhaTemplate } from "./templates/jharokha";
+import { ToranTemplate } from "./templates/toran";
+import { BanarasiTemplate } from "./templates/banarasi";
+import { KalashTemplate } from "./templates/kalash";
+import { NavyTemplate } from "./templates/navy";
 
 const TEMPLATES: Record<
   TemplateId,
@@ -23,6 +29,12 @@ const TEMPLATES: Record<
   floral: FloralTemplate,
   emerald: EmeraldTemplate,
   mandala: MandalaTemplate,
+  peacock: PeacockTemplate,
+  jharokha: JharokhaTemplate,
+  toran: ToranTemplate,
+  banarasi: BanarasiTemplate,
+  kalash: KalashTemplate,
+  navy: NavyTemplate,
 };
 
 /** Single source of truth — used by both <PDFViewer> preview and download. */

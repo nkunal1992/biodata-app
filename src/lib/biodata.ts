@@ -4,7 +4,13 @@ export type TemplateId =
   | "modern"
   | "floral"
   | "emerald"
-  | "mandala";
+  | "mandala"
+  | "peacock"
+  | "jharokha"
+  | "toran"
+  | "banarasi"
+  | "kalash"
+  | "navy";
 
 export const TEMPLATE_IDS: TemplateId[] = [
   "traditional",
@@ -13,6 +19,12 @@ export const TEMPLATE_IDS: TemplateId[] = [
   "floral",
   "emerald",
   "mandala",
+  "peacock",
+  "jharokha",
+  "toran",
+  "banarasi",
+  "kalash",
+  "navy",
 ];
 
 export type OutputLocale = "en" | "hi";
@@ -44,6 +56,9 @@ export interface AstroDetails {
   gotra: string;
   rashi: string;
   nakshatra: string;
+  charan: string;
+  gana: string;
+  nadi: string;
   manglik: Manglik;
   motherTongue: string;
   kuldevta: string;
@@ -63,6 +78,8 @@ export interface FamilyDetails {
   motherName: string;
   motherOccupation: string;
   siblings: string;
+  mama: string;
+  grandfather: string;
   familyType: FamilyType;
   nativePlace: string;
 }
@@ -117,6 +134,9 @@ export const emptyBiodata: BiodataData = {
     gotra: "",
     rashi: "",
     nakshatra: "",
+    charan: "",
+    gana: "",
+    nadi: "",
     manglik: "",
     motherTongue: "",
     kuldevta: "",
@@ -134,6 +154,8 @@ export const emptyBiodata: BiodataData = {
     motherName: "",
     motherOccupation: "",
     siblings: "",
+    mama: "",
+    grandfather: "",
     familyType: "",
     nativePlace: "",
   },
@@ -169,6 +191,9 @@ export const sampleBiodata: BiodataData = {
     gotra: "Bharadwaj",
     rashi: "Vrishabha (Taurus)",
     nakshatra: "Krittika",
+    charan: "2nd Pada",
+    gana: "Manushya",
+    nadi: "Madhya",
     manglik: "no",
     motherTongue: "Hindi",
     kuldevta: "",
@@ -186,6 +211,8 @@ export const sampleBiodata: BiodataData = {
     motherName: "Sushma Sharma",
     motherOccupation: "Homemaker",
     siblings: "1 elder sister (married)",
+    mama: "Ramesh Gupta, Kanpur",
+    grandfather: "Late Shri Ramgopal Sharma",
     familyType: "nuclear",
     nativePlace: "Varanasi, UP",
   },

@@ -113,7 +113,12 @@
       "address": "Address",
       "aboutMe": "About me",
       "expectations": "Partner expectations",
-      "invocation": "Invocation line"
+      "invocation": "Invocation line",
+      "charan": "Charan / Pada",
+      "gana": "Gana",
+      "nadi": "Nadi",
+      "mama": "Mama (maternal uncle)",
+      "grandfather": "Grandfather"
     },
     "placeholders": {
       "name": "e.g. Aarav Sharma",
@@ -135,7 +140,12 @@
       "address": "Area, city, PIN",
       "aboutMe": "A few lines about personality, hobbies, values…",
       "expectations": "e.g. Well-educated, family-oriented, working professional…",
-      "invocation": "॥ श्री गणेशाय नमः ॥"
+      "invocation": "॥ श्री गणेशाय नमः ॥",
+      "charan": "e.g. 2nd Pada",
+      "gana": "e.g. Manushya",
+      "nadi": "e.g. Madhya",
+      "mama": "e.g. Ramesh Gupta, Kanpur",
+      "grandfather": "e.g. Late Shri Ramgopal Sharma"
     },
     "options": {
       "select": "Select…",
@@ -188,7 +198,13 @@
     "modern": "Modern",
     "floral": "Floral",
     "emerald": "Emerald",
-    "mandala": "Mandala"
+    "mandala": "Mandala",
+    "peacock": "Peacock Royal",
+    "jharokha": "Jharokha",
+    "toran": "Marigold Toran",
+    "banarasi": "Banarasi Zari",
+    "kalash": "Shubh Kalash",
+    "navy": "Navy & Gold"
   },
   "notFound": {
     "title": "Page not found",

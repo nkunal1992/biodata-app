@@ -19,6 +19,12 @@ const TEMPLATE_SWATCHES: Record<string, string> = {
   floral: "bg-[#fff9f4] border-[#f472b6]",
   emerald: "bg-[#065f46] border-[#a7f3d0]",
   mandala: "bg-[#fdf8ee] border-[#d97706]",
+  peacock: "bg-[#f7fbf9] border-[#0f766e]",
+  jharokha: "bg-[#faf3e3] border-[#7f1d1d]",
+  toran: "bg-[#fffdf4] border-[#f59e0b]",
+  banarasi: "bg-[#fdfbf5] border-[#4c1d95]",
+  kalash: "bg-[#fffaf2] border-[#b91c1c]",
+  navy: "bg-white border-[#1e3a8a]",
 };
 
 export function TemplatePicker() {
