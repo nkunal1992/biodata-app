@@ -7,6 +7,7 @@ import {
   FieldRow,
   PhotoFrame,
   scriptFont,
+  PageFrame,
 } from "../components";
 
 export function NavyTemplate({
@@ -31,13 +32,7 @@ export function NavyTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#ffffff", padding: 30 }}>
-        <View
-          style={{
-            border: "0.8pt solid #b45309",
-            padding: 22,
-            flexGrow: 1,
-          }}
-        >
+        <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={22}>
           <View
             style={{
               flexDirection: "row",
@@ -86,6 +81,7 @@ export function NavyTemplate({
             {data.photo && (
               <PhotoFrame
                 src={data.photo}
+                  frame={data.photoFrame}
                 width={86}
                 borderColor="#b45309"
                 padding={3}
@@ -197,7 +193,7 @@ export function NavyTemplate({
             <Diamond color="#1e3a8a" size={7} />
             <Diamond color="#b45309" size={5} />
           </View>
-        </View>
+        </PageFrame>
       </Page>
     </Document>
   );

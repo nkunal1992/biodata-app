@@ -85,6 +85,44 @@ export function TemplatePicker() {
   );
 }
 
+export function PageBorderPicker() {
+  const t = useTranslations("editor");
+  const pageBorder = useBiodataStore((s) => s.data.pageBorder ?? "template");
+  const setTopLevel = useBiodataStore((s) => s.setTopLevel);
+  const opts = [
+    "template",
+    "none",
+    "line",
+    "double",
+    "ornate",
+    "floral",
+  ] as const;
+  return (
+    <div>
+      <p className="mb-2 text-xs font-semibold tracking-wide text-stone-500 uppercase">
+        {t("pageBorder")}
+      </p>
+      <div className="flex flex-wrap gap-1.5">
+        {opts.map((o) => (
+          <button
+            key={o}
+            type="button"
+            onClick={() => setTopLevel({ pageBorder: o })}
+            className={cn(
+              "rounded-lg border px-3 py-1.5 text-xs font-medium transition",
+              pageBorder === o
+                ? "border-orange-500 bg-orange-600 text-white"
+                : "border-stone-300 bg-white text-stone-600 hover:border-orange-300",
+            )}
+          >
+            {t(`borders.${o}`)}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function OutputLocaleToggle() {
   const t = useTranslations("editor");
   const outputLocale = useBiodataStore((s) => s.data.outputLocale);

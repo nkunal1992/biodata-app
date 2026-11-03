@@ -20,7 +20,13 @@ interface BiodataStore {
     patch: Partial<
       Pick<
         BiodataData,
-        "photo" | "invocation" | "aboutMe" | "expectations" | "accent"
+        | "photo"
+        | "invocation"
+        | "aboutMe"
+        | "expectations"
+        | "accent"
+        | "photoFrame"
+        | "pageBorder"
       >
     >,
   ) => void;

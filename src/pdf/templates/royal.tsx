@@ -8,6 +8,7 @@ import {
   PhotoFrame,
   SectionHeading,
   scriptFont,
+  PageFrame,
 } from "../components";
 
 export function RoyalTemplate({
@@ -32,6 +33,7 @@ export function RoyalTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#ffffff" }}>
+        <PageFrame override={data.pageBorder} fallback="none" color="#6d0f2b" padding={0}>
         <View
           style={{
             backgroundColor: "#6d0f2b",
@@ -78,6 +80,7 @@ export function RoyalTemplate({
           {data.photo && (
             <PhotoFrame
               src={data.photo}
+                  frame={data.photoFrame}
               width={84}
               borderColor="#fbbf24"
               padding={2}
@@ -142,6 +145,7 @@ export function RoyalTemplate({
             <Diamond color={theme.accent} size={5} />
           </View>
         </View>
+        </PageFrame>
       </Page>
     </Document>
   );

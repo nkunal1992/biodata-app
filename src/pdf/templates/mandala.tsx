@@ -9,6 +9,7 @@ import {
   PhotoFrame,
   SectionHeading,
   scriptFont,
+  PageFrame,
 } from "../components";
 
 function MandalaMark({ size = 90, color }: { size?: number; color: string }) {
@@ -60,13 +61,7 @@ export function MandalaTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#fdf8ee", padding: 26 }}>
-        <View
-          style={{
-            border: "1pt solid #d97706",
-            padding: 20,
-            flexGrow: 1,
-          }}
-        >
+        <PageFrame override={data.pageBorder} fallback="line" color="#d97706" padding={20}>
           <View style={{ alignItems: "center", marginBottom: 6 }}>
             <View style={{ position: "absolute", top: 30, opacity: 0.12 }}>
               <MandalaMark size={110} color="#92400e" />
@@ -76,6 +71,7 @@ export function MandalaTemplate({
               {data.photo && (
                 <PhotoFrame
                   src={data.photo}
+                  frame={data.photoFrame}
                   width={78}
                   borderColor="#d97706"
                   padding={2}
@@ -169,7 +165,7 @@ export function MandalaTemplate({
             <Diamond color={theme.primary} size={7} />
             <Diamond color={theme.accent} size={5} />
           </View>
-        </View>
+        </PageFrame>
       </Page>
     </Document>
   );
