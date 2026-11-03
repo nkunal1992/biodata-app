@@ -3,12 +3,19 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
-import { ChevronDown, Eye, Heart } from "lucide-react";
+import { ChevronDown, Eye, Heart, Home } from "lucide-react";
 import { useBiodataStore } from "@/store/biodata-store";
 import { decodeShareHash } from "@/lib/share";
 import { cn } from "@/lib/cn";
+import { Link } from "@/i18n/navigation";
+import { LocaleSwitcher } from "@/components/Navbar";
 import { SECTION_ORDER, SectionBody, type SectionKey } from "./sections";
-import { OutputLocaleToggle, TemplatePicker, Toolbar } from "./controls";
+import {
+  OutputLocaleToggle,
+  PageBorderPicker,
+  TemplatePicker,
+  Toolbar,
+} from "./controls";
 
 const PdfPreview = dynamic(() => import("@/components/PdfPreview"), {
   ssr: false,
@@ -125,21 +132,32 @@ export default function EditorShell() {
     <div className="flex min-h-screen flex-col bg-stone-100">
       <header className="flex items-center justify-between border-b border-stone-200 bg-white px-4 py-3 lg:px-6">
         <div className="flex items-center gap-2">
-          <Heart size={18} className="text-orange-600" fill="currentColor" />
-          <span className="text-base font-bold text-stone-900">
-            {nav("brand")}
-          </span>
+          <Link href="/" className="flex items-center gap-2">
+            <Heart size={18} className="text-orange-600" fill="currentColor" />
+            <span className="text-base font-bold text-stone-900">
+              {nav("brand")}
+            </span>
+          </Link>
+          <Link
+            href="/"
+            className="ml-1 inline-flex items-center gap-1 rounded-lg border border-stone-300 px-2.5 py-1 text-xs font-medium text-stone-600 hover:bg-stone-100"
+          >
+            <Home size={12} /> {nav("home")}
+          </Link>
           <span className="hidden text-sm text-stone-400 sm:inline">
             · {t("title")}
           </span>
         </div>
-        <button
-          type="button"
-          onClick={() => setShowMobilePreview((v) => !v)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-stone-300 px-3 py-1.5 text-sm text-stone-700 lg:hidden"
-        >
-          <Eye size={15} /> {t("preview")}
-        </button>
+        <div className="flex items-center gap-2">
+          <LocaleSwitcher compact />
+          <button
+            type="button"
+            onClick={() => setShowMobilePreview((v) => !v)}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-300 px-3 py-1.5 text-sm text-stone-700 lg:hidden"
+          >
+            <Eye size={15} /> {t("preview")}
+          </button>
+        </div>
       </header>
 
       <div className="flex flex-1 flex-col lg:flex-row">
@@ -153,6 +171,9 @@ export default function EditorShell() {
             <TemplatePicker />
             <div className="border-t border-stone-100 pt-4">
               <OutputLocaleToggle />
+            </div>
+            <div className="border-t border-stone-100 pt-4">
+              <PageBorderPicker />
             </div>
             <div className="border-t border-stone-100 pt-4">
               <Toolbar />
