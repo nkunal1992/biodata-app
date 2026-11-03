@@ -10,6 +10,7 @@ import {
   SectionHeading,
   scriptFont,
   PageFrame,
+  bgColor,
 } from "../components";
 
 /** Zari butti strip — small gold paisley-dots row, like Banarasi brocade. */
@@ -62,7 +63,7 @@ export function BanarasiTemplate({
 
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
-      <Page size="A4" style={{ backgroundColor: "#fdfbf5", padding: 22 }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#fdfbf5"), padding: 22 }}>
         {/* zari double border */}
         <PageFrame override={data.pageBorder} fallback="ornate" color="#4c1d95" color2="#a16207" padding={15}>
         

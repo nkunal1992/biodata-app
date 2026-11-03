@@ -15,6 +15,7 @@ import {
   SectionHeading,
   scriptFont,
   PageFrame,
+  bgColor,
 } from "../components";
 
 /** पूर्ण कलश — coconut + mango leaves over a decorated pot. */
@@ -39,7 +40,7 @@ export function KalashTemplate({
 
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
-      <Page size="A4" style={{ backgroundColor: "#fffaf2", padding: 24 }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffaf2"), padding: 24 }}>
         <PageFrame override={data.pageBorder} fallback="line" color="#d97706" padding={16}>
           <View style={{ alignItems: "center" }}>
             <KalashMark size={52} />

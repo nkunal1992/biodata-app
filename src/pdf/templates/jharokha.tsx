@@ -10,6 +10,7 @@ import {
   SectionHeading,
   scriptFont,
   PageFrame,
+  bgColor,
 } from "../components";
 
 /** Repeating jaali-lattice band of tiny diamonds. */
@@ -51,7 +52,7 @@ export function JharokhaTemplate({
 
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
-      <Page size="A4" style={{ backgroundColor: "#faf3e3", padding: 24 }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#faf3e3"), padding: 24 }}>
         <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={16}>
           <JaaliBand color="#b45309" />
           <View style={{ alignItems: "center", marginBottom: 4 }}>

@@ -17,6 +17,7 @@ import {
   SectionHeading,
   scriptFont,
   PageFrame,
+  bgColor,
 } from "../components";
 
 function PeacockFeather({ size = 40 }: { size?: number }) {
@@ -73,7 +74,7 @@ export function PeacockTemplate({
 
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
-      <Page size="A4" style={{ backgroundColor: "#f7fbf9", padding: 24 }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#f7fbf9"), padding: 24 }}>
         <PageFrame override={data.pageBorder} fallback="double" color="#0f766e" color2="#b45309" padding={16}>
         
             <View style={{ alignItems: "center" }}>

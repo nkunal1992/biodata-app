@@ -2,7 +2,7 @@ import { Document, Page, Text, View } from "@react-pdf/renderer";
 import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
-import { FieldRow, Invocation, PhotoFrame, scriptFont, SectionHeading, PageFrame } from "../components";
+import { FieldRow, Invocation, PhotoFrame, scriptFont, SectionHeading, PageFrame, bgColor } from "../components";
 
 export function FloralTemplate({
   data,
@@ -25,7 +25,7 @@ export function FloralTemplate({
 
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
-      <Page size="A4" style={{ backgroundColor: "#fff9f4", padding: 20 }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#fff9f4"), padding: 20 }}>
         <PageFrame override={data.pageBorder} fallback="floral" color="#f9a8d4" color2="#f472b6" padding={18} style={{ margin: 20 }}>
           <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
           <View style={{ alignItems: "center", marginBottom: 4 }}>

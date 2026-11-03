@@ -85,6 +85,58 @@ export function TemplatePicker() {
   );
 }
 
+export function PageBgPicker() {
+  const t = useTranslations("editor");
+  const bg = useBiodataStore((s) => s.data.pageBackground ?? "template");
+  const setTopLevel = useBiodataStore((s) => s.setTopLevel);
+  const opts = [
+    "template",
+    "white",
+    "ivory",
+    "cream",
+    "blush",
+    "mint",
+    "sandal",
+  ] as const;
+  const swatch: Record<string, string> = {
+    template: "conic-gradient(#f0abfc, #93c5fd, #86efac, #fde68a, #f0abfc)",
+    white: "#ffffff",
+    ivory: "#fefcf3",
+    cream: "#fdf6e3",
+    blush: "#fdf0ee",
+    mint: "#f0f7f0",
+    sandal: "#f5ead3",
+  };
+  return (
+    <div>
+      <p className="mb-2 text-xs font-semibold tracking-wide text-stone-500 uppercase">
+        {t("pageBg")}
+      </p>
+      <div className="flex flex-wrap gap-1.5">
+        {opts.map((o) => (
+          <button
+            key={o}
+            type="button"
+            onClick={() => setTopLevel({ pageBackground: o })}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition",
+              bg === o
+                ? "border-orange-500 bg-orange-50 text-orange-800"
+                : "border-stone-300 bg-white text-stone-600 hover:border-orange-300",
+            )}
+          >
+            <span
+              className="block h-3.5 w-3.5 rounded-full border border-stone-300"
+              style={{ background: swatch[o] }}
+            />
+            {t(`bgs.${o}`)}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function PageBorderPicker() {
   const t = useTranslations("editor");
   const pageBorder = useBiodataStore((s) => s.data.pageBorder ?? "template");
