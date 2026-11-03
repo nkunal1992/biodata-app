@@ -16,6 +16,7 @@ import {
   PhotoFrame,
   SectionHeading,
   scriptFont,
+  PageFrame,
 } from "../components";
 
 /** A hanging toran strip — marigold circles + mango-leaf triangles. */
@@ -27,7 +28,6 @@ function ToranStrip({ width = 500 }: { width?: number }) {
     <Svg width={count * step} height={h} viewBox={`0 0 ${count * step} ${h}`}>
       {Array.from({ length: count }).map((_, i) => {
         const x = i * step + step / 2;
-        const marigold = i % 2 === 0;
         return (
           <Path key={`l${i}`} d={`M${x} 12 L${x - 4} 20 L${x + 4} 20 Z`} fill="#15803d" />
         );
@@ -72,6 +72,7 @@ export function ToranTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#fffdf4", padding: 22 }}>
+        <PageFrame override={data.pageBorder} fallback="none" color="#d97706" padding={0}>
         <View style={{ alignItems: "center" }}>
           <ToranStrip />
         </View>
@@ -93,6 +94,7 @@ export function ToranTemplate({
               {data.photo && (
                 <PhotoFrame
                   src={data.photo}
+                  frame={data.photoFrame}
                   width={78}
                   borderColor="#d97706"
                   padding={2}
@@ -155,6 +157,7 @@ export function ToranTemplate({
             );
           })}
         </View>
+        </PageFrame>
       </Page>
     </Document>
   );

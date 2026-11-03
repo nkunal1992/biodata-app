@@ -9,6 +9,7 @@ import {
   PhotoFrame,
   SectionHeading,
   scriptFont,
+  PageFrame,
 } from "../components";
 
 /** Repeating jaali-lattice band of tiny diamonds. */
@@ -25,44 +26,6 @@ function JaaliBand({ color, count = 26 }: { color: string; count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <Diamond key={i} size={4} color={color} />
       ))}
-    </View>
-  );
-}
-
-/** Photo in a jharokha (arch) frame — large top corner radii. */
-function ArchPhoto({ src }: { src: string }) {
-  const w = 84;
-  return (
-    <View
-      style={{
-        border: "2pt solid #b45309",
-        padding: 3,
-        borderTopLeftRadius: w / 2 + 8,
-        borderTopRightRadius: w / 2 + 8,
-        borderBottomLeftRadius: 6,
-        borderBottomRightRadius: 6,
-        backgroundColor: "#fff7e6",
-      }}
-    >
-      <View
-        style={{
-          borderTopLeftRadius: w / 2,
-          borderTopRightRadius: w / 2,
-          borderBottomLeftRadius: 4,
-          borderBottomRightRadius: 4,
-          overflow: "hidden",
-        }}
-      >
-        {/* eslint-disable-next-line jsx-a11y/alt-text -- react-pdf Image has no alt prop */}
-        <View>
-          <PhotoFrame
-            src={src}
-            width={w}
-            borderColor="transparent"
-            padding={0}
-          />
-        </View>
-      </View>
     </View>
   );
 }
@@ -89,13 +52,7 @@ export function JharokhaTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#faf3e3", padding: 24 }}>
-        <View
-          style={{
-            border: "2pt solid #b45309",
-            padding: 16,
-            flexGrow: 1,
-          }}
-        >
+        <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={16}>
           <JaaliBand color="#b45309" />
           <View style={{ alignItems: "center", marginBottom: 4 }}>
             <Invocation text={data.invocation} theme={theme} />
@@ -131,7 +88,7 @@ export function JharokhaTemplate({
                     {labels.title}
                   </Text>
                 </View>
-                <ArchPhoto src={data.photo} />
+                <PhotoFrame src={data.photo} width={84} borderColor="#b45309" padding={3} frame={data.photoFrame ?? "arch"} />
               </View>
             ) : (
               <View style={{ alignItems: "center" }}>
@@ -203,7 +160,7 @@ export function JharokhaTemplate({
           })}
 
           <JaaliBand color="#b45309" />
-        </View>
+        </PageFrame>
       </Page>
     </Document>
   );

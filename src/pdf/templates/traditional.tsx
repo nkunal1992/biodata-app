@@ -3,7 +3,7 @@ import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import {
-  DoubleBorder,
+  PageFrame,
   FieldRow,
   Invocation,
   PhotoFrame,
@@ -36,7 +36,7 @@ export function TraditionalTemplate({
         size="A4"
         style={{ backgroundColor: "#fffdf5", padding: 22, display: "flex" }}
       >
-        <DoubleBorder color={theme.accent} style={{ borderColor: "#b45309" }}>
+        <PageFrame override={data.pageBorder} fallback="double" color="#b45309" color2="#b45309" padding={16}>
           <Invocation text={data.invocation} theme={theme} />
           <View
             style={{
@@ -68,7 +68,8 @@ export function TraditionalTemplate({
               </Text>
             </View>
             {data.photo && (
-              <PhotoFrame src={data.photo} width={86} borderColor="#b45309" />
+              <PhotoFrame src={data.photo}
+                  frame={data.photoFrame} width={86} borderColor="#b45309" />
             )}
           </View>
           {sections.map((sec) => (
@@ -117,7 +118,7 @@ export function TraditionalTemplate({
               </Text>
             </View>
           )}
-        </DoubleBorder>
+        </PageFrame>
       </Page>
     </Document>
   );

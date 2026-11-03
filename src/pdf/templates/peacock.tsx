@@ -16,6 +16,7 @@ import {
   PhotoFrame,
   SectionHeading,
   scriptFont,
+  PageFrame,
 } from "../components";
 
 function PeacockFeather({ size = 40 }: { size?: number }) {
@@ -73,20 +74,8 @@ export function PeacockTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#f7fbf9", padding: 24 }}>
-        <View
-          style={{
-            border: "1.5pt solid #0f766e",
-            padding: 3.5,
-            flexGrow: 1,
-          }}
-        >
-          <View
-            style={{
-              border: "0.7pt solid #b45309",
-              padding: 16,
-              flexGrow: 1,
-            }}
-          >
+        <PageFrame override={data.pageBorder} fallback="double" color="#0f766e" color2="#b45309" padding={16}>
+        
             <View style={{ alignItems: "center" }}>
               <PeacockFeather size={34} />
               <Invocation text={data.invocation} theme={theme} fontSize={10} />
@@ -110,6 +99,7 @@ export function PeacockTemplate({
                 {data.photo && (
                   <PhotoFrame
                     src={data.photo}
+                  frame={data.photoFrame}
                     width={72}
                     borderColor="#b45309"
                     padding={2}
@@ -170,8 +160,7 @@ export function PeacockTemplate({
                 </View>
               );
             })}
-          </View>
-        </View>
+          </PageFrame>
       </Page>
     </Document>
   );

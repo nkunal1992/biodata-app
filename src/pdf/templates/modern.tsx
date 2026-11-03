@@ -2,7 +2,7 @@ import { Document, Page, Text, View } from "@react-pdf/renderer";
 import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
-import { FieldRow, PhotoFrame, scriptFont } from "../components";
+import { FieldRow, PhotoFrame, scriptFont, PageFrame } from "../components";
 
 export function ModernTemplate({
   data,
@@ -27,6 +27,7 @@ export function ModernTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#ffffff", flexDirection: "row" }}>
+        <PageFrame override={data.pageBorder} fallback="none" color="{accent}" padding={0}>
         <View style={{ width: 10, backgroundColor: accent }} />
         <View style={{ flex: 1, padding: 30, paddingLeft: 26 }}>
           <View
@@ -74,6 +75,7 @@ export function ModernTemplate({
             {data.photo && (
               <PhotoFrame
                 src={data.photo}
+                  frame={data.photoFrame}
                 width={84}
                 borderColor={accent}
                 padding={2}
@@ -144,6 +146,7 @@ export function ModernTemplate({
             );
           })}
         </View>
+        </PageFrame>
       </Page>
     </Document>
   );

@@ -29,6 +29,22 @@ export const TEMPLATE_IDS: TemplateId[] = [
 
 export type OutputLocale = "en" | "hi";
 
+export type FrameStyle =
+  | "classic"
+  | "rounded"
+  | "oval"
+  | "circle"
+  | "arch"
+  | "ornate";
+
+export type PageBorderStyle =
+  | "template"
+  | "none"
+  | "line"
+  | "double"
+  | "ornate"
+  | "floral";
+
 export type Manglik = "" | "yes" | "no" | "anshik";
 export type MaritalStatus = "" | "never" | "divorced" | "widowed" | "awaiting";
 export type FamilyType = "" | "nuclear" | "joint";
@@ -96,6 +112,10 @@ export interface BiodataData {
   outputLocale: OutputLocale;
   /** Accent color for the modern template (hex). */
   accent?: string;
+  /** Photo frame style — applied across all templates. */
+  photoFrame?: FrameStyle;
+  /** Page border override; 'template' keeps each design's signature border. */
+  pageBorder?: PageBorderStyle;
   /** Downscaled JPEG data URL — excluded from share links. */
   photo?: string;
   invocation: string;

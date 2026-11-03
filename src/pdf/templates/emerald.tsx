@@ -2,7 +2,7 @@ import { Document, Page, Text, View } from "@react-pdf/renderer";
 import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections, type Row } from "../rows";
-import { FieldRow, PhotoFrame, scriptFont } from "../components";
+import { FieldRow, PhotoFrame, scriptFont, PageFrame } from "../components";
 
 function SidebarRow({
   label,
@@ -78,6 +78,7 @@ export function EmeraldTemplate({
         size="A4"
         style={{ backgroundColor: "#ffffff", flexDirection: "row" }}
       >
+        <PageFrame override={data.pageBorder} fallback="none" color="#065f46" padding={0}>
         <View
           style={{
             width: 175,
@@ -90,6 +91,7 @@ export function EmeraldTemplate({
             <View style={{ alignItems: "center", marginBottom: 14 }}>
               <PhotoFrame
                 src={data.photo}
+                  frame={data.photoFrame}
                 width={105}
                 borderColor="#a7f3d0"
                 padding={3}
@@ -244,6 +246,7 @@ export function EmeraldTemplate({
             );
           })}
         </View>
+        </PageFrame>
       </Page>
     </Document>
   );

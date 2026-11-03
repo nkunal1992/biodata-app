@@ -4,7 +4,28 @@ import { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { ImagePlus, Trash2 } from "lucide-react";
 import { useBiodataStore } from "@/store/biodata-store";
+import type { FrameStyle } from "@/lib/biodata";
 import { SectionFields, TopLevelField, type FieldDef } from "./fields";
+import { SuggestionPicker } from "./SuggestionPicker";
+import { cn } from "@/lib/cn";
+
+const FRAME_STYLES: FrameStyle[] = [
+  "classic",
+  "rounded",
+  "oval",
+  "circle",
+  "arch",
+  "ornate",
+];
+
+const FRAME_PREVIEW_CLS: Record<FrameStyle, string> = {
+  classic: "rounded-none",
+  rounded: "rounded-md",
+  oval: "rounded-[50%]",
+  circle: "rounded-full aspect-square",
+  arch: "rounded-t-full rounded-b-md",
+  ornate: "rounded-sm ring-2 ring-amber-400 ring-offset-1",
+};
 
 export const SECTION_ORDER = [
   "photo",
@@ -127,6 +148,46 @@ export function PhotoSection() {
         )}
         <p className="text-xs text-stone-500">{t("photoFormats")}</p>
       </div>
+      {photo && <FramePicker />}
+    </div>
+  );
+}
+
+function FramePicker() {
+  const t = useTranslations("editor");
+  const frame = useBiodataStore((s) => s.data.photoFrame ?? "classic");
+  const setTopLevel = useBiodataStore((s) => s.setTopLevel);
+  return (
+    <div className="flex-1">
+      <p className="mb-1.5 text-xs font-medium text-stone-600">
+        {t("frameStyle")}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {FRAME_STYLES.map((f) => (
+          <button
+            key={f}
+            type="button"
+            onClick={() => setTopLevel({ photoFrame: f })}
+            title={t(`frames.${f}`)}
+            className={cn(
+              "flex flex-col items-center gap-1 rounded-lg border-2 p-1.5 transition",
+              frame === f
+                ? "border-orange-500 ring-2 ring-orange-500/20"
+                : "border-stone-200 hover:border-stone-300",
+            )}
+          >
+            <span
+              className={cn(
+                "block h-8 w-7 border-2 border-stone-400 bg-stone-100",
+                FRAME_PREVIEW_CLS[f],
+              )}
+            />
+            <span className="text-[10px] text-stone-600">
+              {t(`frames.${f}`)}
+            </span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -173,7 +234,9 @@ export function SectionBody({ section }: { section: SectionKey }) {
       return (
         <div className="space-y-3">
           <TopLevelField name="aboutMe" textarea />
+          <SuggestionPicker field="aboutMe" />
           <TopLevelField name="expectations" textarea />
+          <SuggestionPicker field="expectations" />
           <TopLevelField name="invocation" />
         </div>
       );

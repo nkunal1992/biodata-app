@@ -9,6 +9,7 @@ import {
   PhotoFrame,
   SectionHeading,
   scriptFont,
+  PageFrame,
 } from "../components";
 
 /** Zari butti strip — small gold paisley-dots row, like Banarasi brocade. */
@@ -63,20 +64,8 @@ export function BanarasiTemplate({
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#fdfbf5", padding: 22 }}>
         {/* zari double border */}
-        <View
-          style={{
-            border: "2.5pt solid #4c1d95",
-            padding: 3,
-            flexGrow: 1,
-          }}
-        >
-          <View
-            style={{
-              border: "0.9pt solid #a16207",
-              padding: 15,
-              flexGrow: 1,
-            }}
-          >
+        <PageFrame override={data.pageBorder} fallback="ornate" color="#4c1d95" color2="#a16207" padding={15}>
+        
             <ButtiRow color="#a16207" />
             <View style={{ alignItems: "center", marginBottom: 2 }}>
               <Invocation text={data.invocation} theme={theme} />
@@ -95,6 +84,7 @@ export function BanarasiTemplate({
                 {data.photo && (
                   <PhotoFrame
                     src={data.photo}
+                  frame={data.photoFrame}
                     width={76}
                     borderColor="#a16207"
                     padding={2}
@@ -158,8 +148,7 @@ export function BanarasiTemplate({
             })}
 
             <ButtiRow color="#a16207" />
-          </View>
-        </View>
+          </PageFrame>
       </Page>
     </Document>
   );

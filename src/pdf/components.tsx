@@ -1,5 +1,6 @@
-import { Image, Path, Svg, Text, View } from "@react-pdf/renderer";
+import { Circle, Image, Path, Svg, Text, View } from "@react-pdf/renderer";
 import type { Style } from "@react-pdf/types";
+import type { FrameStyle, PageBorderStyle } from "@/lib/biodata";
 
 /** Per-template palette + fonts (fonts come from docLabels(locale).fonts). */
 export interface Theme {
@@ -152,38 +153,197 @@ export function PhotoFrame({
   width = 92,
   borderColor,
   padding = 3,
-  borderRadius = 0,
+  frame = "classic",
+  borderRadius,
   style,
 }: {
   src?: string;
   width?: number;
   borderColor: string;
   padding?: number;
+  frame?: FrameStyle;
+  /** @deprecated prefer `frame` — kept for compat */
   borderRadius?: number;
   style?: Style;
 }) {
   if (!src) return null;
+  const square = frame === "circle";
+  const imgH = square ? width : width * 1.22;
+  const outer: object =
+    frame === "oval"
+      ? { borderRadius: width }
+      : frame === "circle"
+        ? { borderRadius: width / 2 + padding }
+        : frame === "arch"
+          ? {
+              borderTopLeftRadius: width * 0.55,
+              borderTopRightRadius: width * 0.55,
+              borderBottomLeftRadius: 6,
+              borderBottomRightRadius: 6,
+            }
+          : frame === "rounded"
+            ? { borderRadius: 8 }
+            : { borderRadius: borderRadius ?? (frame === "ornate" ? 4 : 0) };
+  const inner: object =
+    frame === "oval"
+      ? { borderRadius: width }
+      : frame === "circle"
+        ? { borderRadius: width / 2 }
+        : frame === "arch"
+          ? {
+              borderTopLeftRadius: width * 0.5,
+              borderTopRightRadius: width * 0.5,
+              borderBottomLeftRadius: 4,
+              borderBottomRightRadius: 4,
+            }
+          : frame === "rounded"
+            ? { borderRadius: 5 }
+            : frame === "ornate"
+              ? { borderRadius: 2 }
+              : {};
+
+  const img = (
+    // eslint-disable-next-line jsx-a11y/alt-text -- react-pdf Image has no alt prop
+    <Image
+      src={src}
+      style={{ width, height: imgH, objectFit: "cover", ...inner }}
+    />
+  );
+
+  if (frame === "ornate") {
+    return (
+      <View
+        style={[
+          { border: `1.5pt solid ${borderColor}`, padding: 2, ...outer },
+          style,
+        ]}
+      >
+        <View style={{ border: `0.6pt solid ${borderColor}`, padding: 2.5 }}>
+          {img}
+        </View>
+      </View>
+    );
+  }
+  return (
+    <View
+      style={[{ border: `1pt solid ${borderColor}`, padding, ...outer }, style]}
+    >
+      {img}
+    </View>
+  );
+}
+
+/** Small floral corner motif (shared with the floral template). */
+export function CornerFloral({
+  color,
+  flip = false,
+  style,
+}: {
+  color: string;
+  flip?: boolean;
+  style?: Style;
+}) {
+  return (
+    <Svg
+      width={54}
+      height={54}
+      viewBox="0 0 54 54"
+      style={[flip ? { transform: "scaleX(-1)" } : {}, style ?? {}]}
+    >
+      <Path d="M2 2 Q26 8 30 32 Q8 28 2 2 Z" fill={color} opacity={0.25} />
+      <Path d="M10 2 Q34 6 44 30 Q20 26 10 2 Z" fill={color} opacity={0.35} />
+      <Circle cx={40} cy={40} r={3} fill={color} opacity={0.5} />
+      <Circle cx={30} cy={46} r={2} fill={color} opacity={0.4} />
+      <Circle cx={46} cy={30} r={2} fill={color} opacity={0.4} />
+    </Svg>
+  );
+}
+
+export type PageBorderKind = Exclude<PageBorderStyle, "template">;
+
+/**
+ * Page border wrapper honoring the user's `pageBorder` override.
+ * `fallback` is the template's signature border used when override='template'.
+ */
+export function PageFrame({
+  override = "template",
+  fallback = "none",
+  color,
+  color2,
+  padding = 16,
+  children,
+  style,
+}: {
+  override?: PageBorderStyle;
+  fallback?: PageBorderKind;
+  color: string;
+  color2?: string;
+  padding?: number;
+  children: React.ReactNode;
+  style?: Style;
+}) {
+  const kind: PageBorderKind =
+    override === "template" ? fallback : (override as PageBorderKind);
+  const c2 = color2 ?? color;
+
+  if (kind === "none") {
+    return <View style={[{ padding, flexGrow: 1 }, style]}>{children}</View>;
+  }
+  if (kind === "floral") {
+    return (
+      <View
+        style={[
+          { border: `0.7pt solid ${color}`, padding, flexGrow: 1 },
+          style,
+        ]}
+      >
+        <View style={{ position: "absolute", top: 4, left: 4 }}>
+          <CornerFloral color={c2} />
+        </View>
+        <View style={{ position: "absolute", top: 4, right: 4 }}>
+          <CornerFloral color={c2} flip />
+        </View>
+        {children}
+      </View>
+    );
+  }
+  if (kind === "line") {
+    return (
+      <View
+        style={[
+          { border: `0.9pt solid ${color}`, padding, flexGrow: 1 },
+          style,
+        ]}
+      >
+        {children}
+      </View>
+    );
+  }
+  if (kind === "ornate") {
+    return (
+      <View
+        style={[
+          { border: `2.2pt solid ${color}`, padding: 3, flexGrow: 1 },
+          style,
+        ]}
+      >
+        <View style={{ border: `0.7pt solid ${c2}`, padding, flexGrow: 1 }}>
+          {children}
+        </View>
+      </View>
+    );
+  }
+  // double
   return (
     <View
       style={[
-        {
-          border: `1pt solid ${borderColor}`,
-          padding,
-          borderRadius,
-        },
+        { border: `1.6pt solid ${color}`, padding: 4, flexGrow: 1 },
         style,
       ]}
     >
-      {/* eslint-disable-next-line jsx-a11y/alt-text -- react-pdf Image has no alt prop */}
-      <Image
-        src={src}
-        style={{
-          width,
-          height: width * 1.22,
-          objectFit: "cover",
-          borderRadius: Math.max(0, borderRadius - padding),
-        }}
-      />
+      <View style={{ border: `0.7pt solid ${c2}`, padding, flexGrow: 1 }}>
+        {children}
+      </View>
     </View>
   );
 }

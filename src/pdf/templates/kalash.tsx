@@ -17,6 +17,7 @@ import {
   PhotoFrame,
   SectionHeading,
   scriptFont,
+  PageFrame,
 } from "../components";
 
 /** पूर्ण कलश — coconut + mango leaves over a decorated pot. */
@@ -69,13 +70,7 @@ export function KalashTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#fffaf2", padding: 24 }}>
-        <View
-          style={{
-            border: "1.2pt solid #d97706",
-            padding: 16,
-            flexGrow: 1,
-          }}
-        >
+        <PageFrame override={data.pageBorder} fallback="line" color="#d97706" padding={16}>
           <View style={{ alignItems: "center" }}>
             <KalashMark size={52} />
             <Invocation text={data.invocation} theme={theme} />
@@ -94,6 +89,7 @@ export function KalashTemplate({
               {data.photo && (
                 <PhotoFrame
                   src={data.photo}
+                  frame={data.photoFrame}
                   width={76}
                   borderColor="#d97706"
                   padding={2}
@@ -155,7 +151,7 @@ export function KalashTemplate({
               </View>
             );
           })}
-        </View>
+        </PageFrame>
       </Page>
     </Document>
   );

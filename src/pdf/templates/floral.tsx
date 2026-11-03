@@ -1,25 +1,8 @@
-import { Circle, Document, Page, Path, Svg, Text, View } from "@react-pdf/renderer";
+import { Document, Page, Text, View } from "@react-pdf/renderer";
 import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
-import { FieldRow, Invocation, PhotoFrame, scriptFont, SectionHeading } from "../components";
-
-function CornerFloral({ color, flip = false }: { color: string; flip?: boolean }) {
-  return (
-    <Svg
-      width={54}
-      height={54}
-      viewBox="0 0 54 54"
-      style={flip ? { transform: "scaleX(-1)" } : undefined}
-    >
-      <Path d="M2 2 Q26 8 30 32 Q8 28 2 2 Z" fill={color} opacity={0.25} />
-      <Path d="M10 2 Q34 6 44 30 Q20 26 10 2 Z" fill={color} opacity={0.35} />
-      <Circle cx={40} cy={40} r={3} fill={color} opacity={0.5} />
-      <Circle cx={30} cy={46} r={2} fill={color} opacity={0.4} />
-      <Circle cx={46} cy={30} r={2} fill={color} opacity={0.4} />
-    </Svg>
-  );
-}
+import { FieldRow, Invocation, PhotoFrame, scriptFont, SectionHeading, PageFrame } from "../components";
 
 export function FloralTemplate({
   data,
@@ -43,26 +26,13 @@ export function FloralTemplate({
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: "#fff9f4", padding: 20 }}>
-        <View style={{ position: "absolute", top: 12, left: 12 }}>
-          <CornerFloral color="#f472b6" />
-        </View>
-        <View style={{ position: "absolute", top: 12, right: 12 }}>
-          <CornerFloral color="#f472b6" flip />
-        </View>
-
-        <View
-          style={{
-            border: "0.7pt solid #f9a8d4",
-            margin: 20,
-            padding: 18,
-            flexGrow: 1,
-          }}
-        >
+        <PageFrame override={data.pageBorder} fallback="floral" color="#f9a8d4" color2="#f472b6" padding={18} style={{ margin: 20 }}>
           <Invocation text={data.invocation} theme={theme} />
           <View style={{ alignItems: "center", marginBottom: 4 }}>
             {data.photo && (
               <PhotoFrame
                 src={data.photo}
+                  frame={data.photoFrame}
                 width={80}
                 borderColor="#f472b6"
                 borderRadius={40}
@@ -133,7 +103,7 @@ export function FloralTemplate({
               </View>
             );
           })}
-        </View>
+        </PageFrame>
       </Page>
     </Document>
   );
