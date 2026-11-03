@@ -4,10 +4,29 @@ import { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { ImagePlus, Trash2 } from "lucide-react";
 import { useBiodataStore } from "@/store/biodata-store";
-import type { FrameStyle } from "@/lib/biodata";
+import type { FrameStyle, InvocationIcon } from "@/lib/biodata";
 import { SectionFields, TopLevelField, type FieldDef } from "./fields";
 import { SuggestionPicker } from "./SuggestionPicker";
 import { cn } from "@/lib/cn";
+
+const ICONS: InvocationIcon[] = [
+  "none",
+  "om",
+  "swastik",
+  "kalash",
+  "diya",
+  "lotus",
+  "ganesha",
+];
+
+const MANTRAS = [
+  "॥ श्री गणेशाय नमः ॥",
+  "ॐ गं गणपतये नमः",
+  "ॐ नमः शिवाय",
+  "॥ शुभ विवाह ॥",
+  "जय श्री कृष्ण",
+  "जय माता दी",
+];
 
 const FRAME_STYLES: FrameStyle[] = [
   "classic",
@@ -153,6 +172,55 @@ export function PhotoSection() {
   );
 }
 
+function InvocationControls() {
+  const t = useTranslations("editor");
+  const icon = useBiodataStore((s) => s.data.invocationIcon ?? "none");
+  const setTopLevel = useBiodataStore((s) => s.setTopLevel);
+  return (
+    <div className="space-y-3">
+      <div>
+        <p className="mb-1.5 text-xs font-medium text-stone-600">
+          {t("icon")}
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {ICONS.map((ic) => (
+            <button
+              key={ic}
+              type="button"
+              onClick={() => setTopLevel({ invocationIcon: ic })}
+              className={cn(
+                "rounded-lg border px-3 py-1.5 text-xs font-medium transition",
+                icon === ic
+                  ? "border-orange-500 bg-orange-600 text-white"
+                  : "border-stone-300 bg-white text-stone-600 hover:border-orange-300",
+              )}
+            >
+              {t(`icons.${ic}`)}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <p className="mb-1.5 text-xs font-medium text-stone-600">
+          {t("mantra")}
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {MANTRAS.map((m) => (
+            <button
+              key={m}
+              type="button"
+              onClick={() => setTopLevel({ invocation: m })}
+              className="rounded-lg border border-stone-300 bg-white px-2.5 py-1 text-xs text-stone-600 hover:border-orange-300 hover:text-orange-700"
+            >
+              {m}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FramePicker() {
   const t = useTranslations("editor");
   const frame = useBiodataStore((s) => s.data.photoFrame ?? "classic");
@@ -238,6 +306,7 @@ export function SectionBody({ section }: { section: SectionKey }) {
           <TopLevelField name="expectations" textarea />
           <SuggestionPicker field="expectations" />
           <TopLevelField name="invocation" />
+          <InvocationControls />
         </div>
       );
   }

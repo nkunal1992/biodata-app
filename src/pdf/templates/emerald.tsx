@@ -2,7 +2,7 @@ import { Document, Page, Text, View } from "@react-pdf/renderer";
 import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections, type Row } from "../rows";
-import { FieldRow, PhotoFrame, scriptFont, PageFrame } from "../components";
+import { FieldRow, PhotoFrame, scriptFont, PageFrame , IconMark } from "../components";
 
 function SidebarRow({
   label,
@@ -119,6 +119,7 @@ export function EmeraldTemplate({
           >
             {labels.title}
           </Text>
+          <IconMark icon={data.invocationIcon} color="#d4af37" size={15} style={{ alignSelf: "center", marginBottom: 3 }} />
           {data.invocation.trim() ? (
             <Text
               style={{

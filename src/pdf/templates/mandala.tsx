@@ -66,7 +66,7 @@ export function MandalaTemplate({
             <View style={{ position: "absolute", top: 30, opacity: 0.12 }}>
               <MandalaMark size={110} color="#92400e" />
             </View>
-            <Invocation text={data.invocation} theme={theme} />
+            <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
             <View style={{ alignItems: "center", marginTop: 6 }}>
               {data.photo && (
                 <PhotoFrame

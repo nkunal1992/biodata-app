@@ -78,7 +78,7 @@ export function PeacockTemplate({
         
             <View style={{ alignItems: "center" }}>
               <PeacockFeather size={34} />
-              <Invocation text={data.invocation} theme={theme} fontSize={10} />
+              <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} fontSize={10} />
               <View
                 style={{
                   flexDirection: "row",

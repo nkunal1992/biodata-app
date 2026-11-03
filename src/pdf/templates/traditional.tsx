@@ -37,7 +37,7 @@ export function TraditionalTemplate({
         style={{ backgroundColor: "#fffdf5", padding: 22, display: "flex" }}
       >
         <PageFrame override={data.pageBorder} fallback="double" color="#b45309" color2="#b45309" padding={16}>
-          <Invocation text={data.invocation} theme={theme} />
+          <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
           <View
             style={{
               flexDirection: "row",

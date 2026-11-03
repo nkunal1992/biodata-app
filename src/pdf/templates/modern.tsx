@@ -2,7 +2,7 @@ import { Document, Page, Text, View } from "@react-pdf/renderer";
 import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
-import { FieldRow, PhotoFrame, scriptFont, PageFrame } from "../components";
+import { FieldRow, PhotoFrame, scriptFont, PageFrame , IconMark } from "../components";
 
 export function ModernTemplate({
   data,
@@ -59,6 +59,7 @@ export function ModernTemplate({
               >
                 {name}
               </Text>
+              <IconMark icon={data.invocationIcon} color={accent} size={15} style={{ alignSelf: "center", marginBottom: 2 }} />
               {data.invocation.trim() ? (
                 <Text
                   style={{

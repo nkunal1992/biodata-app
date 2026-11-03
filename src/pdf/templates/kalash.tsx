@@ -1,10 +1,6 @@
 import {
-  Circle,
   Document,
   Page,
-  Path,
-  Rect,
-  Svg,
   Text,
   View,
 } from "@react-pdf/renderer";
@@ -14,6 +10,7 @@ import { buildSections } from "../rows";
 import {
   FieldRow,
   Invocation,
+  KalashMark,
   PhotoFrame,
   SectionHeading,
   scriptFont,
@@ -21,33 +18,6 @@ import {
 } from "../components";
 
 /** पूर्ण कलश — coconut + mango leaves over a decorated pot. */
-function KalashMark({ size = 56 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size * 1.25} viewBox="0 0 60 75">
-      {/* mango leaves */}
-      <Path d="M30 20 Q16 12 10 6" stroke="#15803d" strokeWidth={2} fill="none" />
-      <Path d="M30 20 Q44 12 50 6" stroke="#15803d" strokeWidth={2} fill="none" />
-      <Path d="M30 20 Q30 8 30 3" stroke="#15803d" strokeWidth={2} fill="none" />
-      {/* coconut */}
-      <Circle cx={30} cy={19} r={7.5} fill="#92400e" />
-      <Circle cx={30} cy={16.5} r={2.5} fill="#b45309" />
-      {/* rim */}
-      <Rect x={14} y={26} width={32} height={6} rx={2.5} fill="#d97706" />
-      {/* pot */}
-      <Path
-        d="M14 32 Q8 44 12 57 Q17 71 30 71 Q43 71 48 57 Q52 44 46 32 Z"
-        fill="#b91c1c"
-      />
-      {/* auspicious mark */}
-      <Circle cx={30} cy={50} r={6} fill="#fcd34d" />
-      <Path
-        d="M30 45.5 L34 50 L30 54.5 L26 50 Z"
-        fill="#b91c1c"
-      />
-    </Svg>
-  );
-}
-
 export function KalashTemplate({
   data,
   labels,
@@ -73,7 +43,7 @@ export function KalashTemplate({
         <PageFrame override={data.pageBorder} fallback="line" color="#d97706" padding={16}>
           <View style={{ alignItems: "center" }}>
             <KalashMark size={52} />
-            <Invocation text={data.invocation} theme={theme} />
+            <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
             >
