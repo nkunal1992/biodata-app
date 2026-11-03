@@ -1,0 +1,189 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
+import { ChevronDown, Eye, Heart } from "lucide-react";
+import { useBiodataStore } from "@/store/biodata-store";
+import { decodeShareHash } from "@/lib/share";
+import { cn } from "@/lib/cn";
+import { SECTION_ORDER, SectionBody, type SectionKey } from "./sections";
+import { OutputLocaleToggle, TemplatePicker, Toolbar } from "./controls";
+
+const PdfPreview = dynamic(() => import("@/components/PdfPreview"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full items-center justify-center bg-stone-200 text-sm text-stone-500">
+      …
+    </div>
+  ),
+});
+
+function StepperSection({
+  index,
+  sectionKey,
+  open,
+  onToggle,
+  onNext,
+  isLast,
+}: {
+  index: number;
+  sectionKey: SectionKey;
+  open: boolean;
+  onToggle: () => void;
+  onNext: () => void;
+  isLast: boolean;
+}) {
+  const t = useTranslations("editor");
+  return (
+    <div
+      className={cn(
+        "overflow-hidden rounded-xl border bg-white transition",
+        open ? "border-orange-300 shadow-sm" : "border-stone-200",
+      )}
+    >
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        className="flex w-full items-center gap-3 px-4 py-3 text-left"
+      >
+        <span
+          className={cn(
+            "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold",
+            open ? "bg-orange-600 text-white" : "bg-stone-200 text-stone-600",
+          )}
+        >
+          {index + 1}
+        </span>
+        <span className="flex-1">
+          <span className="block text-sm font-semibold text-stone-800">
+            {t(`sections.${sectionKey}`)}
+          </span>
+          {open && (
+            <span className="block text-xs text-stone-500">
+              {t(`sectionHints.${sectionKey}`)}
+            </span>
+          )}
+        </span>
+        <ChevronDown
+          size={16}
+          className={cn(
+            "text-stone-400 transition-transform",
+            open && "rotate-180",
+          )}
+        />
+      </button>
+      {open && (
+        <div className="border-t border-stone-100 px-4 py-4">
+          <SectionBody section={sectionKey} />
+          {!isLast && (
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                onClick={onNext}
+                className="rounded-lg bg-stone-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-stone-700"
+              >
+                {t("next")} →
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function EditorShell() {
+  const t = useTranslations("editor");
+  const nav = useTranslations("nav");
+  const hydrateFromShare = useBiodataStore((s) => s.hydrateFromShare);
+  const [open, setOpen] = useState<SectionKey | null>("photo");
+  const [showMobilePreview, setShowMobilePreview] = useState(false);
+  const [shared, setShared] = useState(false);
+
+  // Hydrate from a #d= share hash once, then strip it.
+  useEffect(() => {
+    const sharedData = decodeShareHash(window.location.hash);
+    if (sharedData) {
+      hydrateFromShare(sharedData);
+      // One-time hydration banner — setState here is intentional.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShared(true);
+      history.replaceState(null, "", window.location.pathname);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const openIdx = open === null ? -1 : SECTION_ORDER.indexOf(open);
+  const next = () => {
+    const nxt = SECTION_ORDER[openIdx + 1];
+    if (nxt) setOpen(nxt);
+  };
+
+  return (
+    <div className="flex min-h-screen flex-col bg-stone-100">
+      <header className="flex items-center justify-between border-b border-stone-200 bg-white px-4 py-3 lg:px-6">
+        <div className="flex items-center gap-2">
+          <Heart size={18} className="text-orange-600" fill="currentColor" />
+          <span className="text-base font-bold text-stone-900">
+            {nav("brand")}
+          </span>
+          <span className="hidden text-sm text-stone-400 sm:inline">
+            · {t("title")}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowMobilePreview((v) => !v)}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-stone-300 px-3 py-1.5 text-sm text-stone-700 lg:hidden"
+        >
+          <Eye size={15} /> {t("preview")}
+        </button>
+      </header>
+
+      <div className="flex flex-1 flex-col lg:flex-row">
+        <div className="order-2 w-full space-y-4 p-4 lg:order-1 lg:w-[46%] lg:max-w-2xl lg:p-6">
+          {shared && (
+            <p className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800">
+              ✓ {t("sharedLoaded")}
+            </p>
+          )}
+          <div className="space-y-4 rounded-xl border border-stone-200 bg-white p-4">
+            <TemplatePicker />
+            <div className="border-t border-stone-100 pt-4">
+              <OutputLocaleToggle />
+            </div>
+            <div className="border-t border-stone-100 pt-4">
+              <Toolbar />
+            </div>
+          </div>
+
+          <div className="space-y-2.5">
+            {SECTION_ORDER.map((key, i) => (
+              <StepperSection
+                key={key}
+                index={i}
+                sectionKey={key}
+                open={open === key}
+                onToggle={() => setOpen(open === key ? null : key)}
+                onNext={next}
+                isLast={i === SECTION_ORDER.length - 1}
+              />
+            ))}
+          </div>
+        </div>
+
+        {showMobilePreview && (
+          <div className="order-1 h-[70vh] border-b border-stone-200 lg:hidden">
+            <PdfPreview />
+          </div>
+        )}
+
+        <aside className="sticky top-0 hidden h-screen flex-1 lg:order-2 lg:block">
+          <PdfPreview />
+        </aside>
+      </div>
+    </div>
+  );
+}
