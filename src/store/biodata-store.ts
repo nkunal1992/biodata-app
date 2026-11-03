@@ -28,6 +28,7 @@ interface BiodataStore {
         | "photoFrame"
         | "pageBorder"
         | "invocationIcon"
+        | "pageBackground"
       >
     >,
   ) => void;

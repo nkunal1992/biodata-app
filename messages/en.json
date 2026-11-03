@@ -248,6 +248,16 @@
       "diya": "Diya",
       "lotus": "Lotus",
       "ganesha": "Ganesh Ji"
+    },
+    "pageBg": "Page background",
+    "bgs": {
+      "template": "Template default",
+      "white": "White",
+      "ivory": "Ivory",
+      "cream": "Cream",
+      "blush": "Blush",
+      "mint": "Mint",
+      "sandal": "Sandal"
     }
   },
   "templates": {

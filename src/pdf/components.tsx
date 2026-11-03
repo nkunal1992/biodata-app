@@ -1,6 +1,6 @@
 import { Circle, Image, Path, Rect, Svg, Text, View } from "@react-pdf/renderer";
 import type { Style } from "@react-pdf/types";
-import type { FrameStyle, InvocationIcon, PageBorderStyle } from "@/lib/biodata";
+import type { BiodataData, FrameStyle, InvocationIcon, PageBg, PageBorderStyle } from "@/lib/biodata";
 
 /** Per-template palette + fonts (fonts come from docLabels(locale).fonts). */
 export interface Theme {
@@ -565,4 +565,22 @@ export function IconMark({
       )}
     </View>
   );
+}
+
+// ── Page background ──────────────────────────────────────────────
+
+const BG_TONES: Record<Exclude<PageBg, "template">, string> = {
+  white: "#ffffff",
+  ivory: "#fefcf3",
+  cream: "#fdf6e3",
+  blush: "#fdf0ee",
+  mint: "#f0f7f0",
+  sandal: "#f5ead3",
+};
+
+/** Resolve the page background: user override or the template's tone. */
+export function bgColor(data: BiodataData, fallback: string): string {
+  const bg = data.pageBackground;
+  if (!bg || bg === "template") return fallback;
+  return BG_TONES[bg];
 }

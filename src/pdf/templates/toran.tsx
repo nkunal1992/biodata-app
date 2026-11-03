@@ -17,6 +17,7 @@ import {
   SectionHeading,
   scriptFont,
   PageFrame,
+  bgColor,
 } from "../components";
 
 /** A hanging toran strip — marigold circles + mango-leaf triangles. */
@@ -71,7 +72,7 @@ export function ToranTemplate({
 
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
-      <Page size="A4" style={{ backgroundColor: "#fffdf4", padding: 22 }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffdf4"), padding: 22 }}>
         <PageFrame override={data.pageBorder} fallback="none" color="#d97706" padding={0}>
         <View style={{ alignItems: "center" }}>
           <ToranStrip />

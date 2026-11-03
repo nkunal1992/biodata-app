@@ -12,6 +12,7 @@ import { LocaleSwitcher } from "@/components/Navbar";
 import { SECTION_ORDER, SectionBody, type SectionKey } from "./sections";
 import {
   OutputLocaleToggle,
+  PageBgPicker,
   PageBorderPicker,
   TemplatePicker,
   Toolbar,
@@ -171,6 +172,9 @@ export default function EditorShell() {
             <TemplatePicker />
             <div className="border-t border-stone-100 pt-4">
               <OutputLocaleToggle />
+            </div>
+            <div className="border-t border-stone-100 pt-4">
+              <PageBgPicker />
             </div>
             <div className="border-t border-stone-100 pt-4">
               <PageBorderPicker />

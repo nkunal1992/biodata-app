@@ -46,6 +46,15 @@ export type InvocationIcon =
   | "lotus"
   | "ganesha";
 
+export type PageBg =
+  | "template"
+  | "white"
+  | "ivory"
+  | "cream"
+  | "blush"
+  | "mint"
+  | "sandal";
+
 export type PageBorderStyle =
   | "template"
   | "none"
@@ -127,6 +136,8 @@ export interface BiodataData {
   pageBorder?: PageBorderStyle;
   /** Auspicious icon drawn above the invocation line. */
   invocationIcon?: InvocationIcon;
+  /** Paper background override; 'template' keeps each design's tone. */
+  pageBackground?: PageBg;
   /** Downscaled JPEG data URL — excluded from share links. */
   photo?: string;
   invocation: string;

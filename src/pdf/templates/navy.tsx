@@ -9,6 +9,7 @@ import {
   scriptFont,
   PageFrame,
   IconMark,
+  bgColor,
 } from "../components";
 
 export function NavyTemplate({
@@ -32,7 +33,7 @@ export function NavyTemplate({
 
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
-      <Page size="A4" style={{ backgroundColor: "#ffffff", padding: 30 }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff"), padding: 30 }}>
         <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={22}>
           <View
             style={{

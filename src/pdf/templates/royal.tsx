@@ -10,6 +10,7 @@ import {
   scriptFont,
   PageFrame,
   IconMark,
+  bgColor,
 } from "../components";
 
 export function RoyalTemplate({
@@ -33,7 +34,7 @@ export function RoyalTemplate({
 
   return (
     <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
-      <Page size="A4" style={{ backgroundColor: "#ffffff" }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff") }}>
         <PageFrame override={data.pageBorder} fallback="none" color="#6d0f2b" padding={0}>
         <View
           style={{
