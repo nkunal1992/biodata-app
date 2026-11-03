@@ -21,6 +21,12 @@ const TEMPLATE_CARD: Record<string, string> = {
   floral: "border-pink-400 bg-[#fff9f4]",
   emerald: "border-emerald-200 bg-[#065f46] text-emerald-50",
   mandala: "border-amber-600 bg-[#fdf8ee]",
+  peacock: "border-teal-700 bg-[#f7fbf9]",
+  jharokha: "border-[#7f1d1d] bg-[#faf3e3]",
+  toran: "border-amber-500 bg-[#fffdf4]",
+  banarasi: "border-violet-900 bg-[#fdfbf5]",
+  kalash: "border-red-700 bg-[#fffaf2]",
+  navy: "border-blue-900 bg-white",
 };
 
 export default async function LandingPage({

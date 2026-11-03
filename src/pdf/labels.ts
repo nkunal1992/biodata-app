@@ -30,6 +30,9 @@ export interface DocLabels {
     | "gotra"
     | "rashi"
     | "nakshatra"
+    | "charan"
+    | "gana"
+    | "nadi"
     | "manglik"
     | "motherTongue"
     | "kuldevta"
@@ -41,6 +44,8 @@ export interface DocLabels {
     | "father"
     | "mother"
     | "siblings"
+    | "mama"
+    | "grandfather"
     | "familyType"
     | "nativePlace"
     | "phone"
@@ -88,6 +93,9 @@ const en: DocLabels = {
     gotra: "Gotra",
     rashi: "Rashi",
     nakshatra: "Nakshatra",
+    charan: "Charan / Pada",
+    gana: "Gana",
+    nadi: "Nadi",
     manglik: "Manglik",
     motherTongue: "Mother Tongue",
     kuldevta: "Kuldevta",
@@ -99,6 +107,8 @@ const en: DocLabels = {
     father: "Father",
     mother: "Mother",
     siblings: "Siblings",
+    mama: "Mama (Maternal Uncle)",
+    grandfather: "Grandfather",
     familyType: "Family Type",
     nativePlace: "Native Place",
     phone: "Phone",
@@ -165,6 +175,9 @@ const hi: DocLabels = {
     gotra: "गोत्र",
     rashi: "राशि",
     nakshatra: "नक्षत्र",
+    charan: "चरण / पादा",
+    gana: "गण",
+    nadi: "नाड़ी",
     manglik: "मांगलिक",
     motherTongue: "मातृभाषा",
     kuldevta: "कुलदेवता",
@@ -176,6 +189,8 @@ const hi: DocLabels = {
     father: "पिता",
     mother: "माता",
     siblings: "भाई-बहन",
+    mama: "मामा",
+    grandfather: "दादाजी / नानाजी",
     familyType: "परिवार प्रकार",
     nativePlace: "मूल निवास",
     phone: "फोन",
