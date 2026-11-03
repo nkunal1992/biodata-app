@@ -1,0 +1,202 @@
+{
+  "meta": {
+    "title": "Shubh Biodata — Free Marriage Biodata Maker",
+    "description": "Create a beautiful Hindu marriage biodata in minutes. Free, bilingual (English & Hindi), print-ready A4 PDF with 6 elegant templates. No sign-up — your data never leaves your browser."
+  },
+  "nav": {
+    "brand": "Shubh Biodata",
+    "brandHi": "शुभ बायोडाटा",
+    "home": "Home",
+    "create": "Create Biodata",
+    "language": "भाषा / Language"
+  },
+  "landing": {
+    "badge": "Free · No sign-up · 100% private",
+    "heroTitle": "A beautiful marriage biodata in minutes",
+    "heroSubtitle": "Fill in your details, pick a template, and download a print-ready PDF — in English or Hindi. Made for Hindu families: gotra, manglik, rashi, nakshatra and more.",
+    "cta": "Create your biodata",
+    "ctaSecondary": "View templates",
+    "howTitle": "How it works",
+    "step1Title": "Fill your details",
+    "step1Text": "Personal, horoscope, family and contact details — guided sections in English or Hindi.",
+    "step2Title": "Choose a design",
+    "step2Text": "Six elegant templates, from traditional saffron to modern minimal. Live preview as you type.",
+    "step3Title": "Download & share",
+    "step3Text": "One click gives you a crisp A4 PDF for WhatsApp or print. Share a link that pre-fills everything.",
+    "templatesTitle": "Designs for every family",
+    "templatesSubtitle": "From a classic श्री गणेश invocation to a clean modern layout.",
+    "privacyTitle": "Your details stay with you",
+    "privacyText": "Everything runs in your browser. No accounts, no uploads, no servers — close the tab and nothing was sent anywhere.",
+    "featuresTitle": "Why families choose Shubh Biodata",
+    "feature1Title": "Truly bilingual",
+    "feature1Text": "Both the app and the biodata itself work in English and Hindi, with correct Devanagari rendering.",
+    "feature2Title": "Hindu fields built in",
+    "feature2Text": "Gotra, manglik status, rashi, nakshatra, birth time & place — no squeezing them into 'other details'.",
+    "feature3Title": "Print-ready PDF",
+    "feature3Text": "Vector A4 output with selectable text — crisp on paper and on screen.",
+    "feature4Title": "Free & open source",
+    "feature4Text": "MIT licensed. No watermarks, no paywalls, no premium templates.",
+    "footerTagline": "Made with respect for tradition and modern craft.",
+    "footerSource": "Source on GitHub"
+  },
+  "editor": {
+    "title": "Create your biodata",
+    "backHome": "Home",
+    "preview": "Preview",
+    "template": "Template",
+    "outputLanguage": "Biodata language",
+    "outputLanguageHint": "Language of the generated document",
+    "download": "Download PDF",
+    "downloading": "Preparing PDF…",
+    "share": "Copy share link",
+    "shareHint": "Encodes your details in the link (photo not included)",
+    "copied": "Link copied to clipboard",
+    "reset": "Reset",
+    "resetConfirm": "Clear all fields and the photo?",
+    "next": "Next section",
+    "previous": "Previous",
+    "done": "Done",
+    "openSection": "Open {section}",
+    "sections": {
+      "photo": "Photo",
+      "personal": "Personal Details",
+      "astro": "Horoscope & Community",
+      "career": "Education & Career",
+      "family": "Family Details",
+      "contact": "Contact Details",
+      "extras": "About & Expectations"
+    },
+    "sectionHints": {
+      "photo": "A clear, recent photo. Resized in your browser — never uploaded.",
+      "personal": "Basic details about the bride or groom.",
+      "astro": "Used for kundali matching. Fill what your family follows — skip the rest.",
+      "career": "Education and occupation.",
+      "family": "Parents, siblings and native place.",
+      "contact": "How interested families should reach you.",
+      "extras": "A short personal note and partner preferences — optional but adds warmth."
+    },
+    "fields": {
+      "name": "Full name",
+      "dob": "Date of birth",
+      "birthTime": "Time of birth",
+      "birthPlace": "Place of birth",
+      "height": "Height",
+      "weight": "Weight",
+      "complexion": "Complexion",
+      "bloodGroup": "Blood group",
+      "maritalStatus": "Marital status",
+      "diet": "Diet",
+      "religion": "Religion",
+      "caste": "Caste",
+      "subCaste": "Sub-caste",
+      "gotra": "Gotra",
+      "rashi": "Rashi (moon sign)",
+      "nakshatra": "Nakshatra",
+      "manglik": "Manglik",
+      "motherTongue": "Mother tongue",
+      "kuldevta": "Kuldevta / family deity",
+      "qualification": "Highest qualification",
+      "college": "College / university",
+      "occupation": "Occupation",
+      "company": "Company / employer",
+      "income": "Annual income",
+      "fatherName": "Father's name",
+      "fatherOccupation": "Father's occupation",
+      "motherName": "Mother's name",
+      "motherOccupation": "Mother's occupation",
+      "siblings": "Siblings",
+      "familyType": "Family type",
+      "nativePlace": "Native place",
+      "phone": "Phone / WhatsApp",
+      "phoneOwner": "Whose number",
+      "email": "Email",
+      "address": "Address",
+      "aboutMe": "About me",
+      "expectations": "Partner expectations",
+      "invocation": "Invocation line"
+    },
+    "placeholders": {
+      "name": "e.g. Aarav Sharma",
+      "birthPlace": "e.g. Jaipur, Rajasthan",
+      "height": "e.g. 5'10\" / 178 cm",
+      "weight": "e.g. 70 kg",
+      "gotra": "e.g. Bharadwaj",
+      "rashi": "e.g. Vrishabha (Taurus)",
+      "nakshatra": "e.g. Krittika",
+      "qualification": "e.g. B.Tech, MBA",
+      "college": "e.g. IIT Delhi",
+      "occupation": "e.g. Software Engineer",
+      "company": "e.g. TCS, Bangalore",
+      "income": "e.g. ₹18–25 LPA",
+      "siblings": "e.g. 1 elder sister (married), 1 younger brother",
+      "nativePlace": "e.g. Varanasi, UP",
+      "phone": "+91 …",
+      "email": "name@example.com",
+      "address": "Area, city, PIN",
+      "aboutMe": "A few lines about personality, hobbies, values…",
+      "expectations": "e.g. Well-educated, family-oriented, working professional…",
+      "invocation": "॥ श्री गणेशाय नमः ॥"
+    },
+    "options": {
+      "select": "Select…",
+      "maritalStatus": {
+        "never": "Never married",
+        "divorced": "Divorced",
+        "widowed": "Widowed",
+        "awaiting": "Awaiting divorce"
+      },
+      "manglik": {
+        "no": "Non-manglik",
+        "yes": "Manglik",
+        "anshik": "Anshik (partial)"
+      },
+      "familyType": {
+        "nuclear": "Nuclear",
+        "joint": "Joint"
+      },
+      "diet": {
+        "veg": "Vegetarian",
+        "nonveg": "Non-vegetarian",
+        "eggetarian": "Eggetarian",
+        "jain": "Jain vegetarian",
+        "vegan": "Vegan"
+      },
+      "complexion": {
+        "veryFair": "Very fair",
+        "fair": "Fair",
+        "wheatish": "Wheatish",
+        "dusky": "Dusky"
+      },
+      "phoneOwner": {
+        "self": "Self",
+        "father": "Father",
+        "mother": "Mother",
+        "other": "Family member"
+      }
+    },
+    "uploadPhoto": "Upload photo",
+    "changePhoto": "Change photo",
+    "removePhoto": "Remove",
+    "photoFormats": "JPG or PNG, up to 10 MB",
+    "sampleLoaded": "Sample data loaded — replace it with real details.",
+    "clearConfirmTitle": "Start fresh?",
+    "sharedLoaded": "Details loaded from shared link — review and edit below."
+  },
+  "templates": {
+    "traditional": "Traditional",
+    "royal": "Royal",
+    "modern": "Modern",
+    "floral": "Floral",
+    "emerald": "Emerald",
+    "mandala": "Mandala"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for does not exist.",
+    "home": "Back to home"
+  },
+  "redirect": {
+    "text": "Taking you to Shubh Biodata…",
+    "link": "Click here if you are not redirected"
+  }
+}
