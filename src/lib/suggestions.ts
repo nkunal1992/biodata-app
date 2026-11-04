@@ -25,13 +25,13 @@ export const SUGGESTIONS: Suggestion[] = [
   // ── About Me ──────────────────────────────────────────────
   {
     id: "am-engineer", for: A, tags: ["engineer", "ambitious", "balanced"],
-    en: "I work as a {occupation|software professional} and take pride in what I do. Outside work I value family time, fitness and the occasional trek. I believe in growing together while keeping our traditions close.",
-    hi: "मैं {occupation|सॉफ्टवेयर पेशेवर} के रूप में कार्य करता/करती हूँ और अपने काम पर गर्व करता/करती हूँ। काम के अलावा परिवार का समय, फिटनेस और कभी-कभार ट्रेकिंग मुझे प्रिय है। मैं परंपराओं के साथ मिलकर आगे बढ़ने में विश्वास रखता/रखती हूँ।",
+    en: "I work as a software professional and take pride in what I do. Outside work I value family time, fitness and the occasional trek. I believe in growing together while keeping our traditions close.",
+    hi: "मैं एक सॉफ्टवेयर पेशेवर के रूप में कार्य करता/करती हूँ और अपने काम पर गर्व करता/करती हूँ। काम के अलावा परिवार का समय, फिटनेस और कभी-कभार ट्रेकिंग मुझे प्रिय है। मैं परंपराओं के साथ मिलकर आगे बढ़ने में विश्वास रखता/रखती हूँ।",
   },
   {
     id: "am-doctor", for: A, tags: ["doctor", "family", "simple"],
-    en: "I am a {occupation|doctor} by profession — caring for people is both my work and my nature. Family means everything to me; I enjoy quiet evenings, good food and keeping life simple and honest.",
-    hi: "पेशे से मैं {occupation|डॉक्टर} हूँ — लोगों की सेवा मेरा काम भी है और स्वभाव भी। परिवार मेरे लिए सब कुछ है; शांत शामें, अच्छा खाना और सरल व ईमानदार जीवन मुझे पसंद है।",
+    en: "I am a doctor by profession — caring for people is both my work and my nature. Family means everything to me; I enjoy quiet evenings, good food and keeping life simple and honest.",
+    hi: "पेशे से मैं डॉक्टर हूँ — लोगों की सेवा मेरा काम भी है और स्वभाव भी। परिवार मेरे लिए सब कुछ है; शांत शामें, अच्छा खाना और सरल व ईमानदार जीवन मुझे पसंद है।",
   },
   {
     id: "am-teacher", for: A, tags: ["teacher", "calm", "reading"],
@@ -40,18 +40,18 @@ export const SUGGESTIONS: Suggestion[] = [
   },
   {
     id: "am-business", for: A, tags: ["business", "ambitious", "family"],
-    en: "I run my own {occupation|business} and enjoy building things from the ground up. Ambitious at work, deeply rooted at home — festivals, family dinners and long drives keep me happy.",
-    hi: "मैं अपना {occupation|व्यवसाय} चलाता/चलाती हूँ और नई चीज़ें बनाने में आनंद लेता/लेती हूँ। काम में महत्वाकांक्षी, घर में पूरी तरह जुड़ा हुआ — त्योहार, पारिवारिक भोज और लंबी ड्राइव मुझे खुश रखते हैं।",
+    en: "I run my own business and enjoy building things from the ground up. Ambitious at work, deeply rooted at home — festivals, family dinners and long drives keep me happy.",
+    hi: "मैं अपना व्यवसाय चलाता/चलाती हूँ और नई चीज़ें बनाने में आनंद लेता/लेती हूँ। काम में महत्वाकांक्षी, घर में पूरी तरह जुड़ा हुआ — त्योहार, पारिवारिक भोज और लंबी ड्राइव मुझे खुश रखते हैं।",
   },
   {
     id: "am-govt", for: A, tags: ["govt", "traditional"],
-    en: "I serve in a {occupation|government job} — stability, integrity and public service matter to me. I follow a disciplined routine and cherish traditional values passed down in our family.",
-    hi: "मैं {occupation|सरकारी नौकरी} में कार्यरत हूँ — स्थिरता, ईमानदारी और जनसेवा मेरे लिए महत्वपूर्ण है। अनुशासित दिनचर्या रखता/रखती हूँ और परिवार की पारंपरिक मूल्यों को मानता/मानती हूँ।",
+    en: "I serve in a government job — stability, integrity and public service matter to me. I follow a disciplined routine and cherish traditional values passed down in our family.",
+    hi: "मैं सरकारी नौकरी में कार्यरत हूँ — स्थिरता, ईमानदारी और जनसेवा मेरे लिए महत्वपूर्ण है। अनुशासित दिनचर्या रखता/रखती हूँ और परिवार की पारंपरिक मूल्यों को मानता/मानती हूँ।",
   },
   {
     id: "am-banker", for: A, tags: ["banker", "calm", "family"],
-    en: "I work in {occupation|banking/finance} — numbers by day, family and friends by evening. Calm, dependable and organized, I like a balanced, drama-free life.",
-    hi: "मैं {occupation|बैंकिंग/वित्त} क्षेत्र में कार्य करता/करती हूँ — दिन में आंकड़े, शाम को परिवार और दोस्त। शांत, भरोसेमंद और व्यवस्थित स्वभाव का/की हूँ; संतुलित जीवन मुझे पसंद है।",
+    en: "I work in banking/finance — numbers by day, family and friends by evening. Calm, dependable and organized, I like a balanced, drama-free life.",
+    hi: "मैं बैंकिंग/वित्त क्षेत्र में कार्य करता/करती हूँ — दिन में आंकड़े, शाम को परिवार और दोस्त। शांत, भरोसेमंद और व्यवस्थित स्वभाव का/की हूँ; संतुलित जीवन मुझे पसंद है।",
   },
   {
     id: "am-calm", for: A, tags: ["calm", "simple", "balanced"],
@@ -135,8 +135,8 @@ export const SUGGESTIONS: Suggestion[] = [
   },
   {
     id: "am-education", for: A, tags: ["teacher", "ambitious", "reading"],
-    en: "{qualification|Well-educated} and always curious — I believe education is a journey, not a degree. Enjoy mentoring juniors and learning something new every year.",
-    hi: "{qualification|सुशिक्षित} और हमेशा जिज्ञासु — शिक्षा मेरे लिए यात्रा है, सिर्फ डिग्री नहीं। जूनियर्स को मार्गदर्शन करना और हर साल कुछ नया सीखना पसंद है।",
+    en: "With a {qualification|strong academic} background and an always-curious mind — I believe education is a journey, not a degree. Enjoy mentoring juniors and learning something new every year.",
+    hi: "{qualification|मजबूत शैक्षणिक} पृष्ठभूमि और हमेशा जिज्ञासु मन के साथ — शिक्षा मेरे लिए यात्रा है, सिर्फ डिग्री नहीं। जूनियर्स को मार्गदर्शन करना और हर साल कुछ नया सीखना पसंद है।",
   },
   {
     id: "am-warm", for: A, tags: ["family", "cheerful", "cooking"],
