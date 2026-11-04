@@ -50,6 +50,39 @@ describe("fillPlaceholders", () => {
   });
 });
 
+describe("content hygiene", () => {
+  const PROFESSION_TAGS = ["engineer", "doctor", "teacher", "business", "govt", "banker"];
+
+  it("no {occupation}/{name} tokens anywhere — they contradict tags", () => {
+    for (const s of SUGGESTIONS) {
+      expect(s.en + s.hi).not.toMatch(/\{(occupation|name)[|}]/);
+    }
+  });
+
+  it("every token has a pipe fallback (never bare {x})", () => {
+    for (const s of SUGGESTIONS) {
+      for (const m of (s.en + " " + s.hi).matchAll(/\{(\w+)(\|[^}]*)?\}/g)) {
+        expect(m[2], `${s.id} {${m[1]}}`).toBeTruthy();
+      }
+    }
+  });
+
+  it("profession-tagged entries hardcode their profession (no {occupation})", () => {
+    for (const s of SUGGESTIONS) {
+      if (s.tags.some((t) => PROFESSION_TAGS.includes(t))) {
+        expect(s.en + s.hi).not.toMatch(/\{occupation/);
+      }
+    }
+  });
+
+  it("filled text stays grammatical for the reported bug case", () => {
+    const govt = SUGGESTIONS.find((s) => s.id === "am-govt")!;
+    const out = fillPlaceholders(govt.en, sampleBiodata); // occupation=engineer
+    expect(out).toContain("government job");
+    expect(out).not.toContain("Software Engineer");
+  });
+});
+
 describe("suggestionsFor", () => {
   it("empty tags returns all for the field", () => {
     expect(suggestionsFor("aboutMe", []).length).toBe(
