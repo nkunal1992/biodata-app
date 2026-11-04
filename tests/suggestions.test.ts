@@ -56,9 +56,31 @@ describe("suggestionsFor", () => {
       SUGGESTIONS.filter((s) => s.for === "aboutMe").length,
     );
   });
-  it("filters to entries carrying all active tags", () => {
-    const r = suggestionsFor("aboutMe", ["family"]);
-    expect(r.length).toBeGreaterThan(0);
-    for (const s of r) expect(s.tags).toContain("family");
+  it("ranks best matches first: all-tag matches beat partial", () => {
+    const r = suggestionsFor("aboutMe", ["family", "calm"]);
+    const hits = (s: (typeof SUGGESTIONS)[number]) =>
+      ["family", "calm"].filter((t) => s.tags.includes(t)).length;
+    expect(hits(r[0])).toBeGreaterThanOrEqual(hits(r[r.length - 1]));
+    expect(hits(r[0])).toBe(2);
+  });
+  it("exhaustive: every tag pair and triple returns non-empty ranked results", () => {
+    const kinds = ["aboutMe", "expectations"] as const;
+    const combos: string[][] = [];
+    for (let i = 0; i < allTags.length; i++)
+      for (let j = i + 1; j < allTags.length; j++) {
+        combos.push([allTags[i], allTags[j]]);
+        for (let k = j + 1; k < allTags.length; k++)
+          combos.push([allTags[i], allTags[j], allTags[k]]);
+      }
+    combos.push([...allTags]); // the full 22-tag selection
+    for (const kind of kinds) {
+      for (const c of combos) {
+        const r = suggestionsFor(kind, c);
+        expect(r.length, `${kind} ${c.join("+")}`).toBeGreaterThan(0);
+        // every returned entry must match at least one active tag
+        for (const s of r)
+          expect(c.some((t) => s.tags.includes(t))).toBe(true);
+      }
+    }
   });
 });
