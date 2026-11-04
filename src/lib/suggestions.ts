@@ -241,6 +241,20 @@ export const SUGGESTIONS: Suggestion[] = [
     hi: "देखभाल करने वाला, धैर्यवान साथी जो अच्छे-बुरे समय में परिवार के साथ खड़ा रहे — जिसकी मौजूदगी से ही लोगों को सुरक्षा और प्रेम महसूस हो।",
   },
   {
+    id: "ex-creative",
+    for: E,
+    tags: ["creative", "music", "cheerful"],
+    en: "A creative, cheerful partner — someone who enjoys music, arts or any creative pursuit and brings color and lightness to everyday life.",
+    hi: "रचनात्मक, हँसमुख साथी — जिसे संगीत, कला या किसी भी सृजनात्मक काम से लगाव हो और रोज़मर्रा की ज़िंदगी में रंग भर दे।",
+  },
+  {
+    id: "ex-music",
+    for: E,
+    tags: ["music", "creative", "calm"],
+    en: "Would love a partner who appreciates music and the arts — someone with whom evenings can be filled with old songs and easy conversation.",
+    hi: "ऐसा साथी चाहिए जिसे संगीत और कला से प्रेम हो — जिसके साथ शामें पुराने गानों और सहज बातचीत में बीतें।",
+  },
+  {
     id: "ex-adventurous", for: E, tags: ["travel", "sports", "cheerful"],
     en: "Looking for an active, adventurous partner — someone who says yes to treks, trips and trying new things, and keeps life energetic and fun.",
     hi: "सक्रिय, रोमांच-प्रेमी साथी — जो ट्रेक, यात्राओं और नई चीज़ों के लिए हां कहे और जीवन को ऊर्जावान व मज़ेदार बनाए।",
@@ -272,13 +286,28 @@ export function fillPlaceholders(text: string, data: BiodataData): string {
     .trim();
 }
 
-/** Filter suggestions: entry must carry every active tag (empty = all). */
+/**
+ * Relevance-ranked suggestions: entries matching ALL active tags first,
+ * then partial matches sorted by how many tags they carry (desc),
+ * stable by original order. Never returns empty when any tag can match.
+ */
 export function suggestionsFor(
   kind: SuggestionFor,
   activeTags: string[],
 ): Suggestion[] {
-  return SUGGESTIONS.filter(
-    (s) =>
-      s.for === kind && activeTags.every((t) => s.tags.includes(t)),
-  );
+  const pool = SUGGESTIONS.filter((s) => s.for === kind);
+  if (activeTags.length === 0) return pool;
+
+  const scored = pool
+    .map((s, idx) => ({
+      s,
+      idx,
+      hits: activeTags.filter((t) => s.tags.includes(t)).length,
+    }))
+    .filter((x) => x.hits > 0)
+    .sort((a, b) => b.hits - a.hits || a.idx - b.idx);
+
+  // Nothing matches at all → fall back to the full pool rather than blank.
+  if (scored.length === 0) return pool;
+  return scored.map((x) => x.s);
 }
