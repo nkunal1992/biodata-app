@@ -275,6 +275,18 @@
       "yes": "Yes",
       "no": "No",
       "optional": "Optional"
+    },
+    "drafts": "Drafts",
+    "newDraft": "New",
+    "deleteDraft": "Delete draft",
+    "deleteDraftConfirm": "Delete this biodata draft?",
+    "downloadPng": "PNG",
+    "downloadPngHint": "Download first page as PNG for WhatsApp",
+    "undo": "Undo",
+    "candidateFor": "Biodata for",
+    "for": {
+      "groom": "Groom",
+      "bride": "Bride"
     }
   },
   "templates": {

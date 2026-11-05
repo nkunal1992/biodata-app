@@ -294,7 +294,12 @@ export function SectionBody({ section }: { section: SectionKey }) {
     case "photo":
       return <PhotoSection />;
     case "personal":
-      return <SectionFields section="personal" defs={PERSONAL} />;
+      return (
+        <div className="space-y-3">
+          <CandidateForToggle />
+          <SectionFields section="personal" defs={PERSONAL} />
+        </div>
+      );
     case "astro":
       return <SectionFields section="astro" defs={ASTRO} />;
     case "career":
@@ -370,6 +375,36 @@ function PrefsFields() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+function CandidateForToggle() {
+  const t = useTranslations("editor");
+  const cf = useBiodataStore((s) => s.data.candidateFor);
+  const setTopLevel = useBiodataStore((s) => s.setTopLevel);
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="mr-1 text-xs font-medium text-stone-600">
+        {t("candidateFor")}
+      </span>
+      {(["groom", "bride"] as const).map((v) => (
+        <button
+          key={v}
+          type="button"
+          onClick={() =>
+            setTopLevel({ candidateFor: cf === v ? undefined : v })
+          }
+          className={cn(
+            "rounded-full border px-3 py-1 text-xs font-medium transition",
+            cf === v
+              ? "border-orange-500 bg-orange-600 text-white"
+              : "border-stone-300 bg-white text-stone-600 hover:border-orange-300",
+          )}
+        >
+          {t(`for.${v}`)}
+        </button>
+      ))}
     </div>
   );
 }
