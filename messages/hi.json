@@ -275,6 +275,18 @@
       "yes": "हाँ",
       "no": "नहीं",
       "optional": "वैकल्पिक"
+    },
+    "drafts": "ड्राफ़्ट",
+    "newDraft": "नया",
+    "deleteDraft": "ड्राफ़्ट हटाएं",
+    "deleteDraftConfirm": "यह बायोडाटा ड्राफ़्ट हटाएं?",
+    "downloadPng": "PNG",
+    "downloadPngHint": "WhatsApp के लिए पहला पेज PNG में डाउनलोड करें",
+    "undo": "पूर्ववत",
+    "candidateFor": "बायोडाटा किसके लिए",
+    "for": {
+      "groom": "वर",
+      "bride": "वधू"
     }
   },
   "templates": {

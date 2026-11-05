@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, Download, Link2, RotateCcw } from "lucide-react";
+import { Check, Download, FileImage, Link2, RotateCcw, Trash2, Undo2 } from "lucide-react";
 import { pdf } from "@react-pdf/renderer";
 import { TEMPLATE_IDS, type OutputLocale } from "@/lib/biodata";
-import { useBiodataStore } from "@/store/biodata-store";
+import { draftName, useBiodataStore } from "@/store/biodata-store";
 import { buildBiodataDocument } from "@/pdf/document";
 import { encodeShareData } from "@/lib/share";
 import { cn } from "@/lib/cn";
@@ -215,7 +215,10 @@ export function Toolbar() {
   const uiLocale = useLocale();
   const data = useBiodataStore((s) => s.data);
   const reset = useBiodataStore((s) => s.reset);
+  const undo = useBiodataStore((s) => s.undo);
+  const hasPast = useBiodataStore((s) => s.past.length > 0);
   const [busy, setBusy] = useState(false);
+  const [imgBusy, setImgBusy] = useState(false);
   const [copied, setCopied] = useState(false);
 
   async function download() {
@@ -231,6 +234,42 @@ export function Toolbar() {
       setTimeout(() => URL.revokeObjectURL(url), 5000);
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function downloadPng() {
+    setImgBusy(true);
+    try {
+      const blob = await pdf(buildBiodataDocument(data)).toBlob();
+      const buf = await blob.arrayBuffer();
+      const pdfjs = await import("pdfjs-dist");
+      pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+        "pdfjs-dist/build/pdf.worker.min.mjs",
+        import.meta.url,
+      ).toString();
+      const doc = await pdfjs.getDocument({ data: buf }).promise;
+      const page = await doc.getPage(1);
+      const scale = 2;
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement("canvas");
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({
+        canvasContext: canvas.getContext("2d")!,
+        viewport,
+      }).promise;
+      canvas.toBlob((b) => {
+        if (!b) return;
+        const url = URL.createObjectURL(b);
+        const a = document.createElement("a");
+        const name = data.personal.name.trim() || "biodata";
+        a.href = url;
+        a.download = `${name.replace(/\s+/g, "-").toLowerCase()}-biodata.png`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+      }, "image/png");
+    } finally {
+      setImgBusy(false);
     }
   }
 
@@ -255,6 +294,15 @@ export function Toolbar() {
       </button>
       <button
         type="button"
+        onClick={downloadPng}
+        disabled={imgBusy}
+        title={t("downloadPngHint")}
+        className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 disabled:opacity-60"
+      >
+        <FileImage size={16} /> {imgBusy ? t("downloading") : t("downloadPng")}
+      </button>
+      <button
+        type="button"
         onClick={share}
         title={t("shareHint")}
         className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100"
@@ -264,6 +312,16 @@ export function Toolbar() {
       </button>
       <button
         type="button"
+        onClick={undo}
+        disabled={!hasPast}
+        title="Ctrl+Z"
+        className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-600 hover:bg-stone-100 disabled:opacity-40"
+      >
+        <Undo2 size={15} /> {t("undo")}
+      </button>
+      <DraftPicker />
+      <button
+        type="button"
         onClick={() => {
           if (window.confirm(t("resetConfirm"))) reset();
         }}
@@ -271,6 +329,60 @@ export function Toolbar() {
       >
         <RotateCcw size={15} /> {t("reset")}
       </button>
+    </div>
+  );
+}
+
+export function DraftPicker() {
+  const t = useTranslations("editor");
+  const drafts = useBiodataStore((s) => s.drafts);
+  const data = useBiodataStore((s) => s.data);
+  const activeId = useBiodataStore((s) => s.activeId);
+  const switchDraft = useBiodataStore((s) => s.switchDraft);
+  const newDraft = useBiodataStore((s) => s.newDraft);
+  const deleteDraft = useBiodataStore((s) => s.deleteDraft);
+  const ids = Object.keys(drafts);
+  const all = ids.includes(activeId)
+    ? ids
+    : [activeId, ...ids];
+
+  const label = (id: string, i: number) =>
+    draftName(drafts[id] ?? { data, updatedAt: 0 }, i);
+
+  return (
+    <div className="flex items-center gap-1.5">
+      <select
+        value={activeId}
+        onChange={(e) => switchDraft(e.target.value)}
+        className="max-w-[160px] rounded-lg border border-stone-300 bg-white px-2 py-1.5 text-xs text-stone-700"
+        title={t("drafts")}
+      >
+        {all.map((id, i) => (
+          <option key={id} value={id}>
+            {label(id, i)}
+          </option>
+        ))}
+      </select>
+      <button
+        type="button"
+        onClick={newDraft}
+        title={t("newDraft")}
+        className="rounded-lg border border-stone-300 bg-white px-2 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-100"
+      >
+        + {t("newDraft")}
+      </button>
+      {all.length > 1 && (
+        <button
+          type="button"
+          onClick={() => {
+            if (window.confirm(t("deleteDraftConfirm"))) deleteDraft(activeId);
+          }}
+          title={t("deleteDraft")}
+          className="rounded-lg border border-stone-200 bg-white p-1.5 text-stone-400 hover:border-red-300 hover:text-red-600"
+        >
+          <Trash2 size={13} />
+        </button>
+      )}
     </div>
   );
 }
