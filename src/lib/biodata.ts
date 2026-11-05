@@ -29,6 +29,20 @@ export const TEMPLATE_IDS: TemplateId[] = [
 
 export type OutputLocale = "en" | "hi";
 
+export type CandidateFor = "groom" | "bride";
+
+export interface MatchPrefs {
+  /** Preferred partner age band, e.g. "25", "30". */
+  ageMin: string;
+  ageMax: string;
+  /** Preferred education level (free text — communities vary). */
+  education: string;
+  /** 'yes' | 'no' | '' — vegetarian-only preference. */
+  vegOnly: "yes" | "no" | "";
+  /** 'yes' | 'optional' | 'no' | '' — kundli matching. */
+  kundli: "yes" | "optional" | "no" | "";
+}
+
 export type FrameStyle =
   | "classic"
   | "rounded"
@@ -81,6 +95,12 @@ export interface PersonalDetails {
   bloodGroup: string;
   maritalStatus: MaritalStatus;
   diet: Diet;
+  /** Where the candidate currently lives. */
+  residenceCity: string;
+  /** Known languages, e.g. "Hindi, English". */
+  languages: string;
+  /** Free-text interests line. */
+  hobbies: string;
 }
 
 export interface AstroDetails {
@@ -121,6 +141,8 @@ export interface FamilyDetails {
 export interface ContactDetails {
   phone: string;
   phoneOwner: PhoneOwner;
+  fatherPhone: string;
+  motherPhone: string;
   email: string;
   address: string;
 }
@@ -147,7 +169,16 @@ export interface BiodataData {
   family: FamilyDetails;
   contact: ContactDetails;
   aboutMe: string;
+  /** "About our family" paragraph — standard in North Indian biodatas. */
+  familyAbout: string;
+  /** What the partner/candidate wants. */
   expectations: string;
+  /** What the family wants — distinct from the candidate's. */
+  familyExpectations: string;
+  /** Optional structured match preferences shown as a rows block. */
+  prefs?: MatchPrefs;
+  /** Optional bride/groom designation for the title. */
+  candidateFor?: CandidateFor;
 }
 
 export const DEFAULT_INVOCATION = "॥ श्री गणेशाय नमः ॥";
@@ -168,6 +199,9 @@ export const emptyBiodata: BiodataData = {
     bloodGroup: "",
     maritalStatus: "",
     diet: "",
+    residenceCity: "",
+    languages: "",
+    hobbies: "",
   },
   astro: {
     religion: "Hindu",
@@ -204,11 +238,16 @@ export const emptyBiodata: BiodataData = {
   contact: {
     phone: "",
     phoneOwner: "",
+    fatherPhone: "",
+    motherPhone: "",
     email: "",
     address: "",
   },
   aboutMe: "",
+  familyAbout: "",
   expectations: "",
+  familyExpectations: "",
+  prefs: { ageMin: "", ageMax: "", education: "", vegOnly: "", kundli: "" },
 };
 
 /** Friendly sample so the preview is never blank. */
@@ -225,6 +264,9 @@ export const sampleBiodata: BiodataData = {
     bloodGroup: "B+",
     maritalStatus: "never",
     diet: "veg",
+    residenceCity: "Bengaluru",
+    languages: "Hindi, English, Rajasthani",
+    hobbies: "Travel, photography, cricket",
   },
   astro: {
     religion: "Hindu",
@@ -261,11 +303,25 @@ export const sampleBiodata: BiodataData = {
   contact: {
     phone: "+91 98XXXXXXXX",
     phoneOwner: "father",
+    fatherPhone: "+91 98XXXXXXXX",
+    motherPhone: "+91 94XXXXXXXX",
     email: "family@example.com",
     address: "Malviya Nagar, Jaipur 302017",
   },
   aboutMe:
     "Calm, family-oriented and fond of trekking and old Hindi music. Balances a modern career with traditional values.",
+  familyAbout:
+    "A close-knit Brahmin family originally from Varanasi, now settled in Jaipur in our own house. Father retired as bank manager, mother is a homemaker. We value simplicity, education and togetherness.",
   expectations:
     "Well-educated, kind-hearted partner from a cultured family. Working professional preferred.",
+  familyExpectations:
+    "We welcome the partner as part of our family — no demands, only mutual respect and love. Early engagement preferred.",
+  prefs: {
+    ageMin: "25",
+    ageMax: "30",
+    education: "Graduate+",
+    vegOnly: "yes",
+    kundli: "yes",
+  },
+  candidateFor: "groom",
 };

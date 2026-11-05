@@ -2,7 +2,8 @@ import { Document, Page, Text, View } from "@react-pdf/renderer";
 import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
-import { FieldRow, Invocation, PhotoFrame, scriptFont, SectionHeading, PageFrame, bgColor } from "../components";
+import { FieldRow, Invocation, PhotoFrame, scriptFont, SectionHeading, PageFrame, bgColor, titleFor,
+} from "../components";
 
 export function FloralTemplate({
   data,
@@ -24,7 +25,7 @@ export function FloralTemplate({
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (
-    <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
+    <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fff9f4"), padding: 20 }}>
         <PageFrame override={data.pageBorder} fallback="floral" color="#f9a8d4" color2="#f472b6" padding={18} style={{ margin: 20 }}>
           <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
@@ -58,7 +59,7 @@ export function FloralTemplate({
                 marginTop: 3,
               }}
             >
-              {labels.title}
+              {titleFor(labels, data)}
             </Text>
           </View>
 
@@ -77,16 +78,16 @@ export function FloralTemplate({
             </View>
           ))}
 
-          {(["aboutMe", "expectations"] as const).map((k) => {
+          {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
             const text = data[k].trim();
             if (!text) return null;
             return (
               <View key={k} wrap={false}>
                 <SectionHeading
                   title={
-                    k === "aboutMe"
-                      ? labels.sections.about
-                      : labels.sections.expectations
+                    labels.sections[
+                    ({aboutMe: "about", familyAbout: "aboutFamily", expectations: "expectations", familyExpectations: "familyExpectations"} as const)[k]
+                  ]
                   }
                   theme={theme}
                 />

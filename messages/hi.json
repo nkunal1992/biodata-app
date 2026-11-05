@@ -118,7 +118,14 @@
       "gana": "गण",
       "nadi": "नाड़ी",
       "mama": "मामा",
-      "grandfather": "दादाजी / नानाजी"
+      "grandfather": "दादाजी / नानाजी",
+      "residenceCity": "निवास स्थान",
+      "languages": "ज्ञात भाषाएँ",
+      "hobbies": "शौक / रुचियाँ",
+      "fatherPhone": "पिता का फोन",
+      "motherPhone": "माता का फोन",
+      "familyAbout": "परिवार के बारे में",
+      "familyExpectations": "पारिवारिक अपेक्षाएं"
     },
     "placeholders": {
       "name": "जैसे: आरव शर्मा",
@@ -258,6 +265,16 @@
       "blush": "गुलाबी",
       "mint": "मिंट",
       "sandal": "चंदन"
+    },
+    "prefsTitle": "जीवनसाथी वरीयताएँ (वैकल्पिक)",
+    "prefAge": "अपेक्षित आयु",
+    "prefEducation": "अपेक्षित शिक्षा",
+    "prefVeg": "शाकाहारी ही",
+    "prefKundli": "कुंडली मिलान",
+    "prefOpts": {
+      "yes": "हाँ",
+      "no": "नहीं",
+      "optional": "वैकल्पिक"
     }
   },
   "templates": {

@@ -16,6 +16,7 @@ import {
   scriptFont,
   PageFrame,
   bgColor,
+  titleFor,
 } from "../components";
 
 /** पूर्ण कलश — coconut + mango leaves over a decorated pot. */
@@ -39,7 +40,7 @@ export function KalashTemplate({
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (
-    <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
+    <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffaf2"), padding: 24 }}>
         <PageFrame override={data.pageBorder} fallback="line" color="#d97706" padding={16}>
           <View style={{ alignItems: "center" }}>
@@ -77,7 +78,7 @@ export function KalashTemplate({
                 marginTop: 4,
               }}
             >
-              {labels.title}
+              {titleFor(labels, data)}
             </Text>
           </View>
 
@@ -96,16 +97,16 @@ export function KalashTemplate({
             </View>
           ))}
 
-          {(["aboutMe", "expectations"] as const).map((k) => {
+          {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
             const text = data[k].trim();
             if (!text) return null;
             return (
               <View key={k} wrap={false}>
                 <SectionHeading
                   title={
-                    k === "aboutMe"
-                      ? labels.sections.about
-                      : labels.sections.expectations
+                    labels.sections[
+                    ({aboutMe: "about", familyAbout: "aboutFamily", expectations: "expectations", familyExpectations: "familyExpectations"} as const)[k]
+                  ]
                   }
                   theme={theme}
                 />

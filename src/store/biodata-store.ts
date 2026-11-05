@@ -29,6 +29,10 @@ interface BiodataStore {
         | "pageBorder"
         | "invocationIcon"
         | "pageBackground"
+        | "familyAbout"
+        | "familyExpectations"
+        | "prefs"
+        | "candidateFor"
       >
     >,
   ) => void;

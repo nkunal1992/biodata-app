@@ -11,6 +11,7 @@ import {
   scriptFont,
   PageFrame,
   bgColor,
+  titleFor,
 } from "../components";
 
 /** Repeating jaali-lattice band of tiny diamonds. */
@@ -51,7 +52,7 @@ export function JharokhaTemplate({
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (
-    <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
+    <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#faf3e3"), padding: 24 }}>
         <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={16}>
           <JaaliBand color="#b45309" />
@@ -86,7 +87,7 @@ export function JharokhaTemplate({
                       marginTop: 4,
                     }}
                   >
-                    {labels.title}
+                    {titleFor(labels, data)}
                   </Text>
                 </View>
                 <PhotoFrame src={data.photo} width={84} borderColor="#b45309" padding={3} frame={data.photoFrame ?? "arch"} />
@@ -111,7 +112,7 @@ export function JharokhaTemplate({
                     marginTop: 4,
                   }}
                 >
-                  {labels.title}
+                  {titleFor(labels, data)}
                 </Text>
               </View>
             )}
@@ -133,16 +134,16 @@ export function JharokhaTemplate({
             </View>
           ))}
 
-          {(["aboutMe", "expectations"] as const).map((k) => {
+          {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
             const text = data[k].trim();
             if (!text) return null;
             return (
               <View key={k} wrap={false}>
                 <SectionHeading
                   title={
-                    k === "aboutMe"
-                      ? labels.sections.about
-                      : labels.sections.expectations
+                    labels.sections[
+                    ({aboutMe: "about", familyAbout: "aboutFamily", expectations: "expectations", familyExpectations: "familyExpectations"} as const)[k]
+                  ]
                   }
                   theme={theme}
                 />

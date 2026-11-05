@@ -26,6 +26,16 @@ function combine(name: string, occ: string): string {
  * Convert form data into ordered label/value rows per section.
  * Empty fields are omitted; option keys resolve to localized display text.
  */
+function ageYears(dobISO: string): number | null {
+  const dob = new Date(dobISO);
+  if (isNaN(dob.getTime())) return null;
+  const now = new Date();
+  let age = now.getFullYear() - dob.getFullYear();
+  const m = now.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age--;
+  return age >= 0 && age < 120 ? age : null;
+}
+
 export function buildSections(
   data: BiodataData,
   labels: DocLabels,
@@ -36,7 +46,15 @@ export function buildSections(
 
   const personal: Row[] = [
     { label: f.name, value: v(data.personal.name) },
-    { label: f.dob, value: data.personal.dob ? formatDob(data.personal.dob, loc) : "" },
+    {
+      label: f.dob,
+      value: data.personal.dob
+        ? `${formatDob(data.personal.dob, loc)}${(() => {
+            const a = ageYears(data.personal.dob);
+            return a !== null ? ` (${localizeDigits(`${a} ${loc === "hi" ? "वर्ष" : "yrs"}`, loc)})` : "";
+          })()}`
+        : "",
+    },
     { label: f.birthTime, value: data.personal.birthTime ? formatBirthTime(data.personal.birthTime, loc) : "" },
     { label: f.birthPlace, value: v(data.personal.birthPlace) },
     { label: f.height, value: localizeDigits(v(data.personal.height), loc) },
@@ -53,6 +71,9 @@ export function buildSections(
         : "",
     },
     { label: f.diet, value: data.personal.diet ? o.diet[data.personal.diet] : "" },
+    { label: f.residenceCity, value: v(data.personal.residenceCity) },
+    { label: f.languages, value: v(data.personal.languages) },
+    { label: f.hobbies, value: v(data.personal.hobbies) },
   ];
 
   const astro: Row[] = [
@@ -87,6 +108,8 @@ export function buildSections(
     : "";
   const contact: Row[] = [
     { label: f.phone, value: phone && owner ? `${phone} (${owner})` : phone },
+    { label: f.fatherPhone, value: v(data.contact.fatherPhone) },
+    { label: f.motherPhone, value: v(data.contact.motherPhone) },
     { label: f.email, value: v(data.contact.email) },
     { label: f.address, value: v(data.contact.address) },
   ];
@@ -110,15 +133,32 @@ export function buildSections(
     { label: f.nativePlace, value: v(data.family.nativePlace) },
   ];
 
+  const p = data.prefs;
+  const ageBand =
+    p && (p.ageMin.trim() || p.ageMax.trim())
+      ? `${localizeDigits(v(p.ageMin), loc)}–${localizeDigits(v(p.ageMax), loc)} ${loc === "hi" ? "वर्ष" : "yrs"}`
+      : "";
+  const prefs: Row[] = p
+    ? [
+        { label: f.prefAge, value: ageBand },
+        { label: f.prefEducation, value: v(p.education) },
+        { label: f.prefVeg, value: p.vegOnly ? o.vegOnly[p.vegOnly] : "" },
+        { label: f.prefKundli, value: p.kundli ? o.kundli[p.kundli] : "" },
+      ]
+    : [];
+
   const out: SectionData[] = [
     { key: "personal", title: s.personal, rows: personal },
     { key: "astro", title: s.astro, rows: astro },
     { key: "career", title: s.career, rows: career },
     { key: "family", title: s.family, rows: family },
     { key: "contact", title: s.contact, rows: contact },
+    { key: "prefs", title: s.prefs, rows: prefs },
   ];
-  return out.map((sec) => ({
-    ...sec,
-    rows: sec.rows.filter((r) => r.value.length > 0),
-  }));
+  return out
+    .map((sec) => ({
+      ...sec,
+      rows: sec.rows.filter((r) => r.value.length > 0),
+    }))
+    .filter((sec) => sec.key !== "prefs" || sec.rows.length > 0);
 }

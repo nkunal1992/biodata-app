@@ -1,6 +1,7 @@
 import { Circle, Image, Path, Rect, Svg, Text, View } from "@react-pdf/renderer";
 import type { Style } from "@react-pdf/types";
 import type { BiodataData, FrameStyle, InvocationIcon, PageBg, PageBorderStyle } from "@/lib/biodata";
+import type { DocLabels } from "./labels";
 
 /** Per-template palette + fonts (fonts come from docLabels(locale).fonts). */
 export interface Theme {
@@ -583,4 +584,10 @@ export function bgColor(data: BiodataData, fallback: string): string {
   const bg = data.pageBackground;
   if (!bg || bg === "template") return fallback;
   return BG_TONES[bg];
+}
+
+/** Title with optional "— Groom/Bride" suffix. */
+export function titleFor(labels: DocLabels, data: BiodataData): string {
+  if (!data.candidateFor) return labels.title;
+  return `${labels.title} — ${labels.candidateFor[data.candidateFor]}`;
 }
