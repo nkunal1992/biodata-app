@@ -286,6 +286,8 @@ export function PageFrame({
   color,
   color2,
   padding = 16,
+  qr,
+  footer,
   children,
   style,
 }: {
@@ -294,15 +296,51 @@ export function PageFrame({
   color: string;
   color2?: string;
   padding?: number;
+  qr?: string;
+  footer?: string;
   children: React.ReactNode;
   style?: Style;
 }) {
+  const deco = (
+    <>
+      {qr && (
+        <View style={{ position: "absolute", bottom: 6, right: 8, alignItems: "center" }}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text -- react-pdf Image has no alt prop */}
+          <Image src={qr} style={{ width: 34, height: 34 }} />
+          <Text style={{ fontSize: 4.5, color: color2 ?? color, marginTop: 1 }}>
+            scan to edit
+          </Text>
+        </View>
+      )}
+      {footer && (
+        <Text
+          style={{
+            position: "absolute",
+            bottom: 8,
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            fontSize: 6,
+            color: color2 ?? color,
+            letterSpacing: 0.5,
+          }}
+        >
+          {footer}
+        </Text>
+      )}
+    </>
+  );
   const kind: PageBorderKind =
     override === "template" ? fallback : (override as PageBorderKind);
   const c2 = color2 ?? color;
 
   if (kind === "none") {
-    return <View style={[{ padding, flexGrow: 1 }, style]}>{children}</View>;
+    return (
+      <View style={[{ padding, flexGrow: 1 }, style]}>
+        {deco}
+        {children}
+      </View>
+    );
   }
   if (kind === "floral") {
     return (
@@ -318,6 +356,7 @@ export function PageFrame({
         <View style={{ position: "absolute", top: 4, right: 4 }}>
           <CornerFloral color={c2} flip />
         </View>
+        {deco}
         {children}
       </View>
     );
@@ -343,6 +382,7 @@ export function PageFrame({
         ]}
       >
         <View style={{ border: `0.7pt solid ${c2}`, padding, flexGrow: 1 }}>
+          {deco}
           {children}
         </View>
       </View>
@@ -357,6 +397,7 @@ export function PageFrame({
       ]}
     >
       <View style={{ border: `0.7pt solid ${c2}`, padding, flexGrow: 1 }}>
+        {deco}
         {children}
       </View>
     </View>

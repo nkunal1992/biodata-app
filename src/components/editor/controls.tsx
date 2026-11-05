@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Check, Download, FileImage, Link2, RotateCcw, Trash2, Undo2 } from "lucide-react";
 import { pdf } from "@react-pdf/renderer";
+import QRCode from "qrcode";
 import { TEMPLATE_IDS, type OutputLocale } from "@/lib/biodata";
 import { draftName, useBiodataStore } from "@/store/biodata-store";
 import { buildBiodataDocument } from "@/pdf/document";
@@ -11,21 +12,6 @@ import { encodeShareData } from "@/lib/share";
 import { cn } from "@/lib/cn";
 
 const ACCENTS = ["#0d9488", "#7c3aed", "#0369a1", "#be123c", "#65a30d"];
-
-const TEMPLATE_SWATCHES: Record<string, string> = {
-  traditional: "bg-[#fffdf5] border-[#b45309]",
-  royal: "bg-[#6d0f2b] border-[#fbbf24]",
-  modern: "bg-white border-[#0d9488]",
-  floral: "bg-[#fff9f4] border-[#f472b6]",
-  emerald: "bg-[#065f46] border-[#a7f3d0]",
-  mandala: "bg-[#fdf8ee] border-[#d97706]",
-  peacock: "bg-[#f7fbf9] border-[#0f766e]",
-  jharokha: "bg-[#faf3e3] border-[#7f1d1d]",
-  toran: "bg-[#fffdf4] border-[#f59e0b]",
-  banarasi: "bg-[#fdfbf5] border-[#4c1d95]",
-  kalash: "bg-[#fffaf2] border-[#b91c1c]",
-  navy: "bg-white border-[#1e3a8a]",
-};
 
 export function TemplatePicker() {
   const t = useTranslations();
@@ -52,12 +38,9 @@ export function TemplatePicker() {
                 : "border-stone-200 hover:border-stone-300",
             )}
           >
-            <div
-              className={cn(
-                "mb-1 h-14 w-full rounded-md border-2",
-                TEMPLATE_SWATCHES[id],
-              )}
-            />
+            <div className="mb-1 h-16 w-full overflow-hidden rounded-md">
+              <TemplateThumb id={id} />
+            </div>
             <span className="block px-0.5 text-xs font-medium text-stone-700">
               {t(`templates.${id}`)}
             </span>
@@ -82,6 +65,52 @@ export function TemplatePicker() {
         </div>
       )}
     </div>
+  );
+}
+
+
+const THUMB: Record<string, { border: number; header: string; accent: string }> = {
+  traditional: { border: 2, header: "diamond", accent: "#b45309" },
+  royal: { border: 0, header: "band", accent: "#6d0f2b" },
+  modern: { border: 0, header: "bar", accent: "#2563eb" },
+  floral: { border: 1, header: "floral", accent: "#f472b6" },
+  emerald: { border: 0, header: "sidebar", accent: "#065f46" },
+  mandala: { border: 1, header: "mandala", accent: "#d97706" },
+  peacock: { border: 2, header: "feather", accent: "#0f766e" },
+  jharokha: { border: 2, header: "arch", accent: "#b45309" },
+  toran: { border: 0, header: "toran", accent: "#d97706" },
+  banarasi: { border: 2, header: "zari", accent: "#4c1d95" },
+  kalash: { border: 1, header: "kalash", accent: "#b91c1c" },
+  navy: { border: 1, header: "navy", accent: "#1e3a8a" },
+};
+
+function TemplateThumb({ id }: { id: string }) {
+  const t = THUMB[id] ?? THUMB.traditional;
+  const rows = [0, 1, 2, 3, 4].map((i) => (
+    <rect key={i} x={8} y={30 + i * 8} width={44} height={2.5} rx={1} fill="#d6d3d1" />
+  ));
+  return (
+    <svg viewBox="0 0 60 76" className="h-full w-full">
+      <rect x={2} y={2} width={56} height={72} rx={2} fill="#fffdf8" stroke={t.accent}
+        strokeWidth={t.border || 0.5} strokeOpacity={0.9} />
+      {t.border === 2 && (
+        <rect x={5} y={5} width={50} height={66} rx={1} fill="none" stroke={t.accent} strokeWidth={0.5} />
+      )}
+      {t.header === "band" && <rect x={2} y={2} width={56} height={16} rx={2} fill={t.accent} />}
+      {t.header === "bar" && <rect x={2} y={2} width={5} height={72} fill={t.accent} />}
+      {t.header === "sidebar" && <rect x={2} y={2} width={18} height={72} fill={t.accent} opacity={0.85} />}
+      {t.header === "diamond" && <rect x={26} y={7} width={8} height={8} transform="rotate(45 30 11)" fill={t.accent} />}
+      {t.header === "floral" && <><circle cx={14} cy={12} r={4} fill={t.accent} opacity={0.6} /><circle cx={46} cy={12} r={4} fill={t.accent} opacity={0.6} /></>}
+      {t.header === "mandala" && <circle cx={30} cy={12} r={7} fill="none" stroke={t.accent} strokeWidth={1.5} />}
+      {t.header === "feather" && <ellipse cx={30} cy={12} rx={7} ry={5} fill="none" stroke={t.accent} strokeWidth={1.5} />}
+      {t.header === "arch" && <rect x={24} y={6} width={12} height={14} rx={6} fill="none" stroke={t.accent} strokeWidth={1.5} />}
+      {t.header === "toran" && [0,1,2,3,4,5].map((i) => <circle key={i} cx={8 + i * 9} cy={8} r={3} fill={t.accent} />)}
+      {t.header === "zari" && <rect x={8} y={7} width={44} height={4} fill={t.accent} opacity={0.7} />}
+      {t.header === "kalash" && <><rect x={24} y={10} width={12} height={9} rx={4} fill={t.accent} /><circle cx={30} cy={7} r={2.5} fill="#92400e" /></>}
+      {t.header === "navy" && <rect x={8} y={7} width={20} height={5} fill={t.accent} />}
+      <rect x={t.header === "sidebar" ? 24 : 8} y={22} width={30} height={4} rx={1} fill={t.accent} opacity={0.6} />
+      <g transform={t.header === "sidebar" ? "translate(16,0)" : ""}>{rows}</g>
+    </svg>
   );
 }
 
@@ -224,7 +253,10 @@ export function Toolbar() {
   async function download() {
     setBusy(true);
     try {
-      const blob = await pdf(buildBiodataDocument(data)).toBlob();
+      const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+      const shareUrl = `${location.origin}${base}/${uiLocale}/create/#d=${encodeShareData(data)}`;
+      const qr = await QRCode.toDataURL(shareUrl, { width: 128, margin: 0 });
+      const blob = await pdf(buildBiodataDocument(data, qr)).toBlob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       const name = data.personal.name.trim() || "biodata";
@@ -240,7 +272,10 @@ export function Toolbar() {
   async function downloadPng() {
     setImgBusy(true);
     try {
-      const blob = await pdf(buildBiodataDocument(data)).toBlob();
+      const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+      const shareUrl = `${location.origin}${base}/${uiLocale}/create/#d=${encodeShareData(data)}`;
+      const qr = await QRCode.toDataURL(shareUrl, { width: 128, margin: 0 });
+      const blob = await pdf(buildBiodataDocument(data, qr)).toBlob();
       const buf = await blob.arrayBuffer();
       const pdfjs = await import("pdfjs-dist");
       pdfjs.GlobalWorkerOptions.workerSrc = new URL(

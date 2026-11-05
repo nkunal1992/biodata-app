@@ -57,9 +57,11 @@ function PeacockFeather({ size = 40 }: { size?: number }) {
 export function PeacockTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#0f766e", // deep teal
@@ -76,7 +78,7 @@ export function PeacockTemplate({
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#f7fbf9"), padding: 24 }}>
-        <PageFrame override={data.pageBorder} fallback="double" color="#0f766e" color2="#b45309" padding={16}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="double" color="#0f766e" color2="#b45309" padding={16}>
         
             <View style={{ alignItems: "center" }}>
               <PeacockFeather size={34} />

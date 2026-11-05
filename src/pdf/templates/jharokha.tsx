@@ -35,9 +35,11 @@ function JaaliBand({ color, count = 26 }: { color: string; count?: number }) {
 export function JharokhaTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#7f1d1d", // deep maroon
@@ -54,7 +56,7 @@ export function JharokhaTemplate({
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#faf3e3"), padding: 24 }}>
-        <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={16}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#b45309" padding={16}>
           <JaaliBand color="#b45309" />
           <View style={{ alignItems: "center", marginBottom: 4 }}>
             <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />

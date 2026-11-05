@@ -125,7 +125,8 @@
       "fatherPhone": "Father's Phone",
       "motherPhone": "Mother's Phone",
       "familyAbout": "About Family",
-      "familyExpectations": "Family Expectations"
+      "familyExpectations": "Family Expectations",
+      "biodataNo": "Biodata No. / footer"
     },
     "placeholders": {
       "name": "e.g. Aarav Sharma",

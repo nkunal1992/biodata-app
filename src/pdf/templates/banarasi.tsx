@@ -46,9 +46,11 @@ function ButtiRow({ color, count = 18 }: { color: string; count?: number }) {
 export function BanarasiTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#4c1d95", // deep banarasi purple
@@ -66,7 +68,7 @@ export function BanarasiTemplate({
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fdfbf5"), padding: 22 }}>
         {/* zari double border */}
-        <PageFrame override={data.pageBorder} fallback="ornate" color="#4c1d95" color2="#a16207" padding={15}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="ornate" color="#4c1d95" color2="#a16207" padding={15}>
         
             <ButtiRow color="#a16207" />
             <View style={{ alignItems: "center", marginBottom: 2 }}>

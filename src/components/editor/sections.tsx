@@ -321,6 +321,7 @@ export function SectionBody({ section }: { section: SectionKey }) {
           <SuggestionPicker field="familyExpectations" />
           <PrefsFields />
           <TopLevelField name="invocation" />
+          <TopLevelField name="biodataNo" />
           <InvocationControls />
         </div>
       );

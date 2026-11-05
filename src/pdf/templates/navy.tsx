@@ -16,9 +16,11 @@ import {
 export function NavyTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#1e3a8a", // midnight navy
@@ -35,7 +37,7 @@ export function NavyTemplate({
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff"), padding: 30 }}>
-        <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={22}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#b45309" padding={22}>
           <View
             style={{
               flexDirection: "row",

@@ -125,7 +125,8 @@
       "fatherPhone": "पिता का फोन",
       "motherPhone": "माता का फोन",
       "familyAbout": "परिवार के बारे में",
-      "familyExpectations": "पारिवारिक अपेक्षाएं"
+      "familyExpectations": "पारिवारिक अपेक्षाएं",
+      "biodataNo": "बायोडाटा नं. / फुटर"
     },
     "placeholders": {
       "name": "जैसे: आरव शर्मा",

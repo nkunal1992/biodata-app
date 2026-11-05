@@ -42,9 +42,11 @@ function SidebarRow({
 export function EmeraldTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#065f46",
@@ -79,7 +81,7 @@ export function EmeraldTemplate({
         size="A4"
         style={{ backgroundColor: bgColor(data, "#ffffff"), flexDirection: "row" }}
       >
-        <PageFrame override={data.pageBorder} fallback="none" color="#065f46" padding={0}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#065f46" padding={0}>
         <View
           style={{
             width: 175,

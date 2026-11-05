@@ -124,7 +124,7 @@ export function TopLevelField({
   name,
   textarea = false,
 }: {
-  name: "aboutMe" | "expectations" | "invocation" | "familyAbout" | "familyExpectations";
+  name: "aboutMe" | "expectations" | "invocation" | "familyAbout" | "familyExpectations" | "biodataNo";
   textarea?: boolean;
 }) {
   const t = useTranslations("editor");

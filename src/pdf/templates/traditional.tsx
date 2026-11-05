@@ -16,9 +16,11 @@ import {
 export function TraditionalTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#881337", // maroon
@@ -38,7 +40,7 @@ export function TraditionalTemplate({
         size="A4"
         style={{ backgroundColor: bgColor(data, "#fffdf5"), padding: 22, display: "flex" }}
       >
-        <PageFrame override={data.pageBorder} fallback="double" color="#b45309" color2="#b45309" padding={16}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="double" color="#b45309" color2="#b45309" padding={16}>
           <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
           <View
             style={{

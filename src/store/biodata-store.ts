@@ -49,6 +49,7 @@ interface BiodataStore {
         | "familyExpectations"
         | "prefs"
         | "candidateFor"
+        | "biodataNo"
       >
     >,
   ) => void;
