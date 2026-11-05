@@ -99,6 +99,9 @@ const FAMILY: FieldDef[] = [
   { name: "fatherOccupation" },
   { name: "motherName" },
   { name: "motherOccupation" },
+  { name: "residenceCity" },
+  { name: "languages" },
+  { name: "hobbies", span: true },
   { name: "siblings", span: true },
   { name: "mama" },
   { name: "grandfather" },
@@ -108,6 +111,8 @@ const FAMILY: FieldDef[] = [
 
 const CONTACT: FieldDef[] = [
   { name: "phone" },
+  { name: "fatherPhone" },
+  { name: "motherPhone" },
   { name: "phoneOwner", type: "select", optionsKey: "phoneOwner" },
   { name: "email" },
   { name: "address", type: "textarea", span: true },
@@ -303,11 +308,68 @@ export function SectionBody({ section }: { section: SectionKey }) {
         <div className="space-y-3">
           <TopLevelField name="aboutMe" textarea />
           <SuggestionPicker field="aboutMe" />
+          <TopLevelField name="familyAbout" textarea />
+          <SuggestionPicker field="familyAbout" />
           <TopLevelField name="expectations" textarea />
           <SuggestionPicker field="expectations" />
+          <TopLevelField name="familyExpectations" textarea />
+          <SuggestionPicker field="familyExpectations" />
+          <PrefsFields />
           <TopLevelField name="invocation" />
           <InvocationControls />
         </div>
       );
   }
+}
+
+const PREF_SELS: Record<string, string[]> = {
+  vegOnly: ["yes", "no"],
+  kundli: ["yes", "optional", "no"],
+};
+
+function PrefsFields() {
+  const t = useTranslations("editor");
+  const prefs = useBiodataStore((s) => s.data.prefs);
+  const setTopLevel = useBiodataStore((s) => s.setTopLevel);
+  const set = (k: string, val: string) =>
+    setTopLevel({
+      prefs: {
+        ageMin: "", ageMax: "", education: "", vegOnly: "", kundli: "",
+        ...prefs, [k]: val,
+      },
+    });
+  return (
+    <div className="rounded-xl border border-stone-200 bg-white p-3">
+      <p className="mb-2 text-xs font-semibold tracking-wide text-stone-500 uppercase">
+        {t("prefsTitle")}
+      </p>
+      <div className="grid grid-cols-2 gap-2">
+        <label className="block">
+          <span className="mb-0.5 block text-xs text-stone-500">{t("prefAge")}</span>
+          <div className="flex items-center gap-1.5">
+            <input value={prefs?.ageMin ?? ""} onChange={(e) => set("ageMin", e.target.value)} placeholder="25" className="w-full rounded-lg border border-stone-300 px-2 py-1.5 text-sm" />
+            <span className="text-xs text-stone-400">–</span>
+            <input value={prefs?.ageMax ?? ""} onChange={(e) => set("ageMax", e.target.value)} placeholder="30" className="w-full rounded-lg border border-stone-300 px-2 py-1.5 text-sm" />
+          </div>
+        </label>
+        <label className="block">
+          <span className="mb-0.5 block text-xs text-stone-500">{t("prefEducation")}</span>
+          <input value={prefs?.education ?? ""} onChange={(e) => set("education", e.target.value)} className="w-full rounded-lg border border-stone-300 px-2 py-1.5 text-sm" />
+        </label>
+        {Object.entries(PREF_SELS).map(([k, opts]) => (
+          <div key={k}>
+            <span className="mb-0.5 block text-xs text-stone-500">{t(k === "vegOnly" ? "prefVeg" : "prefKundli")}</span>
+            <div className="flex gap-1">
+              {opts.map((o) => (
+                <button key={o} type="button" onClick={() => set(k, prefs?.[k as keyof typeof prefs] === o ? "" : o)}
+                  className={cn("rounded-md border px-2 py-1 text-xs", (prefs as Record<string,string> | undefined)?.[k] === o ? "border-orange-500 bg-orange-600 text-white" : "border-stone-300 bg-white text-stone-600")}>
+                  {t(`prefOpts.${o}`)}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }

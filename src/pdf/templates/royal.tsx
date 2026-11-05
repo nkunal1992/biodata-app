@@ -11,6 +11,7 @@ import {
   PageFrame,
   IconMark,
   bgColor,
+  titleFor,
 } from "../components";
 
 export function RoyalTemplate({
@@ -33,7 +34,7 @@ export function RoyalTemplate({
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (
-    <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
+    <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff") }}>
         <PageFrame override={data.pageBorder} fallback="none" color="#6d0f2b" padding={0}>
         <View
@@ -82,7 +83,7 @@ export function RoyalTemplate({
                 marginTop: 4,
               }}
             >
-              {labels.title}
+              {titleFor(labels, data)}
             </Text>
           </View>
           {data.photo && (
@@ -115,13 +116,13 @@ export function RoyalTemplate({
               ))}
             </View>
           ))}
-          {(["aboutMe", "expectations"] as const).map((k) => {
+          {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
             const text = data[k].trim();
             if (!text) return null;
             const title =
-              k === "aboutMe"
-                ? labels.sections.about
-                : labels.sections.expectations;
+              labels.sections[
+                    ({aboutMe: "about", familyAbout: "aboutFamily", expectations: "expectations", familyExpectations: "familyExpectations"} as const)[k]
+                  ];
             return (
               <View key={k} wrap={false}>
                 <SectionHeading title={title} theme={theme} />

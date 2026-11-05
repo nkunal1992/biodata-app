@@ -118,7 +118,14 @@
       "gana": "Gana",
       "nadi": "Nadi",
       "mama": "Mama (maternal uncle)",
-      "grandfather": "Grandfather"
+      "grandfather": "Grandfather",
+      "residenceCity": "Residence City",
+      "languages": "Languages Known",
+      "hobbies": "Hobbies / Interests",
+      "fatherPhone": "Father's Phone",
+      "motherPhone": "Mother's Phone",
+      "familyAbout": "About Family",
+      "familyExpectations": "Family Expectations"
     },
     "placeholders": {
       "name": "e.g. Aarav Sharma",
@@ -258,6 +265,16 @@
       "blush": "Blush",
       "mint": "Mint",
       "sandal": "Sandal"
+    },
+    "prefsTitle": "Match Preferences (optional)",
+    "prefAge": "Preferred age",
+    "prefEducation": "Preferred education",
+    "prefVeg": "Vegetarian only",
+    "prefKundli": "Kundli matching",
+    "prefOpts": {
+      "yes": "Yes",
+      "no": "No",
+      "optional": "Optional"
     }
   },
   "templates": {

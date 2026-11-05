@@ -10,7 +10,10 @@ export interface DocLabels {
     | "family"
     | "contact"
     | "about"
-    | "expectations",
+    | "aboutFamily"
+    | "expectations"
+    | "familyExpectations"
+    | "prefs",
     string
   >;
   fields: Record<
@@ -49,8 +52,17 @@ export interface DocLabels {
     | "familyType"
     | "nativePlace"
     | "phone"
+    | "fatherPhone"
+    | "motherPhone"
     | "email"
-    | "address",
+    | "address"
+    | "residenceCity"
+    | "languages"
+    | "hobbies"
+    | "prefAge"
+    | "prefEducation"
+    | "prefVeg"
+    | "prefKundli",
     string
   >;
   options: {
@@ -58,11 +70,14 @@ export interface DocLabels {
     maritalStatus: Record<"never" | "divorced" | "widowed" | "awaiting", string>;
     familyType: Record<"nuclear" | "joint", string>;
     diet: Record<"veg" | "nonveg" | "eggetarian" | "jain" | "vegan", string>;
+    vegOnly: Record<"yes" | "no", string>;
+    kundli: Record<"yes" | "optional" | "no", string>;
     complexion: Record<"veryFair" | "fair" | "wheatish" | "dusky", string>;
     phoneOwner: Record<"self" | "father" | "mother" | "other", string>;
   };
   /** react-pdf font families to use per output language. */
   fonts: { heading: string; text: string; value: string };
+  candidateFor: Record<"groom" | "bride", string>;
 }
 
 const en: DocLabels = {
@@ -74,7 +89,10 @@ const en: DocLabels = {
     family: "Family Details",
     contact: "Contact Details",
     about: "About Me",
+    aboutFamily: "About Family",
     expectations: "Partner Expectations",
+    familyExpectations: "Family Expectations",
+    prefs: "Partner Preferences",
   },
   fields: {
     name: "Name",
@@ -112,11 +130,22 @@ const en: DocLabels = {
     familyType: "Family Type",
     nativePlace: "Native Place",
     phone: "Phone",
+    fatherPhone: "Father's Phone",
+    motherPhone: "Mother's Phone",
     email: "Email",
     address: "Address",
+    residenceCity: "Residence",
+    languages: "Languages",
+    hobbies: "Hobbies",
+    prefAge: "Preferred Age",
+    prefEducation: "Preferred Education",
+    prefVeg: "Vegetarian Preferred",
+    prefKundli: "Kundli Matching",
   },
   options: {
     manglik: { yes: "Manglik", no: "Non-Manglik", anshik: "Anshik Manglik" },
+    vegOnly: { yes: "Yes", no: "No" },
+    kundli: { yes: "Required", optional: "Optional", no: "Not Required" },
     maritalStatus: {
       never: "Never Married",
       divorced: "Divorced",
@@ -145,6 +174,7 @@ const en: DocLabels = {
     },
   },
   fonts: { heading: "Display", text: "Serif", value: "Devanagari" },
+  candidateFor: { groom: "Groom", bride: "Bride" },
 };
 
 const hi: DocLabels = {
@@ -156,7 +186,10 @@ const hi: DocLabels = {
     family: "पारिवारिक विवरण",
     contact: "संपर्क सूत्र",
     about: "मेरे बारे में",
+    aboutFamily: "परिवार के बारे में",
     expectations: "जीवनसाथी अपेक्षाएं",
+    familyExpectations: "पारिवारिक अपेक्षाएं",
+    prefs: "जीवनसाथी वरीयताएँ",
   },
   fields: {
     name: "नाम",
@@ -194,11 +227,22 @@ const hi: DocLabels = {
     familyType: "परिवार प्रकार",
     nativePlace: "मूल निवास",
     phone: "फोन",
+    fatherPhone: "पिता का फोन",
+    motherPhone: "माता का फोन",
     email: "ईमेल",
     address: "पता",
+    residenceCity: "निवास स्थान",
+    languages: "भाषाएँ",
+    hobbies: "शौक",
+    prefAge: "अपेक्षित आयु",
+    prefEducation: "अपेक्षित शिक्षा",
+    prefVeg: "शाकाहारी वरीय",
+    prefKundli: "कुंडली मिलान",
   },
   options: {
     manglik: { yes: "मांगलिक", no: "नॉन-मांगलिक", anshik: "आंशिक मांगलिक" },
+    vegOnly: { yes: "हाँ", no: "नहीं" },
+    kundli: { yes: "आवश्यक", optional: "वैकल्पिक", no: "आवश्यक नहीं" },
     maritalStatus: {
       never: "अविवाहित",
       divorced: "तलाकशुदा",
@@ -226,6 +270,7 @@ const hi: DocLabels = {
     text: "Devanagari",
     value: "Devanagari",
   },
+  candidateFor: { groom: "वर", bride: "वधू" },
 };
 
 const map: Record<OutputLocale, DocLabels> = { en, hi };

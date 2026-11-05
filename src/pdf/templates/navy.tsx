@@ -10,6 +10,7 @@ import {
   PageFrame,
   IconMark,
   bgColor,
+  titleFor,
 } from "../components";
 
 export function NavyTemplate({
@@ -32,7 +33,7 @@ export function NavyTemplate({
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (
-    <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
+    <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff"), padding: 30 }}>
         <PageFrame override={data.pageBorder} fallback="line" color="#b45309" padding={22}>
           <View
@@ -53,7 +54,7 @@ export function NavyTemplate({
                   marginBottom: 6,
                 }}
               >
-                {labels.title.toUpperCase()}
+                {titleFor(labels, data).toUpperCase()}
               </Text>
               <Text
                 style={{
@@ -142,7 +143,7 @@ export function NavyTemplate({
             </View>
           ))}
 
-          {(["aboutMe", "expectations"] as const).map((k) => {
+          {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
             const text = data[k].trim();
             if (!text) return null;
             return (
@@ -165,9 +166,9 @@ export function NavyTemplate({
                       letterSpacing: 1.4,
                     }}
                   >
-                    {k === "aboutMe"
-                      ? labels.sections.about
-                      : labels.sections.expectations}
+                    {labels.sections[
+                    ({aboutMe: "about", familyAbout: "aboutFamily", expectations: "expectations", familyExpectations: "familyExpectations"} as const)[k]
+                  ]}
                   </Text>
                 </View>
                 <Text

@@ -2,7 +2,8 @@ import { Document, Page, Text, View } from "@react-pdf/renderer";
 import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections, type Row } from "../rows";
-import { FieldRow, PhotoFrame, scriptFont, PageFrame , IconMark, bgColor } from "../components";
+import { FieldRow, PhotoFrame, scriptFont, PageFrame , IconMark, bgColor, titleFor,
+} from "../components";
 
 function SidebarRow({
   label,
@@ -73,7 +74,7 @@ export function EmeraldTemplate({
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (
-    <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
+    <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page
         size="A4"
         style={{ backgroundColor: bgColor(data, "#ffffff"), flexDirection: "row" }}
@@ -117,7 +118,7 @@ export function EmeraldTemplate({
               marginBottom: 12,
             }}
           >
-            {labels.title}
+            {titleFor(labels, data)}
           </Text>
           <IconMark icon={data.invocationIcon} color="#d4af37" size={15} style={{ alignSelf: "center", marginBottom: 3 }} />
           {data.invocation.trim() ? (
@@ -207,7 +208,7 @@ export function EmeraldTemplate({
             </View>
           ))}
 
-          {(["aboutMe", "expectations"] as const).map((k) => {
+          {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
             const text = data[k].trim();
             if (!text) return null;
             return (
@@ -228,9 +229,9 @@ export function EmeraldTemplate({
                       letterSpacing: 1.4,
                     }}
                   >
-                    {k === "aboutMe"
-                      ? labels.sections.about
-                      : labels.sections.expectations}
+                    {labels.sections[
+                    ({aboutMe: "about", familyAbout: "aboutFamily", expectations: "expectations", familyExpectations: "familyExpectations"} as const)[k]
+                  ]}
                   </Text>
                 </View>
                 <Text

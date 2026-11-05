@@ -1,6 +1,10 @@
 import type { BiodataData } from "./biodata";
 
-export type SuggestionFor = "aboutMe" | "expectations";
+export type SuggestionFor =
+  | "aboutMe"
+  | "expectations"
+  | "familyAbout"
+  | "familyExpectations";
 
 export interface Suggestion {
   id: string;
@@ -20,6 +24,8 @@ export const TAG_GROUPS: Record<string, string[]> = {
 
 const A = "aboutMe" as const;
 const E = "expectations" as const;
+const FA = "familyAbout" as const;
+const FE = "familyExpectations" as const;
 
 export const SUGGESTIONS: Suggestion[] = [
   // ── About Me ──────────────────────────────────────────────
@@ -258,6 +264,66 @@ export const SUGGESTIONS: Suggestion[] = [
     id: "ex-adventurous", for: E, tags: ["travel", "sports", "cheerful"],
     en: "Looking for an active, adventurous partner — someone who says yes to treks, trips and trying new things, and keeps life energetic and fun.",
     hi: "सक्रिय, रोमांच-प्रेमी साथी — जो ट्रेक, यात्राओं और नई चीज़ों के लिए हां कहे और जीवन को ऊर्जावान व मज़ेदार बनाए।",
+  },
+  {
+    id: "fa-joint", for: FA, tags: ["family", "traditional"],
+    en: "We are a close-knit {familyType|joint} family from {city|our native place}. Elders are respected, festivals are celebrated together, and every member supports the other through thick and thin.",
+    hi: "हम {city|अपने मूल स्थान} का {familyType|संयुक्त} परिवार हैं। बड़ों का सम्मान होता है, त्योहार साथ मनाए जाते हैं और हर सदस्य दूसरे का साथ देता है।",
+  },
+  {
+    id: "fa-educated", for: FA, tags: ["family", "modern", "ambitious"],
+    en: "An educated, values-driven family that believes in balancing modern outlook with tradition. We respect everyone's individuality and encourage growth.",
+    hi: "सुशिक्षित, संस्कारी परिवार जो आधुनिक सोच और परंपरा के संतुलन में विश्वास रखता है। हम हर व्यक्ति की व्यक्तित्व का सम्मान करते हैं और आगे बढ़ने के लिए प्रोत्साहित करते हैं।",
+  },
+  {
+    id: "fa-business", for: FA, tags: ["business", "family", "traditional"],
+    en: "Ours is a reputed business family of {city|our city} — known for honesty and standing. We hold family values and relationships above all else.",
+    hi: "हम {city|हमारे शहर} का प्रतिष्ठित व्यापारिक परिवार हैं — ईमानदारी और प्रतिष्ठा के लिए जाने जाते हैं। हम पारिवारिक मूल्यों और रिश्तों को सबसे ऊपर रखते हैं।",
+  },
+  {
+    id: "fa-service", for: FA, tags: ["govt", "family", "simple"],
+    en: "A simple, service-oriented family — most members are in government or teaching. We value discipline, sincerity and a peaceful home.",
+    hi: "सरल, सेवा-प्रधान परिवार — अधिकतर सदस्य सरकारी सेवा या शिक्षा में हैं। हम अनुशासन, ईमानदारी और शांत घर को महत्व देते हैं।",
+  },
+  {
+    id: "fa-small", for: FA, tags: ["simple", "calm", "family"],
+    en: "A small, loving family of four — we believe happiness lies in togetherness, honesty and simple living.",
+    hi: "चार लोगों का छोटा, प्रेममय परिवार — हम मानते हैं खुशी एकता, ईमानदारी और सरल जीवन में है।",
+  },
+  {
+    id: "fa-spiritual", for: FA, tags: ["spiritual", "traditional", "family"],
+    en: "A God-fearing, traditional family where daily puja and sanskar are a way of life. We welcome a partner who appreciates our values.",
+    hi: "ईश्वर-भय वाला पारंपरिक परिवार जहां दैनिक पूजा और संस्कार जीवन-पद्धति हैं। हम ऐसे साथी का स्वागत करते हैं जो हमारे मूल्यों को सराहे।",
+  },
+  {
+    id: "fa-open", for: FA, tags: ["modern", "cheerful", "balanced"],
+    en: "A liberal, affectionate family — we treat the new member as our own child, not just in-law. Open communication and mutual respect are our foundations.",
+    hi: "उदार, स्नेही परिवार — हम नए सदस्य को बहू/दामाद नहीं, अपना बच्चा मानते हैं। खुली बातचीत और परस्पर सम्मान हमारी नींव है।",
+  },
+  {
+    id: "fe-respect", for: FE, tags: ["family", "calm", "balanced"],
+    en: "We seek a respectful alliance where both families bond well. No demands — only love, understanding and a graceful match for our child.",
+    hi: "हम ऐसा संबंध चाहते हैं जहां दोनों परिवार अच्छे से जुड़ें। कोई मांग नहीं — बस प्रेम, समझदारी और हमारे बच्चे के लिए एक उचित रिश्ता।",
+  },
+  {
+    id: "fe-working", for: FE, tags: ["ambitious", "modern", "balanced"],
+    en: "We have no objection to a working daughter/son-in-law — we support career aspirations. Family harmony and mutual adjustment matter most to us.",
+    hi: "कार्यरत बहू/दामाद को हमारी ओर से कोई आपत्ति नहीं — हम करियर की इच्छाओं का समर्थन करते हैं। हमारे लिए पारिवारिक सामंजस्य और परस्पर सहयोग ही मायने रखता है।",
+  },
+  {
+    id: "fe-early", for: FE, tags: ["traditional", "simple", "family"],
+    en: "Prefer an early engagement and a simple, heartfelt wedding — we value rituals and meaning over scale and show.",
+    hi: "जल्दी सगाई और सरल, दिल से भरे विवाह की इच्छा — हम दिखावे और बड़े आयोजन से ज्यादा रीति और अर्थ को महत्व देते हैं।",
+  },
+  {
+    id: "fe-values", for: FE, tags: ["spiritual", "traditional", "calm"],
+    en: "Looking for a cultured family that values tradition, faith and character — matching sanskar matters more to us than wealth.",
+    hi: "ऐसे संस्कारी परिवार की तलाश जो परंपरा, आस्था और चरित्र को महत्व दे — हमारे लिए धन से ज्यादा संस्कारों का मेल मायने रखता है।",
+  },
+  {
+    id: "fe-flexible", for: FE, tags: ["modern", "cheerful", "travel"],
+    en: "Location-flexible — the person matters more than the city. We welcome the new member warmly and support them settling in happily.",
+    hi: "स्थान के प्रति लचीले — शहर से ज्यादा इंसान मायने रखता है। हम नए सदस्य का गर्मजोशी से स्वागत करेंगे और खुशी से बसने में साथ देंगे।",
   },
 ];
 

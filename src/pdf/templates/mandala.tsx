@@ -11,6 +11,7 @@ import {
   scriptFont,
   PageFrame,
   bgColor,
+  titleFor,
 } from "../components";
 
 function MandalaMark({ size = 90, color }: { size?: number; color: string }) {
@@ -60,7 +61,7 @@ export function MandalaTemplate({
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (
-    <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
+    <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fdf8ee"), padding: 26 }}>
         <PageFrame override={data.pageBorder} fallback="line" color="#d97706" padding={20}>
           <View style={{ alignItems: "center", marginBottom: 6 }}>
@@ -105,7 +106,7 @@ export function MandalaTemplate({
                     letterSpacing: 3,
                   }}
                 >
-                  {labels.title}
+                  {titleFor(labels, data)}
                 </Text>
                 <Diamond color={theme.accent} size={5} />
               </View>
@@ -127,16 +128,16 @@ export function MandalaTemplate({
             </View>
           ))}
 
-          {(["aboutMe", "expectations"] as const).map((k) => {
+          {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
             const text = data[k].trim();
             if (!text) return null;
             return (
               <View key={k} wrap={false}>
                 <SectionHeading
                   title={
-                    k === "aboutMe"
-                      ? labels.sections.about
-                      : labels.sections.expectations
+                    labels.sections[
+                    ({aboutMe: "about", familyAbout: "aboutFamily", expectations: "expectations", familyExpectations: "familyExpectations"} as const)[k]
+                  ]
                   }
                   theme={theme}
                 />

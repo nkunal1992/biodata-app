@@ -10,6 +10,7 @@ import {
   SectionHeading,
   scriptFont,
   bgColor,
+  titleFor,
 } from "../components";
 
 export function TraditionalTemplate({
@@ -32,7 +33,7 @@ export function TraditionalTemplate({
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (
-    <Document title={`${name} — ${labels.title}`} author="Shubh Biodata">
+    <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page
         size="A4"
         style={{ backgroundColor: bgColor(data, "#fffdf5"), padding: 22, display: "flex" }}
@@ -65,7 +66,7 @@ export function TraditionalTemplate({
                   marginTop: 2,
                 }}
               >
-                {labels.title}
+                {titleFor(labels, data)}
               </Text>
             </View>
             {data.photo && (
@@ -86,39 +87,28 @@ export function TraditionalTemplate({
               ))}
             </View>
           ))}
-          {data.aboutMe.trim() && (
-            <View wrap={false}>
-              <SectionHeading title={labels.sections.about} theme={theme} />
-              <Text
-                style={{
-                  fontFamily: theme.valueFont,
-                  fontSize: 9.5,
-                  color: theme.ink,
-                  lineHeight: 1.5,
-                }}
-              >
-                {data.aboutMe}
-              </Text>
-            </View>
-          )}
-          {data.expectations.trim() && (
-            <View wrap={false}>
-              <SectionHeading
-                title={labels.sections.expectations}
-                theme={theme}
-              />
-              <Text
-                style={{
-                  fontFamily: theme.valueFont,
-                  fontSize: 9.5,
-                  color: theme.ink,
-                  lineHeight: 1.5,
-                }}
-              >
-                {data.expectations}
-              </Text>
-            </View>
-          )}
+          {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
+            const text = data[k].trim();
+            if (!text) return null;
+            return (
+              <View wrap={false} key={k}>
+                <SectionHeading
+                  title={labels.sections[({aboutMe: "about", familyAbout: "aboutFamily", expectations: "expectations", familyExpectations: "familyExpectations"} as const)[k]]}
+                  theme={theme}
+                />
+                <Text
+                  style={{
+                    fontFamily: theme.valueFont,
+                    fontSize: 9.5,
+                    color: theme.ink,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {text}
+                </Text>
+              </View>
+            );
+          })}
         </PageFrame>
       </Page>
     </Document>
