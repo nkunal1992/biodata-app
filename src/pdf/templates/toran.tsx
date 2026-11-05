@@ -55,9 +55,11 @@ function ToranStrip({ width = 500 }: { width?: number }) {
 export function ToranTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#991b1b", // kumkum red
@@ -74,7 +76,7 @@ export function ToranTemplate({
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffdf4"), padding: 22 }}>
-        <PageFrame override={data.pageBorder} fallback="none" color="#d97706" padding={0}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#d97706" padding={0}>
         <View style={{ alignItems: "center" }}>
           <ToranStrip />
         </View>

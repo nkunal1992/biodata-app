@@ -17,9 +17,11 @@ import {
 export function RoyalTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#881337",
@@ -36,7 +38,7 @@ export function RoyalTemplate({
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff") }}>
-        <PageFrame override={data.pageBorder} fallback="none" color="#6d0f2b" padding={0}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#6d0f2b" padding={0}>
         <View
           style={{
             backgroundColor: "#6d0f2b",

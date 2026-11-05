@@ -179,6 +179,8 @@ export interface BiodataData {
   prefs?: MatchPrefs;
   /** Optional bride/groom designation for the title. */
   candidateFor?: CandidateFor;
+  /** Optional biodata number/reference line at the page footer. */
+  biodataNo?: string;
 }
 
 export const DEFAULT_INVOCATION = "॥ श्री गणेशाय नमः ॥";

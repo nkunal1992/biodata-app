@@ -23,9 +23,11 @@ import {
 export function KalashTemplate({
   data,
   labels,
+  qr,
 }: {
   data: BiodataData;
   labels: DocLabels;
+  qr?: string;
 }) {
   const theme = {
     primary: "#b91c1c", // kumkum red
@@ -42,7 +44,7 @@ export function KalashTemplate({
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffaf2"), padding: 24 }}>
-        <PageFrame override={data.pageBorder} fallback="line" color="#d97706" padding={16}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#d97706" padding={16}>
           <View style={{ alignItems: "center" }}>
             <KalashMark size={52} />
             <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />

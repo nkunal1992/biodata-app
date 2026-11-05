@@ -21,6 +21,7 @@ const TEMPLATES: Record<
   (p: {
     data: BiodataData;
     labels: ReturnType<typeof docLabels>;
+    qr?: string;
   }) => ReactElement<DocumentProps>
 > = {
   traditional: TraditionalTemplate,
@@ -40,9 +41,10 @@ const TEMPLATES: Record<
 /** Single source of truth — used by both <PDFViewer> preview and download. */
 export function buildBiodataDocument(
   data: BiodataData,
+  qr?: string,
 ): ReactElement<DocumentProps> {
   registerFonts();
   const labels = docLabels(data.outputLocale);
   const Template = TEMPLATES[data.template] ?? TraditionalTemplate;
-  return <Template data={data} labels={labels} />;
+  return <Template data={data} labels={labels} qr={qr} />;
 }
