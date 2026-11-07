@@ -61,16 +61,16 @@ export function buildSections(
     { label: f.weight, value: localizeDigits(v(data.personal.weight), loc) },
     {
       label: f.complexion,
-      value: data.personal.complexion ? o.complexion[data.personal.complexion] : "",
+      value: data.personal.complexion ? (o.complexion[data.personal.complexion] ?? "") : "",
     },
     { label: f.bloodGroup, value: v(data.personal.bloodGroup) },
     {
       label: f.maritalStatus,
       value: data.personal.maritalStatus
-        ? o.maritalStatus[data.personal.maritalStatus]
+        ? (o.maritalStatus[data.personal.maritalStatus] ?? "")
         : "",
     },
-    { label: f.diet, value: data.personal.diet ? o.diet[data.personal.diet] : "" },
+    { label: f.diet, value: data.personal.diet ? (o.diet[data.personal.diet] ?? "") : "" },
     { label: f.residenceCity, value: v(data.personal.residenceCity) },
     { label: f.languages, value: v(data.personal.languages) },
     { label: f.hobbies, value: v(data.personal.hobbies) },
@@ -88,7 +88,7 @@ export function buildSections(
     { label: f.nadi, value: v(data.astro.nadi) },
     {
       label: f.manglik,
-      value: data.astro.manglik ? o.manglik[data.astro.manglik] : "",
+      value: data.astro.manglik ? (o.manglik[data.astro.manglik] ?? "") : "",
     },
     { label: f.motherTongue, value: v(data.astro.motherTongue) },
     { label: f.kuldevta, value: v(data.astro.kuldevta) },
@@ -104,7 +104,7 @@ export function buildSections(
 
   const phone = v(data.contact.phone);
   const owner = data.contact.phoneOwner
-    ? o.phoneOwner[data.contact.phoneOwner]
+    ? (o.phoneOwner[data.contact.phoneOwner] ?? "")
     : "";
   const contact: Row[] = [
     { label: f.phone, value: phone && owner ? `${phone} (${owner})` : phone },
@@ -128,7 +128,7 @@ export function buildSections(
     { label: f.grandfather, value: v(data.family.grandfather) },
     {
       label: f.familyType,
-      value: data.family.familyType ? o.familyType[data.family.familyType] : "",
+      value: data.family.familyType ? (o.familyType[data.family.familyType] ?? "") : "",
     },
     { label: f.nativePlace, value: v(data.family.nativePlace) },
   ];
@@ -142,8 +142,8 @@ export function buildSections(
     ? [
         { label: f.prefAge, value: ageBand },
         { label: f.prefEducation, value: v(p.education) },
-        { label: f.prefVeg, value: p.vegOnly ? o.vegOnly[p.vegOnly] : "" },
-        { label: f.prefKundli, value: p.kundli ? o.kundli[p.kundli] : "" },
+        { label: f.prefVeg, value: p.vegOnly ? (o.vegOnly[p.vegOnly] ?? "") : "" },
+        { label: f.prefKundli, value: p.kundli ? (o.kundli[p.kundli] ?? "") : "" },
       ]
     : [];
 
@@ -189,7 +189,7 @@ export function buildSections(
       const keys = FIELD_KEYS[sec.key] ?? [];
       const rows = sec.rows.filter(
         (r) =>
-          r.value.length > 0 &&
+          (r.value ?? "").length > 0 &&
           !hiddenFields.has(`${sec.key}.${keys[sec.rows.indexOf(r)]}`),
       );
       // custom fields tagged to this section

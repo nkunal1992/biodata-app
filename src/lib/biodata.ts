@@ -360,3 +360,19 @@ export const sampleBiodata: BiodataData = {
   },
   candidateFor: "groom",
 };
+
+/**
+ * Merge persisted/shared data over emptyBiodata so older stored shapes
+ * (which predate fields added later) never produce undefined sections.
+ * Arrays/objects from `d` win; missing keys get defaults.
+ */
+export function normalizeData(d: Partial<BiodataData> | undefined | null): BiodataData {
+  const base = emptyBiodata;
+  const src: Partial<BiodataData> = d ?? {};
+  const out = { ...base, ...src } as BiodataData;
+  // nested plain objects — merge each so missing sub-fields get defaults
+  for (const key of ["personal","astro","career","family","contact","prefs"] as const) {
+    out[key] = { ...base[key], ...(src[key] ?? {}) } as never;
+  }
+  return out;
+}
