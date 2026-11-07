@@ -60,11 +60,18 @@ function StepperSection({
         open ? "border-orange-300 shadow-sm" : "border-stone-200",
       )}
     >
-      <button
-        type="button"
+      <div
+        role="button"
+        tabIndex={0}
         onClick={onToggle}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onToggle();
+          }
+        }}
         aria-expanded={open}
-        className="flex w-full items-center gap-3 px-4 py-3 text-left"
+        className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left"
       >
         <span
           className={cn(
@@ -122,7 +129,7 @@ function StepperSection({
             open && "rotate-180",
           )}
         />
-      </button>
+      </div>
       {open && (
         <div className="border-t border-stone-100 px-4 py-4">
           <SectionBody section={sectionKey} />
