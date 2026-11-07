@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useTranslations } from "next-intl";
-import { ImagePlus, Trash2 } from "lucide-react";
+import { ImagePlus, Plus, Trash2 } from "lucide-react";
 import { useBiodataStore } from "@/store/biodata-store";
 import type { FrameStyle, InvocationIcon } from "@/lib/biodata";
 import { SectionFields, TopLevelField, type FieldDef } from "./fields";
@@ -289,6 +289,50 @@ async function downscaleImage(
   }
 }
 
+
+function CustomFieldsBlock({ section }: { section: string }) {
+  const t = useTranslations("editor");
+  const customs = useBiodataStore((s) => s.data.customFields ?? []);
+  const addCustomField = useBiodataStore((s) => s.addCustomField);
+  const updateCustomField = useBiodataStore((s) => s.updateCustomField);
+  const removeCustomField = useBiodataStore((s) => s.removeCustomField);
+  const mine = customs.filter((cf) => cf.section === section);
+  return (
+    <div className="mt-3 space-y-2 border-t border-dashed border-stone-200 pt-3">
+      {mine.map((cf) => (
+        <div key={cf.id} className="flex items-start gap-2">
+          <input
+            value={cf.label}
+            placeholder={t("customLabel")}
+            onChange={(e) => updateCustomField(cf.id, { label: e.target.value })}
+            className="w-2/5 rounded-lg border border-stone-300 px-2 py-1.5 text-xs"
+          />
+          <input
+            value={cf.value}
+            placeholder={t("customValue")}
+            onChange={(e) => updateCustomField(cf.id, { value: e.target.value })}
+            className="flex-1 rounded-lg border border-stone-300 px-2 py-1.5 text-xs"
+          />
+          <button
+            type="button"
+            onClick={() => removeCustomField(cf.id)}
+            className="mt-1 text-stone-300 hover:text-red-500"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() => addCustomField(section)}
+        className="inline-flex items-center gap-1 text-xs font-medium text-orange-600 hover:text-orange-700"
+      >
+        <Plus size={13} /> {t("addField")}
+      </button>
+    </div>
+  );
+}
+
 export function SectionBody({ section }: { section: SectionKey }) {
   switch (section) {
     case "photo":
@@ -298,16 +342,37 @@ export function SectionBody({ section }: { section: SectionKey }) {
         <div className="space-y-3">
           <CandidateForToggle />
           <SectionFields section="personal" defs={PERSONAL} />
+          <CustomFieldsBlock section="personal" />
         </div>
       );
     case "astro":
-      return <SectionFields section="astro" defs={ASTRO} />;
+      return (
+        <div>
+          <SectionFields section="astro" defs={ASTRO} />
+          <CustomFieldsBlock section="astro" />
+        </div>
+      );
     case "career":
-      return <SectionFields section="career" defs={CAREER} />;
+      return (
+        <div>
+          <SectionFields section="career" defs={CAREER} />
+          <CustomFieldsBlock section="career" />
+        </div>
+      );
     case "family":
-      return <SectionFields section="family" defs={FAMILY} />;
+      return (
+        <div>
+          <SectionFields section="family" defs={FAMILY} />
+          <CustomFieldsBlock section="family" />
+        </div>
+      );
     case "contact":
-      return <SectionFields section="contact" defs={CONTACT} />;
+      return (
+        <div>
+          <SectionFields section="contact" defs={CONTACT} />
+          <CustomFieldsBlock section="contact" />
+        </div>
+      );
     case "extras":
       return (
         <div className="space-y-3">

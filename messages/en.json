@@ -288,7 +288,13 @@
     "for": {
       "groom": "Groom",
       "bride": "Bride"
-    }
+    },
+    "addField": "+ Add field",
+    "customLabel": "Label",
+    "customValue": "Value",
+    "hideSection": "Hide section",
+    "showSection": "Show section",
+    "hideField": "Hide field"
   },
   "templates": {
     "traditional": "Traditional",

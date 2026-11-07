@@ -31,6 +31,14 @@ export type OutputLocale = "en" | "hi";
 
 export type CandidateFor = "groom" | "bride";
 
+/** User-defined field appended to a section. */
+export interface CustomField {
+  id: string;
+  section: string;
+  label: string;
+  value: string;
+}
+
 export interface MatchPrefs {
   /** Preferred partner age band, e.g. "25", "30". */
   ageMin: string;
@@ -181,6 +189,14 @@ export interface BiodataData {
   candidateFor?: CandidateFor;
   /** Optional biodata number/reference line at the page footer. */
   biodataNo?: string;
+  /** Section keys hidden from the PDF (e.g. "astro"). */
+  hiddenSections?: string[];
+  /** "section.field" composite keys hidden from the PDF. */
+  hiddenFields?: string[];
+  /** User-defined fields appended to their parent section. */
+  customFields?: CustomField[];
+  /** Optional display order for the 5 core sections. */
+  sectionOrder?: string[];
 }
 
 export const DEFAULT_INVOCATION = "॥ श्री गणेशाय नमः ॥";
@@ -250,6 +266,10 @@ export const emptyBiodata: BiodataData = {
   expectations: "",
   familyExpectations: "",
   prefs: { ageMin: "", ageMax: "", education: "", vegOnly: "", kundli: "" },
+  hiddenSections: [],
+  hiddenFields: [],
+  customFields: [],
+  sectionOrder: [],
 };
 
 /** Friendly sample so the preview is never blank. */
