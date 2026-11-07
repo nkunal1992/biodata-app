@@ -288,7 +288,13 @@
     "for": {
       "groom": "वर",
       "bride": "वधू"
-    }
+    },
+    "addField": "+ फ़ील्ड जोड़ें",
+    "customLabel": "शीर्षक",
+    "customValue": "मान",
+    "hideSection": "सेक्शन छुपाएं",
+    "showSection": "सेक्शन दिखाएं",
+    "hideField": "फ़ील्ड छुपाएं"
   },
   "templates": {
     "traditional": "पारंपरिक",

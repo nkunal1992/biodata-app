@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useBiodataStore } from "@/store/biodata-store";
+import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 const inputCls =
@@ -10,17 +11,35 @@ const inputCls =
 export function Field({
   label,
   children,
+  hideKey,
 }: {
   label: string;
   children: React.ReactNode;
+  hideKey?: string;
 }) {
+  const hidden = useBiodataStore((s) =>
+    hideKey ? (s.data.hiddenFields ?? []).includes(hideKey) : false,
+  );
+  const toggleHidden = useBiodataStore((s) => s.toggleFieldHidden);
   return (
-    <label className="block">
-      <span className="mb-1 block text-xs font-medium text-stone-600">
-        {label}
-      </span>
-      {children}
-    </label>
+    <div className={cn("group relative", hidden && "opacity-40")}>
+      <label className="block">
+        <span className="mb-1 block text-xs font-medium text-stone-600">
+          {label}
+        </span>
+        {children}
+      </label>
+      {hideKey && (
+        <button
+          type="button"
+          onClick={() => toggleHidden(hideKey)}
+          title={hidden ? "show" : "hide from PDF"}
+          className="absolute top-0 right-0 rounded p-0.5 text-stone-300 opacity-0 transition group-hover:opacity-100 hover:text-stone-600"
+        >
+          {hidden ? <EyeOff size={12} /> : <Eye size={12} />}
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -69,7 +88,7 @@ export function SectionFields({
             string
           >;
           return (
-            <Field key={def.name} label={label}>
+            <Field key={def.name} label={label} hideKey={`${section}.${def.name}`}>
               <div className={cls}>
                 <select
                   className={inputCls}
@@ -89,7 +108,7 @@ export function SectionFields({
         }
         if (def.type === "textarea") {
           return (
-            <Field key={def.name} label={label}>
+            <Field key={def.name} label={label} hideKey={`${section}.${def.name}`}>
               <div className={cls}>
                 <textarea
                   className={cn(inputCls, "min-h-20")}
@@ -102,7 +121,7 @@ export function SectionFields({
           );
         }
         return (
-          <Field key={def.name} label={label}>
+          <Field key={def.name} label={label} hideKey={`${section}.${def.name}`}>
             <div className={cls}>
               <input
                 className={inputCls}

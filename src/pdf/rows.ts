@@ -155,10 +155,51 @@ export function buildSections(
     { key: "contact", title: s.contact, rows: contact },
     { key: "prefs", title: s.prefs, rows: prefs },
   ];
-  return out
-    .map((sec) => ({
-      ...sec,
-      rows: sec.rows.filter((r) => r.value.length > 0),
-    }))
-    .filter((sec) => sec.key !== "prefs" || sec.rows.length > 0);
+  // ── user overrides: hidden fields/sections, custom fields, order ──
+  const hiddenFields = new Set(data.hiddenFields ?? []);
+  const hiddenSections = new Set(data.hiddenSections ?? []);
+  const customs = data.customFields ?? [];
+
+  // Field→section composite keys match hiddenFields entries.
+  const FIELD_KEYS: Record<string, string[]> = {
+    personal: ["name","dob","birthTime","birthPlace","height","weight","complexion","bloodGroup","maritalStatus","diet","residenceCity","languages","hobbies"],
+    astro: ["religion","caste","subCaste","gotra","rashi","nakshatra","charan","gana","nadi","manglik","motherTongue","kuldevta"],
+    career: ["qualification","college","occupation","company","income"],
+    family: ["father","mother","siblings","mama","grandfather","familyType","nativePlace"],
+    contact: ["phone","fatherPhone","motherPhone","email","address"],
+  };
+  const rowKey: Record<string, (r: Row) => string> = {};
+  for (const [sec, keys] of Object.entries(FIELD_KEYS)) {
+    keys.forEach((k, i) => {
+      rowKey[`${sec}.${i}`] = () => k;
+    });
+  }
+
+  let filtered = out
+    .map((sec) => {
+      const keys = FIELD_KEYS[sec.key] ?? [];
+      const rows = sec.rows.filter(
+        (r) =>
+          r.value.length > 0 &&
+          !hiddenFields.has(`${sec.key}.${keys[sec.rows.indexOf(r)]}`),
+      );
+      // custom fields tagged to this section
+      const extra = customs
+        .filter((cf) => cf.section === sec.key && cf.label.trim() && cf.value.trim())
+        .map((cf) => ({ label: cf.label.trim(), value: cf.value.trim() }));
+      return { ...sec, rows: [...rows, ...extra] };
+    })
+    .filter((sec) => !hiddenSections.has(sec.key) && sec.rows.length > 0);
+
+  // section order override (only core keys; prefs stays last)
+  const order = data.sectionOrder?.length
+    ? [...data.sectionOrder, "prefs"]
+    : null;
+  if (order) {
+    filtered = [...filtered].sort(
+      (a, b) => order.indexOf(a.key) - order.indexOf(b.key),
+    );
+  }
+
+  return filtered;
 }

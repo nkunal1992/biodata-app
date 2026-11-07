@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
-import { ChevronDown, Eye, Heart, Home } from "lucide-react";
+import { ChevronDown, Eye, EyeOff, Heart, Home, ArrowUp, ArrowDown } from "lucide-react";
 import { useBiodataStore } from "@/store/biodata-store";
 import { decodeShareHash } from "@/lib/share";
 import { cn } from "@/lib/cn";
@@ -27,6 +27,8 @@ const PdfPreview = dynamic(() => import("@/components/PdfPreview"), {
   ),
 });
 
+const CORE_ORDER = ["personal", "astro", "career", "family", "contact"] as const;
+
 function StepperSection({
   index,
   sectionKey,
@@ -34,6 +36,7 @@ function StepperSection({
   onToggle,
   onNext,
   isLast,
+  isCore,
 }: {
   index: number;
   sectionKey: SectionKey;
@@ -41,8 +44,14 @@ function StepperSection({
   onToggle: () => void;
   onNext: () => void;
   isLast: boolean;
+  isCore: boolean;
 }) {
   const t = useTranslations("editor");
+  const hidden = useBiodataStore((s) =>
+    (s.data.hiddenSections ?? []).includes(sectionKey),
+  );
+  const toggleSectionHidden = useBiodataStore((s) => s.toggleSectionHidden);
+  const moveSection = useBiodataStore((s) => s.moveSection);
   return (
     <div
       className={cn(
@@ -64,7 +73,7 @@ function StepperSection({
         >
           {index + 1}
         </span>
-        <span className="flex-1">
+        <span className={cn("flex-1", hidden && "opacity-40")}>
           <span className="block text-sm font-semibold text-stone-800">
             {t(`sections.${sectionKey}`)}
           </span>
@@ -74,6 +83,37 @@ function StepperSection({
             </span>
           )}
         </span>
+        {isCore && (
+          <span className="flex items-center gap-0.5" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              title="move up"
+              onClick={() => moveSection(sectionKey, -1)}
+              className="rounded p-1 text-stone-300 hover:text-stone-600"
+            >
+              <ArrowUp size={12} />
+            </button>
+            <button
+              type="button"
+              title="move down"
+              onClick={() => moveSection(sectionKey, 1)}
+              className="rounded p-1 text-stone-300 hover:text-stone-600"
+            >
+              <ArrowDown size={12} />
+            </button>
+            <button
+              type="button"
+              title={hidden ? t("showSection") : t("hideSection")}
+              onClick={() => toggleSectionHidden(sectionKey)}
+              className={cn(
+                "rounded p-1 hover:text-stone-600",
+                hidden ? "text-orange-500" : "text-stone-300",
+              )}
+            >
+              {hidden ? <EyeOff size={13} /> : <Eye size={13} />}
+            </button>
+          </span>
+        )}
         <ChevronDown
           size={16}
           className={cn(
@@ -106,6 +146,7 @@ export default function EditorShell() {
   const t = useTranslations("editor");
   const nav = useTranslations("nav");
   const hydrateFromShare = useBiodataStore((s) => s.hydrateFromShare);
+  const sectionOrder = useBiodataStore((s) => s.data.sectionOrder);
   const [open, setOpen] = useState<SectionKey | null>("photo");
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const [shared, setShared] = useState(false);
@@ -123,9 +164,11 @@ export default function EditorShell() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const openIdx = open === null ? -1 : SECTION_ORDER.indexOf(open);
+  const core = (sectionOrder?.length ? sectionOrder : [...CORE_ORDER]) as SectionKey[];
+  const ORDERED = ["photo", ...core, "extras"] as SectionKey[];
+  const openIdx = open === null ? -1 : ORDERED.indexOf(open);
   const next = () => {
-    const nxt = SECTION_ORDER[openIdx + 1];
+    const nxt = ORDERED[openIdx + 1];
     if (nxt) setOpen(nxt);
   };
 
@@ -185,7 +228,13 @@ export default function EditorShell() {
           </div>
 
           <div className="space-y-2.5">
-            {SECTION_ORDER.map((key, i) => (
+            {(() => {
+              const core =
+                (sectionOrder?.length ?? 0) > 0
+                  ? (sectionOrder as string[])
+                  : [...CORE_ORDER];
+              const order = ["photo", ...core, "extras"] as SectionKey[];
+              return order.map((key, i) => (
               <StepperSection
                 key={key}
                 index={i}
@@ -193,9 +242,11 @@ export default function EditorShell() {
                 open={open === key}
                 onToggle={() => setOpen(open === key ? null : key)}
                 onNext={next}
-                isLast={i === SECTION_ORDER.length - 1}
+                isLast={i === order.length - 1}
+                isCore={(CORE_ORDER as readonly string[]).includes(key)}
               />
-            ))}
+              ));
+            })()}
           </div>
         </div>
 
