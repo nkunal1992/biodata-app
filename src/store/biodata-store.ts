@@ -7,6 +7,7 @@ import {
   type OutputLocale,
   type TemplateId,
   emptyBiodata,
+  normalizeData,
   sampleBiodata,
 } from "@/lib/biodata";
 
@@ -127,8 +128,7 @@ export const useBiodataStore = create<BiodataStore>()(
       hydrateFromShare: (shared) =>
         set((state) =>
           sync(state, {
-            ...state.data,
-            ...shared,
+            ...normalizeData(shared),
             photo: state.data.photo,
           }),
         ),
@@ -313,6 +313,25 @@ export const useBiodataStore = create<BiodataStore>()(
       version: 2,
       // Don't persist undo history or transient fields.
       partialize: (s) => ({ data: s.data, drafts: s.drafts, activeId: s.activeId }),
+      // Older saved shapes lack fields added in later versions — fill
+      // defaults so no code path ever sees undefined sections.
+      merge: (persisted, current) => {
+        const p = persisted as
+          | { data?: BiodataData; drafts?: Record<string, DraftEntry>; activeId?: string }
+          | undefined;
+        if (!p) return current;
+        return {
+          ...current,
+          data: normalizeData(p.data),
+          drafts: Object.fromEntries(
+            Object.entries(p.drafts ?? {}).map(([id, e]) => [
+              id,
+              { ...e, data: normalizeData(e.data) },
+            ]),
+          ),
+          activeId: p.activeId ?? current.activeId,
+        };
+      },
       migrate: (persisted: unknown) => {
         const p = persisted as { data?: BiodataData; drafts?: Record<string, DraftEntry>; activeId?: string };
         if (p?.drafts && p.activeId) return persisted;
