@@ -19,6 +19,7 @@ import {
   PageFrame,
   bgColor,
   titleFor,
+  CoverPage,
 } from "../components";
 
 /** A hanging toran strip — marigold circles + mango-leaf triangles. */
@@ -75,6 +76,9 @@ export function ToranTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffdf4"), padding: 22 }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#d97706" padding={0}>
         <View style={{ alignItems: "center" }}>

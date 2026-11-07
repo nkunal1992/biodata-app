@@ -39,6 +39,13 @@ export interface CustomField {
   value: string;
 }
 
+/** A fully user-defined section (own title + fields). */
+export interface CustomSection {
+  id: string;
+  title: string;
+  fields: { id: string; label: string; value: string }[];
+}
+
 export interface MatchPrefs {
   /** Preferred partner age band, e.g. "25", "30". */
   ageMin: string;
@@ -197,6 +204,10 @@ export interface BiodataData {
   customFields?: CustomField[];
   /** Optional display order for the 5 core sections. */
   sectionOrder?: string[];
+  /** User-defined extra sections rendered after core sections. */
+  customSections?: CustomSection[];
+  /** Render a dedicated cover page before the biodata. */
+  coverPage?: boolean;
 }
 
 export const DEFAULT_INVOCATION = "॥ श्री गणेशाय नमः ॥";
@@ -270,6 +281,8 @@ export const emptyBiodata: BiodataData = {
   hiddenFields: [],
   customFields: [],
   sectionOrder: [],
+  customSections: [],
+  coverPage: false,
 };
 
 /** Friendly sample so the preview is never blank. */

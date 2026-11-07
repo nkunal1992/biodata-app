@@ -12,6 +12,7 @@ import {
   PageFrame,
   bgColor,
   titleFor,
+  CoverPage,
 } from "../components";
 
 function MandalaMark({ size = 90, color }: { size?: number; color: string }) {
@@ -64,6 +65,9 @@ export function MandalaTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fdf8ee"), padding: 26 }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#d97706" padding={20}>
           <View style={{ alignItems: "center", marginBottom: 6 }}>

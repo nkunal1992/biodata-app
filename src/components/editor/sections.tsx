@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ImagePlus, Plus, Trash2 } from "lucide-react";
 import { useBiodataStore } from "@/store/biodata-store";
@@ -123,12 +123,12 @@ export function PhotoSection() {
   const photo = useBiodataStore((s) => s.data.photo);
   const setTopLevel = useBiodataStore((s) => s.setTopLevel);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [rawSrc, setRawSrc] = useState<string | null>(null);
 
-  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+  function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    const dataUrl = await downscaleImage(file, 800, 0.85);
-    setTopLevel({ photo: dataUrl });
+    setRawSrc(URL.createObjectURL(file));
     e.target.value = "";
   }
 
@@ -171,6 +171,11 @@ export function PhotoSection() {
           </button>
         )}
         <p className="text-xs text-stone-500">{t("photoFormats")}</p>
+        {rawSrc && (
+          <div className="mt-2">
+            <PhotoCropper src={rawSrc} onDone={(d) => { setTopLevel({ photo: d }); setRawSrc(null); }} />
+          </div>
+        )}
       </div>
       {photo && <FramePicker />}
     </div>
@@ -263,30 +268,6 @@ function FramePicker() {
       </div>
     </div>
   );
-}
-
-async function downscaleImage(
-  file: File,
-  maxDim: number,
-  quality: number,
-): Promise<string> {
-  const url = URL.createObjectURL(file);
-  try {
-    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-      const el = new Image();
-      el.onload = () => resolve(el);
-      el.onerror = reject;
-      el.src = url;
-    });
-    const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(img.width * scale);
-    canvas.height = Math.round(img.height * scale);
-    canvas.getContext("2d")!.drawImage(img, 0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL("image/jpeg", quality);
-  } finally {
-    URL.revokeObjectURL(url);
-  }
 }
 
 
@@ -385,6 +366,7 @@ export function SectionBody({ section }: { section: SectionKey }) {
           <TopLevelField name="familyExpectations" textarea />
           <SuggestionPicker field="familyExpectations" />
           <PrefsFields />
+          <CustomSectionsBlock />
           <TopLevelField name="invocation" />
           <TopLevelField name="biodataNo" />
           <InvocationControls />
@@ -471,6 +453,142 @@ function CandidateForToggle() {
           {t(`for.${v}`)}
         </button>
       ))}
+    </div>
+  );
+}
+
+function CustomSectionsBlock() {
+  const t = useTranslations("editor");
+  const sections = useBiodataStore((s) => s.data.customSections ?? []);
+  const addCS = useBiodataStore((s) => s.addCustomSection);
+  const updCS = useBiodataStore((s) => s.updateCustomSection);
+  const delCS = useBiodataStore((s) => s.removeCustomSection);
+  return (
+    <div className="rounded-xl border border-dashed border-orange-300 bg-orange-50/50 p-3">
+      <p className="mb-2 text-xs font-semibold tracking-wide text-stone-500 uppercase">
+        {t("customSections")}
+      </p>
+      {sections.map((cs) => (
+        <div key={cs.id} className="mb-2 rounded-lg border border-stone-200 bg-white p-2.5">
+          <div className="flex items-center gap-2">
+            <input
+              value={cs.title}
+              placeholder={t("customSectionTitle")}
+              onChange={(e) => updCS(cs.id, { title: e.target.value })}
+              className="flex-1 rounded-lg border border-stone-300 px-2 py-1.5 text-xs font-medium"
+            />
+            <button type="button" onClick={() => delCS(cs.id)} className="text-stone-300 hover:text-red-500">
+              <Trash2 size={13} />
+            </button>
+          </div>
+          {cs.fields.map((f) => (
+            <div key={f.id} className="mt-1.5 flex items-center gap-2">
+              <input
+                value={f.label}
+                placeholder={t("customLabel")}
+                onChange={(e) =>
+                  updCS(cs.id, {
+                    fields: cs.fields.map((x) => x.id === f.id ? { ...x, label: e.target.value } : x),
+                  })
+                }
+                className="w-2/5 rounded-lg border border-stone-300 px-2 py-1 text-xs"
+              />
+              <input
+                value={f.value}
+                placeholder={t("customValue")}
+                onChange={(e) =>
+                  updCS(cs.id, {
+                    fields: cs.fields.map((x) => x.id === f.id ? { ...x, value: e.target.value } : x),
+                  })
+                }
+                className="flex-1 rounded-lg border border-stone-300 px-2 py-1 text-xs"
+              />
+              <button
+                type="button"
+                onClick={() => updCS(cs.id, { fields: cs.fields.filter((x) => x.id !== f.id) })}
+                className="text-stone-300 hover:text-red-500"
+              >
+                <Trash2 size={12} />
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() =>
+              updCS(cs.id, { fields: [...cs.fields, { id: `f${Date.now().toString(36)}`, label: "", value: "" }] })
+            }
+            className="mt-1.5 inline-flex items-center gap-1 text-xs font-medium text-orange-600"
+          >
+            <Plus size={11} /> {t("addField")}
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={addCS}
+        className="inline-flex items-center gap-1 text-xs font-medium text-orange-700 hover:text-orange-800"
+      >
+        <Plus size={13} /> {t("addSection")}
+      </button>
+    </div>
+  );
+}
+
+function PhotoCropper({ src, onDone }: { src: string; onDone: (dataUrl: string) => void }) {
+  const t = useTranslations("editor");
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [rect, setRect] = React.useState({ x: 0.15, y: 0.15, w: 0.7, h: 0.7 * (4 / 3) });
+  const [img, setImg] = React.useState<HTMLImageElement | null>(null);
+  const [size, setSize] = React.useState({ w: 0, h: 0 });
+  React.useEffect(() => {
+    const i = new window.Image();
+    i.onload = () => { setImg(i); setSize({ w: Math.min(i.width, 400), h: Math.min(i.width, 400) * (i.height / i.width) }); };
+    i.src = src;
+  }, [src]);
+  const crop = () => {
+    if (!img || !canvasRef.current) return;
+    const ctx = canvasRef.current.getContext("2d")!;
+    const sx = rect.x * img.width, sy = rect.y * img.height;
+    const sw = rect.w * img.width, sh = Math.min(rect.h, 1 - rect.y) * img.height;
+    canvasRef.current.width = 360;
+    canvasRef.current.height = 360 * (sh / sw);
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, 360, canvasRef.current.height);
+    onDone(canvasRef.current.toDataURL("image/jpeg", 0.85));
+  };
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.buttons !== 1 || size.w === 0) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const nx = Math.max(0, Math.min(1 - rect.w, (e.clientX - r.left) / r.width - rect.w / 2));
+    const ny = Math.max(0, Math.min(1 - rect.h, (e.clientY - r.top) / r.height - rect.h / 2));
+    setRect((p) => ({ ...p, x: nx, y: ny }));
+  };
+  if (!img) return <p className="text-xs text-stone-400">…</p>;
+  return (
+    <div>
+      <div
+        className="relative mx-auto cursor-move overflow-hidden rounded-lg border border-stone-300"
+        style={{ width: size.w, height: size.h }}
+        onMouseMove={onMove}
+        onMouseDown={onMove}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt="" className="block h-full w-full" draggable={false} />
+        <div
+          className="absolute border-2 border-orange-500 bg-orange-500/10"
+          style={{
+            left: `${rect.x * 100}%`, top: `${rect.y * 100}%`,
+            width: `${rect.w * 100}%`, height: `${rect.h * 100}%`,
+          }}
+        />
+      </div>
+      <canvas ref={canvasRef} className="hidden" />
+      <button
+        type="button"
+        onClick={crop}
+        className="mt-2 w-full rounded-lg bg-orange-600 py-1.5 text-xs font-semibold text-white hover:bg-orange-700"
+      >
+        {t("applyCrop")}
+      </button>
     </div>
   );
 }

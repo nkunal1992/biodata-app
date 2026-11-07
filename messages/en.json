@@ -37,7 +37,14 @@
     "feature4Title": "Free & open source",
     "feature4Text": "MIT licensed. No watermarks, no paywalls, no premium templates.",
     "footerTagline": "Made with respect for tradition and modern craft.",
-    "footerSource": "Source on GitHub"
+    "footerSource": "Source on GitHub",
+    "whyTitle": "Why families choose Shubh Biodata",
+    "why1Title": "Privacy-first",
+    "why1Text": "All data stays in your browser — nothing is uploaded unless you share a link.",
+    "why2Title": "12 premium templates",
+    "why2Text": "Traditional, royal, modern and regional styles in English and Hindi.",
+    "why3Title": "Made for WhatsApp",
+    "why3Text": "One-tap PDF + PNG download, ready to forward to the family group."
   },
   "editor": {
     "title": "Create your biodata",
@@ -294,7 +301,12 @@
     "customValue": "Value",
     "hideSection": "Hide section",
     "showSection": "Show section",
-    "hideField": "Hide field"
+    "hideField": "Hide field",
+    "coverPage": "Cover page",
+    "customSections": "Custom sections",
+    "customSectionTitle": "Section title",
+    "addSection": "Add section",
+    "applyCrop": "Apply crop"
   },
   "templates": {
     "traditional": "Traditional",

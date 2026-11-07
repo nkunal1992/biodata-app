@@ -19,6 +19,7 @@ import {
   PageFrame,
   bgColor,
   titleFor,
+  CoverPage,
 } from "../components";
 
 function PeacockFeather({ size = 40 }: { size?: number }) {
@@ -77,6 +78,9 @@ export function PeacockTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#f7fbf9"), padding: 24 }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="double" color="#0f766e" color2="#b45309" padding={16}>
         

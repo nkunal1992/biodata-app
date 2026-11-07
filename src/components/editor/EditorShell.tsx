@@ -9,9 +9,10 @@ import { decodeShareHash } from "@/lib/share";
 import { cn } from "@/lib/cn";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/Navbar";
-import { SECTION_ORDER, SectionBody, type SectionKey } from "./sections";
+import { SectionBody, type SectionKey } from "./sections";
 import {
   OutputLocaleToggle,
+  CoverToggle,
   PageBgPicker,
   PageBorderPicker,
   TemplatePicker,
@@ -221,6 +222,9 @@ export default function EditorShell() {
             </div>
             <div className="border-t border-stone-100 pt-4">
               <PageBorderPicker />
+            </div>
+            <div className="border-t border-stone-100 pt-4">
+              <CoverToggle />
             </div>
             <div className="border-t border-stone-100 pt-4">
               <Toolbar />

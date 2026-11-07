@@ -114,6 +114,36 @@ function TemplateThumb({ id }: { id: string }) {
   );
 }
 
+export function CoverToggle() {
+  const t = useTranslations("editor");
+  const cover = useBiodataStore((s) => s.data.coverPage ?? false);
+  const setTopLevel = useBiodataStore((s) => s.setTopLevel);
+  return (
+    <label className="flex items-center justify-between">
+      <span className="text-xs font-semibold tracking-wide text-stone-500 uppercase">
+        {t("coverPage")}
+      </span>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={cover}
+        onClick={() => setTopLevel({ coverPage: !cover })}
+        className={cn(
+          "relative h-5 w-9 rounded-full transition",
+          cover ? "bg-orange-600" : "bg-stone-300",
+        )}
+      >
+        <span
+          className={cn(
+            "absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition",
+            cover ? "left-[18px]" : "left-0.5",
+          )}
+        />
+      </button>
+    </label>
+  );
+}
+
 export function PageBgPicker() {
   const t = useTranslations("editor");
   const bg = useBiodataStore((s) => s.data.pageBackground ?? "template");

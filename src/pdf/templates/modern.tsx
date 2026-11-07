@@ -3,6 +3,7 @@ import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import { FieldRow, PhotoFrame, scriptFont, PageFrame , IconMark, bgColor, titleFor,
+  CoverPage,
 } from "../components";
 
 export function ModernTemplate({
@@ -29,6 +30,9 @@ export function ModernTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff"), flexDirection: "row" }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="{accent}" padding={0}>
         <View style={{ width: 10, backgroundColor: accent }} />
