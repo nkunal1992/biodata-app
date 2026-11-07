@@ -17,6 +17,7 @@ import {
   PageFrame,
   bgColor,
   titleFor,
+  CoverPage,
 } from "../components";
 
 /** पूर्ण कलश — coconut + mango leaves over a decorated pot. */
@@ -43,6 +44,9 @@ export function KalashTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffaf2"), padding: 24 }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#d97706" padding={16}>
           <View style={{ alignItems: "center" }}>

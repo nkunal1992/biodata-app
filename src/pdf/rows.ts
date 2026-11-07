@@ -11,7 +11,7 @@ export interface Row {
   value: string;
 }
 export interface SectionData {
-  key: keyof DocLabels["sections"];
+  key: string;
   title: string;
   rows: Row[];
 }
@@ -153,6 +153,15 @@ export function buildSections(
     { key: "career", title: s.career, rows: career },
     { key: "family", title: s.family, rows: family },
     { key: "contact", title: s.contact, rows: contact },
+    ...(data.customSections ?? [])
+      .filter((cs) => cs.title.trim() && cs.fields.length > 0)
+      .map((cs) => ({
+        key: `custom-${cs.id}`,
+        title: cs.title.trim(),
+        rows: cs.fields
+          .filter((f) => f.label.trim() && f.value.trim())
+          .map((f) => ({ label: f.label.trim(), value: f.value.trim() })),
+      })),
     { key: "prefs", title: s.prefs, rows: prefs },
   ];
   // ── user overrides: hidden fields/sections, custom fields, order ──

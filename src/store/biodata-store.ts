@@ -54,6 +54,8 @@ interface BiodataStore {
         | "hiddenFields"
         | "customFields"
         | "sectionOrder"
+        | "customSections"
+        | "coverPage"
       >
     >,
   ) => void;
@@ -71,6 +73,12 @@ interface BiodataStore {
   updateCustomField: (id: string, patch: Partial<import("@/lib/biodata").CustomField>) => void;
   removeCustomField: (id: string) => void;
   moveSection: (section: string, dir: -1 | 1) => void;
+  addCustomSection: () => void;
+  updateCustomSection: (
+    id: string,
+    patch: Partial<import("@/lib/biodata").CustomSection>,
+  ) => void;
+  removeCustomSection: (id: string) => void;
 }
 
 /** Write `data` into the active draft slot (keeps drafts map in sync). */
@@ -242,6 +250,37 @@ export const useBiodataStore = create<BiodataStore>()(
           [order[i], order[j]] = [order[j], order[i]];
           return sync(state, { ...state.data, sectionOrder: order });
         }),
+
+      addCustomSection: () =>
+        set((state) =>
+          sync(state, {
+            ...state.data,
+            customSections: [
+              ...(state.data.customSections ?? []),
+              { id: uid(), title: "", fields: [] },
+            ],
+          }),
+        ),
+
+      updateCustomSection: (id, patch) =>
+        set((state) =>
+          sync(state, {
+            ...state.data,
+            customSections: (state.data.customSections ?? []).map((cs) =>
+              cs.id === id ? { ...cs, ...patch } : cs,
+            ),
+          }),
+        ),
+
+      removeCustomSection: (id) =>
+        set((state) =>
+          sync(state, {
+            ...state.data,
+            customSections: (state.data.customSections ?? []).filter(
+              (cs) => cs.id !== id,
+            ),
+          }),
+        ),
 
       deleteDraft: (id) =>
         set((state) => {

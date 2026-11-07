@@ -12,6 +12,7 @@ import {
   PageFrame,
   bgColor,
   titleFor,
+  CoverPage,
 } from "../components";
 
 /** Repeating jaali-lattice band of tiny diamonds. */
@@ -55,6 +56,9 @@ export function JharokhaTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#faf3e3"), padding: 24 }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#b45309" padding={16}>
           <JaaliBand color="#b45309" />

@@ -3,6 +3,7 @@ import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections, type Row } from "../rows";
 import { FieldRow, PhotoFrame, scriptFont, PageFrame , IconMark, bgColor, titleFor,
+  CoverPage,
 } from "../components";
 
 function SidebarRow({
@@ -77,6 +78,9 @@ export function EmeraldTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page
         size="A4"
         style={{ backgroundColor: bgColor(data, "#ffffff"), flexDirection: "row" }}

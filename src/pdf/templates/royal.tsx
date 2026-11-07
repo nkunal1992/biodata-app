@@ -12,6 +12,7 @@ import {
   IconMark,
   bgColor,
   titleFor,
+  CoverPage,
 } from "../components";
 
 export function RoyalTemplate({
@@ -37,6 +38,9 @@ export function RoyalTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff") }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#6d0f2b" padding={0}>
         <View

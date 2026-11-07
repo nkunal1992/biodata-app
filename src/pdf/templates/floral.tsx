@@ -3,6 +3,7 @@ import type { BiodataData } from "@/lib/biodata";
 import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import { FieldRow, Invocation, PhotoFrame, scriptFont, SectionHeading, PageFrame, bgColor, titleFor,
+  CoverPage,
 } from "../components";
 
 export function FloralTemplate({
@@ -28,6 +29,9 @@ export function FloralTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fff9f4"), padding: 20 }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="floral" color="#f9a8d4" color2="#f472b6" padding={18} style={{ margin: 20 }}>
           <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />

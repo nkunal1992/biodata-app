@@ -112,7 +112,7 @@ export default async function LandingPage({
             {TEMPLATE_IDS.map((id) => (
               <div
                 key={id}
-                className={`rounded-xl border-2 p-3 text-center text-sm font-semibold shadow-sm ${TEMPLATE_CARD[id]}`}
+                className={`w-40 shrink-0 snap-start rounded-xl border-2 p-3 text-center text-sm font-semibold shadow-sm ${TEMPLATE_CARD[id]}`}
               >
                 <div className="mx-auto mb-2 h-16 w-12 rounded border border-current opacity-40" />
                 {tt(id)}
@@ -148,6 +148,19 @@ export default async function LandingPage({
       </section>
 
       {/* Privacy + CTA */}
+      <section className="py-12">
+        <div className="mx-auto max-w-4xl px-4 text-center">
+          <h2 className="text-2xl font-bold text-stone-900">{t("whyTitle")}</h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            {["why1", "why2", "why3"].map((k) => (
+              <div key={k} className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+                <p className="font-semibold text-stone-800">{t(`${k}Title`)}</p>
+                <p className="mt-1 text-sm text-stone-600">{t(`${k}Text`)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       <section className="py-14">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">

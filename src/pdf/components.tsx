@@ -1,4 +1,4 @@
-import { Circle, Image, Path, Rect, Svg, Text, View } from "@react-pdf/renderer";
+import { Circle, Image, Page, Path, Rect, Svg, Text, View } from "@react-pdf/renderer";
 import type { Style } from "@react-pdf/types";
 import type { BiodataData, FrameStyle, InvocationIcon, PageBg, PageBorderStyle } from "@/lib/biodata";
 import type { DocLabels } from "./labels";
@@ -631,4 +631,132 @@ export function bgColor(data: BiodataData, fallback: string): string {
 export function titleFor(labels: DocLabels, data: BiodataData): string {
   if (!data.candidateFor) return labels.title;
   return `${labels.title} — ${labels.candidateFor[data.candidateFor]}`;
+}
+
+// ── Cover page ─────────────────────────────────────────────────
+
+/** Dedicated first page: framed photo, name, family, deity, invocation. */
+export function CoverPage({
+  data,
+  labels,
+  theme,
+}: {
+  data: BiodataData;
+  labels: DocLabels;
+  theme: Theme;
+}) {
+  const name = data.personal.name.trim();
+  return (
+    <Page
+      size="A4"
+      style={{ backgroundColor: data.pageBackground && data.pageBackground !== "template" ? "#fefcf3" : "#fffdf5", padding: 24, display: "flex" }}
+    >
+      <View
+        style={{
+          border: `1.6pt solid ${theme.primary}`,
+          padding: 4,
+          flexGrow: 1,
+        }}
+      >
+        <View
+          style={{
+            border: `0.7pt solid ${theme.accent}`,
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 30,
+          }}
+        >
+          <IconMark
+            icon={data.invocationIcon === "none" ? undefined : data.invocationIcon ?? "kalash"}
+            size={40}
+            color={theme.primary}
+            style={{ marginBottom: 10 }}
+          />
+          {data.invocation.trim() ? (
+            <Text
+              style={{
+                fontFamily: scriptFont(data.invocation, theme.headingFont),
+                fontSize: 11,
+                color: theme.primary,
+                marginBottom: 20,
+              }}
+            >
+              {data.invocation}
+            </Text>
+          ) : null}
+          {data.photo && (
+            <PhotoFrame
+              src={data.photo}
+              width={140}
+              borderColor={theme.accent}
+              padding={4}
+              frame={data.photoFrame ?? "classic"}
+              style={{ marginBottom: 18 }}
+            />
+          )}
+          <Text
+            style={{
+              fontFamily: scriptFont(name, theme.headingFont),
+              fontSize: 30,
+              color: theme.primary,
+              textAlign: "center",
+            }}
+          >
+            {name || labels.fields.name}
+          </Text>
+          {data.candidateFor && (
+            <Text
+              style={{
+                fontFamily: theme.textFont,
+                fontSize: 10,
+                color: theme.accent,
+                letterSpacing: 3,
+                marginTop: 6,
+              }}
+            >
+              {labels.candidateFor[data.candidateFor]}
+            </Text>
+          )}
+          {data.family.fatherName.trim() ? (
+            <Text
+              style={{
+                fontFamily: theme.textFont,
+                fontSize: 10.5,
+                color: theme.ink,
+                marginTop: 18,
+              }}
+            >
+              {data.outputLocale === "hi" ? "पुत्र/पुत्री: " : "S/o · D/o: "}
+              {data.family.fatherName}
+            </Text>
+          ) : null}
+          {data.family.nativePlace.trim() ? (
+            <Text
+              style={{
+                fontFamily: theme.textFont,
+                fontSize: 10,
+                color: theme.ink,
+                marginTop: 4,
+              }}
+            >
+              {data.outputLocale === "hi" ? "मूल निवास: " : "Native: "}
+              {data.family.nativePlace}
+            </Text>
+          ) : null}
+          <Text
+            style={{
+              fontFamily: theme.textFont,
+              fontSize: 8,
+              color: theme.accent,
+              letterSpacing: 3,
+              marginTop: 30,
+            }}
+          >
+            {titleFor(labels, data)}
+          </Text>
+        </View>
+      </View>
+    </Page>
+  );
 }

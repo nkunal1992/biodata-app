@@ -11,6 +11,7 @@ import {
   scriptFont,
   bgColor,
   titleFor,
+  CoverPage,
 } from "../components";
 
 export function TraditionalTemplate({
@@ -36,6 +37,9 @@ export function TraditionalTemplate({
 
   return (
     <Document title={`${name} — ${titleFor(labels, data)}`} author="Shubh Biodata">
+        {data.coverPage && (
+          <CoverPage data={data} labels={labels} theme={theme} />
+        )}
       <Page
         size="A4"
         style={{ backgroundColor: bgColor(data, "#fffdf5"), padding: 22, display: "flex" }}
