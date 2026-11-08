@@ -20,6 +20,7 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  NumberedHeading,
 } from "../components";
 
 /** A hanging toran strip — marigold circles + mango-leaf triangles. */
@@ -123,9 +124,9 @@ export function ToranTemplate({
             </Text>
           </View>
 
-          {sections.map((sec) => (
-            <View key={sec.key} wrap={false}>
-              <SectionHeading title={sec.title} theme={theme} />
+          {sections.map((sec, si) => (
+            <View key={sec.key} wrap={false} style={{ marginBottom: 9 }}>
+              <NumberedHeading title={sec.title} index={si} theme={theme} />
               {sec.rows.map((r) => (
                 <FieldRow
                   key={r.label}

@@ -4,7 +4,6 @@ import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import {
   Diamond,
-  FieldRow,
   Invocation,
   PhotoFrame,
   SectionHeading,
@@ -13,6 +12,7 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  TableRows,
 } from "../components";
 
 function MandalaMark({ size = 90, color }: { size?: number; color: string }) {
@@ -120,17 +120,9 @@ export function MandalaTemplate({
           </View>
 
           {sections.map((sec) => (
-            <View key={sec.key} wrap={false}>
+            <View key={sec.key} wrap={false} style={{ marginBottom: 8 }}>
               <SectionHeading title={sec.title} theme={theme} />
-              {sec.rows.map((r) => (
-                <FieldRow
-                  key={r.label}
-                  label={r.label}
-                  value={r.value}
-                  theme={theme}
-                  labelWidth={135}
-                />
-              ))}
+              <TableRows rows={sec.rows} theme={theme} />
             </View>
           ))}
 

@@ -1,5 +1,6 @@
 import { Circle, Image, Page, Path, Rect, Svg, Text, View } from "@react-pdf/renderer";
 import type { Style } from "@react-pdf/types";
+import type { Row } from "./rows";
 import type { BiodataData, FrameStyle, InvocationIcon, PageBg, PageBorderStyle } from "@/lib/biodata";
 import type { DocLabels } from "./labels";
 
@@ -758,5 +759,326 @@ export function CoverPage({
         </View>
       </View>
     </Page>
+  );
+}
+
+// ── Unique section renderers (template differentiation) ───────
+
+/** Ledger: every field in its own bordered table row. */
+export function TableRows({
+  rows,
+  theme,
+}: {
+  rows: Row[];
+  theme: Theme;
+}) {
+  return (
+    <View
+      style={{
+        borderTop: `0.6pt solid ${theme.accent}`,
+        borderLeft: `0.6pt solid ${theme.accent}`,
+      }}
+    >
+      {rows.map((r, i) => (
+        <View
+          key={i}
+          style={{
+            flexDirection: "row",
+            borderBottom: `0.6pt solid ${theme.accent}`,
+            backgroundColor: i % 2 ? "#00000000" : `${theme.accent}14`,
+          }}
+        >
+          <Text
+            style={{
+              width: "36%",
+              padding: "2.5 8",
+              fontSize: 8,
+              fontFamily: theme.textFont,
+              color: theme.muted,
+              borderRight: `0.6pt solid ${theme.accent}`,
+            }}
+          >
+            {r.label}
+          </Text>
+          <Text
+            style={{
+              flex: 1,
+              padding: "2.5 8",
+              fontSize: 8.5,
+              fontFamily: theme.valueFont,
+              color: theme.ink,
+            }}
+          >
+            {r.value}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+/** Card: each section in its own bordered card with a title bar. */
+export function CardSection({
+  title,
+  rows,
+  theme,
+}: {
+  title: string;
+  rows: Row[];
+  theme: Theme;
+}) {
+  return (
+    <View
+      style={{
+        border: `0.8pt solid ${theme.accent}`,
+        borderRadius: 6,
+        marginBottom: 8,
+        overflow: "hidden",
+      }}
+    >
+      <Text
+        style={{
+          backgroundColor: `${theme.primary}12`,
+          padding: "5 10",
+          fontSize: 8.5,
+          fontFamily: theme.headingFont,
+          fontWeight: 700,
+          color: theme.primary,
+          borderBottom: `0.8pt solid ${theme.accent}`,
+          letterSpacing: 0.5,
+        }}
+      >
+        {title}
+      </Text>
+      <View style={{ padding: "4 10 6" }}>
+        {rows.map((r, i) => (
+          <View
+            key={i}
+            style={{
+              flexDirection: "row",
+              paddingVertical: 2,
+              borderBottom:
+                i < rows.length - 1
+                  ? `0.4pt solid ${theme.accent}25`
+                  : "0pt solid transparent",
+            }}
+          >
+            <Text
+              style={{
+                width: "34%",
+                fontSize: 8.5,
+                fontFamily: theme.textFont,
+                color: theme.muted,
+              }}
+            >
+              {r.label}
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                fontSize: 9,
+                fontFamily: theme.valueFont,
+                color: theme.ink,
+              }}
+            >
+              {r.value}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+/** Ribbon: section title as a colored band across the width. */
+export function RibbonHeading({
+  title,
+  theme,
+}: {
+  title: string;
+  theme: Theme;
+}) {
+  return (
+    <Text
+      style={{
+        backgroundColor: theme.primary,
+        color: "#ffffff",
+        padding: "4 10",
+        fontSize: 9,
+        fontFamily: theme.headingFont,
+        fontWeight: 700,
+        letterSpacing: 1,
+        textAlign: "center",
+        marginBottom: 6,
+        borderRadius: 3,
+      }}
+    >
+      {title}
+    </Text>
+  );
+}
+
+/** Two-col: label+value pairs in a dense two-column grid. */
+export function TwoColRows({
+  rows,
+  theme,
+}: {
+  rows: Row[];
+  theme: Theme;
+}) {
+  const half = Math.ceil(rows.length / 2);
+  const cols = [rows.slice(0, half), rows.slice(half)];
+  return (
+    <View style={{ flexDirection: "row", gap: 16 }}>
+      {cols.map((col, ci) => (
+        <View key={ci} style={{ flex: 1 }}>
+          {col.map((r, i) => (
+            <View
+              key={i}
+              style={{
+                flexDirection: "row",
+                paddingVertical: 2,
+                borderBottom: `0.4pt solid ${theme.accent}30`,
+              }}
+            >
+              <Text
+                style={{
+                  width: "45%",
+                  fontSize: 8,
+                  fontFamily: theme.textFont,
+                  color: theme.muted,
+                }}
+              >
+                {r.label}
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 8.5,
+                  fontFamily: theme.valueFont,
+                  color: theme.ink,
+                }}
+              >
+                {r.value}
+              </Text>
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+}
+
+/** MarginLabel: section title in the left margin, rows to its right. */
+export function MarginLabel({
+  title,
+  rows,
+  theme,
+}: {
+  title: string;
+  rows: Row[];
+  theme: Theme;
+}) {
+  return (
+    <View style={{ flexDirection: "row", marginBottom: 8, gap: 10 }}>
+      <View
+        style={{
+          width: 62,
+          borderRight: `1pt solid ${theme.accent}`,
+          paddingRight: 6,
+          paddingTop: 2,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 7.5,
+            fontFamily: theme.headingFont,
+            fontWeight: 700,
+            color: theme.primary,
+            letterSpacing: 0.4,
+          }}
+        >
+          {title}
+        </Text>
+      </View>
+      <View style={{ flex: 1 }}>
+        {rows.map((r, i) => (
+          <View key={i} style={{ flexDirection: "row", paddingVertical: 1.5 }}>
+            <Text
+              style={{
+                width: "36%",
+                fontSize: 8.5,
+                fontFamily: theme.textFont,
+                color: theme.muted,
+              }}
+            >
+              {r.label}
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                fontSize: 9,
+                fontFamily: theme.valueFont,
+                color: theme.ink,
+              }}
+            >
+              {r.value}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+/** NumberedHeading: "01 — Section" style. */
+export function NumberedHeading({
+  title,
+  index,
+  theme,
+}: {
+  title: string;
+  index: number;
+  theme: Theme;
+}) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 5,
+        gap: 7,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: 8,
+          fontFamily: theme.headingFont,
+          fontWeight: 700,
+          color: theme.accent,
+        }}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </Text>
+      <Text
+        style={{
+          fontSize: 9.5,
+          fontFamily: theme.headingFont,
+          fontWeight: 700,
+          color: theme.primary,
+          letterSpacing: 0.6,
+        }}
+      >
+        {title}
+      </Text>
+      <View
+        style={{
+          flex: 1,
+          height: 0.6,
+          backgroundColor: theme.accent,
+          opacity: 0.4,
+        }}
+      />
+    </View>
   );
 }

@@ -319,18 +319,18 @@
     "design": "Design"
   },
   "templates": {
-    "traditional": "Traditional",
-    "royal": "Royal",
-    "modern": "Modern",
-    "floral": "Floral",
-    "emerald": "Emerald",
-    "mandala": "Mandala",
-    "peacock": "Peacock Royal",
-    "jharokha": "Jharokha",
-    "toran": "Marigold Toran",
-    "banarasi": "Banarasi Zari",
-    "kalash": "Shubh Kalash",
-    "navy": "Navy & Gold"
+    "traditional": "Traditional Frame",
+    "royal": "Royal Band",
+    "modern": "Modern Minimal",
+    "floral": "Floral Portrait",
+    "emerald": "Emerald Sidebar",
+    "mandala": "Mandala Ledger",
+    "peacock": "Peacock Ribbon",
+    "jharokha": "Jharokha Cards",
+    "toran": "Marigold Steps",
+    "banarasi": "Banarasi Grid",
+    "kalash": "Shubh Kundli",
+    "navy": "Navy Margin"
   },
   "notFound": {
     "title": "Page not found",

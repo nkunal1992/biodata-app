@@ -39,7 +39,13 @@ export function KalashTemplate({
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
   };
-  const sections = buildSections(data, labels);
+  const base = buildSections(data, labels);
+  // Kundli-first: astro section leads for devotional families.
+  const sections = [
+    ...base.filter((s) => s.key === "astro"),
+    ...base.filter((s) => s.key !== "astro" && s.key !== "prefs"),
+    ...base.filter((s) => s.key === "prefs"),
+  ];
   const name = data.personal.name.trim() || labels.fields.name;
 
   return (

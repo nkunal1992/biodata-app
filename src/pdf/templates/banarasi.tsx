@@ -4,7 +4,6 @@ import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import {
   Diamond,
-  FieldRow,
   Invocation,
   PhotoFrame,
   SectionHeading,
@@ -13,6 +12,7 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  TwoColRows,
 } from "../components";
 
 /** Zari butti strip — small gold paisley-dots row, like Banarasi brocade. */
@@ -114,19 +114,11 @@ export function BanarasiTemplate({
             <ButtiRow color="#4c1d95" />
 
             {sections.map((sec) => (
-              <View key={sec.key} wrap={false}>
-                <SectionHeading title={sec.title} theme={theme} />
-                {sec.rows.map((r) => (
-                  <FieldRow
-                    key={r.label}
-                    label={r.label}
-                    value={r.value}
-                    theme={theme}
-                    labelWidth={140}
-                  />
-                ))}
-              </View>
-            ))}
+            <View key={sec.key} wrap={false} style={{ marginBottom: 9 }}>
+              <SectionHeading title={sec.title} theme={theme} />
+              <TwoColRows rows={sec.rows} theme={theme} />
+            </View>
+          ))}
 
             {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
               const text = data[k].trim();
