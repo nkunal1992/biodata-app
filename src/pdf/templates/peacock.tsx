@@ -20,6 +20,7 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  RibbonHeading,
 } from "../components";
 
 function PeacockFeather({ size = 40 }: { size?: number }) {
@@ -128,19 +129,19 @@ export function PeacockTemplate({
             </View>
 
             {sections.map((sec) => (
-              <View key={sec.key} wrap={false}>
-                <SectionHeading title={sec.title} theme={theme} />
-                {sec.rows.map((r) => (
-                  <FieldRow
-                    key={r.label}
-                    label={r.label}
-                    value={r.value}
-                    theme={theme}
-                    labelWidth={135}
-                  />
-                ))}
-              </View>
-            ))}
+            <View key={sec.key} wrap={false} style={{ marginBottom: 8 }}>
+              <RibbonHeading title={sec.title} theme={theme} />
+              {sec.rows.map((r) => (
+                <FieldRow
+                  key={r.label}
+                  label={r.label}
+                  value={r.value}
+                  theme={theme}
+                  labelWidth={135}
+                />
+              ))}
+            </View>
+          ))}
 
             {(["aboutMe", "familyAbout", "expectations", "familyExpectations"] as const).map((k) => {
               const text = data[k].trim();

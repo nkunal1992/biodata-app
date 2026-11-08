@@ -4,7 +4,6 @@ import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import {
   Diamond,
-  FieldRow,
   Invocation,
   PhotoFrame,
   SectionHeading,
@@ -13,6 +12,7 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  CardSection,
 } from "../components";
 
 /** Repeating jaali-lattice band of tiny diamonds. */
@@ -127,16 +127,7 @@ export function JharokhaTemplate({
 
           {sections.map((sec) => (
             <View key={sec.key} wrap={false}>
-              <SectionHeading title={sec.title} theme={theme} />
-              {sec.rows.map((r) => (
-                <FieldRow
-                  key={r.label}
-                  label={r.label}
-                  value={r.value}
-                  theme={theme}
-                  labelWidth={140}
-                />
-              ))}
+              <CardSection title={sec.title} rows={sec.rows} theme={theme} />
             </View>
           ))}
 

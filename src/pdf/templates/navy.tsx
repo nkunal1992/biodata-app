@@ -4,7 +4,6 @@ import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import {
   Diamond,
-  FieldRow,
   PhotoFrame,
   scriptFont,
   PageFrame,
@@ -12,6 +11,7 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  MarginLabel,
 } from "../components";
 
 export function NavyTemplate({
@@ -115,37 +115,8 @@ export function NavyTemplate({
           />
 
           {sections.map((sec) => (
-            <View key={sec.key} wrap={false} style={{ marginTop: 13 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginBottom: 7,
-                }}
-              >
-                <Diamond color="#b45309" size={5} />
-                <Text
-                  style={{
-                    marginLeft: 7,
-                    fontFamily: theme.textFont,
-                    fontWeight: 700,
-                    fontSize: 10.5,
-                    color: theme.primary,
-                    letterSpacing: 1.4,
-                  }}
-                >
-                  {sec.title}
-                </Text>
-              </View>
-              {sec.rows.map((r) => (
-                <FieldRow
-                  key={r.label}
-                  label={r.label}
-                  value={r.value}
-                  theme={{ ...theme, primary: "#334155" }}
-                  labelWidth={140}
-                />
-              ))}
+            <View key={sec.key} wrap={false} style={{ marginTop: 6 }}>
+              <MarginLabel title={sec.title} rows={sec.rows} theme={theme} />
             </View>
           ))}
 

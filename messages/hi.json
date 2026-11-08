@@ -319,18 +319,18 @@
     "design": "डिज़ाइन"
   },
   "templates": {
-    "traditional": "पारंपरिक",
-    "royal": "रॉयल",
-    "modern": "आधुनिक",
-    "floral": "फ्लोरल",
-    "emerald": "एमराल्ड",
-    "mandala": "मंडला",
-    "peacock": "मोर रॉयल",
-    "jharokha": "झरोखा",
-    "toran": "तोरण",
-    "banarasi": "बनारसी ज़री",
-    "kalash": "शुभ कलश",
-    "navy": "नेवी गोल्ड"
+    "traditional": "पारंपरिक फ्रेम",
+    "royal": "रॉयल बैंड",
+    "modern": "आधुनिक मिनिमल",
+    "floral": "फ्लोरल पोर्ट्रेट",
+    "emerald": "एमराल्ड साइडबार",
+    "mandala": "मंडला लेजर",
+    "peacock": "मोर रिबन",
+    "jharokha": "झरोखा कार्ड",
+    "toran": "तोरण स्टेप्स",
+    "banarasi": "बनारसी ग्रिड",
+    "kalash": "शुभ कुंडली",
+    "navy": "नेवी मार्जिन"
   },
   "notFound": {
     "title": "पृष्ठ नहीं मिला",

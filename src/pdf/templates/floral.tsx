@@ -40,7 +40,7 @@ export function FloralTemplate({
               <PhotoFrame
                 src={data.photo}
                   frame={data.photoFrame}
-                width={80}
+                width={120}
                 borderColor="#f472b6"
                 borderRadius={40}
                 padding={2}
