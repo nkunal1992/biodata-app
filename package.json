@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "visual-qa": "npm run build && node scripts/visual-qa.mjs"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",

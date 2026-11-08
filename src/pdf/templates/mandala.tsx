@@ -73,8 +73,8 @@ export function MandalaTemplate({
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fdf8ee"), padding: 26 }}>
         <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#d97706" padding={20} texture={data.bgTexture}>
           <View style={{ alignItems: "center", marginBottom: 6 }}>
-            <View style={{ position: "absolute", top: 30, opacity: 0.12 }}>
-              <MandalaMark size={110} color="#92400e" />
+            <View style={{ position: "absolute", top: 14, opacity: 0.07 }}>
+              <MandalaMark size={84} color="#92400e" />
             </View>
             <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
             <View style={{ alignItems: "center", marginTop: 6 }}>

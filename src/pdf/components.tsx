@@ -1047,7 +1047,7 @@ export function TwoColRows({
             >
               <Text
                 style={{
-                  width: "45%",
+                  width: "34%",
                   fontSize: 8,
                   fontFamily: theme.textFont,
                   color: theme.muted,
@@ -1087,7 +1087,7 @@ export function MarginLabel({
     <View style={{ flexDirection: "row", marginBottom: 8, gap: 10 }}>
       <View
         style={{
-          width: 62,
+          width: 86,
           borderRight: `1pt solid ${theme.accent}`,
           paddingRight: 6,
           paddingTop: 2,
