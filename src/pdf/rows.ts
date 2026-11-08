@@ -4,6 +4,7 @@ import {
   formatBirthTime,
   formatDob,
   localizeDigits,
+  docLabels,
 } from "./labels";
 
 export interface Row {
@@ -41,13 +42,23 @@ export function buildSections(
   labels: DocLabels,
 ): SectionData[] {
   const { fields: f, options: o, sections: s } = labels;
+  // bilingualLabels: append the other locale's label, e.g. "Name / नाम"
+  const other = data.bilingualLabels
+    ? docLabels(data.outputLocale === "hi" ? "en" : "hi")
+    : null;
+  const of_ = other?.fields as Record<string, string> | undefined;
+  const os_ = other?.sections as Record<string, string> | undefined;
+  const fl = (k: keyof typeof f): string =>
+    of_ && of_[k] ? `${f[k]} / ${of_[k]}` : f[k];
+  const sl = (k: keyof typeof s): string =>
+    os_ && os_[k] ? `${s[k]} / ${os_[k]}` : s[k];
   const loc = data.outputLocale;
   const v = (x?: string) => (x ?? "").trim();
 
   const personal: Row[] = [
-    { label: f.name, value: v(data.personal.name) },
+    { label: fl("name"), value: v(data.personal.name) },
     {
-      label: f.dob,
+      label: fl("dob"),
       value: data.personal.dob
         ? `${formatDob(data.personal.dob, loc)}${(() => {
             const a = ageYears(data.personal.dob);
@@ -55,51 +66,51 @@ export function buildSections(
           })()}`
         : "",
     },
-    { label: f.birthTime, value: data.personal.birthTime ? formatBirthTime(data.personal.birthTime, loc) : "" },
-    { label: f.birthPlace, value: v(data.personal.birthPlace) },
-    { label: f.height, value: localizeDigits(v(data.personal.height), loc) },
-    { label: f.weight, value: localizeDigits(v(data.personal.weight), loc) },
+    { label: fl("birthTime"), value: data.personal.birthTime ? formatBirthTime(data.personal.birthTime, loc) : "" },
+    { label: fl("birthPlace"), value: v(data.personal.birthPlace) },
+    { label: fl("height"), value: localizeDigits(v(data.personal.height), loc) },
+    { label: fl("weight"), value: localizeDigits(v(data.personal.weight), loc) },
     {
-      label: f.complexion,
+      label: fl("complexion"),
       value: data.personal.complexion ? (o.complexion[data.personal.complexion] ?? "") : "",
     },
-    { label: f.bloodGroup, value: v(data.personal.bloodGroup) },
+    { label: fl("bloodGroup"), value: v(data.personal.bloodGroup) },
     {
-      label: f.maritalStatus,
+      label: fl("maritalStatus"),
       value: data.personal.maritalStatus
         ? (o.maritalStatus[data.personal.maritalStatus] ?? "")
         : "",
     },
-    { label: f.diet, value: data.personal.diet ? (o.diet[data.personal.diet] ?? "") : "" },
-    { label: f.residenceCity, value: v(data.personal.residenceCity) },
-    { label: f.languages, value: v(data.personal.languages) },
-    { label: f.hobbies, value: v(data.personal.hobbies) },
+    { label: fl("diet"), value: data.personal.diet ? (o.diet[data.personal.diet] ?? "") : "" },
+    { label: fl("residenceCity"), value: v(data.personal.residenceCity) },
+    { label: fl("languages"), value: v(data.personal.languages) },
+    { label: fl("hobbies"), value: v(data.personal.hobbies) },
   ];
 
   const astro: Row[] = [
-    { label: f.religion, value: v(data.astro.religion) },
-    { label: f.caste, value: v(data.astro.caste) },
-    { label: f.subCaste, value: v(data.astro.subCaste) },
-    { label: f.gotra, value: v(data.astro.gotra) },
-    { label: f.rashi, value: v(data.astro.rashi) },
-    { label: f.nakshatra, value: v(data.astro.nakshatra) },
-    { label: f.charan, value: v(data.astro.charan) },
-    { label: f.gana, value: v(data.astro.gana) },
-    { label: f.nadi, value: v(data.astro.nadi) },
+    { label: fl("religion"), value: v(data.astro.religion) },
+    { label: fl("caste"), value: v(data.astro.caste) },
+    { label: fl("subCaste"), value: v(data.astro.subCaste) },
+    { label: fl("gotra"), value: v(data.astro.gotra) },
+    { label: fl("rashi"), value: v(data.astro.rashi) },
+    { label: fl("nakshatra"), value: v(data.astro.nakshatra) },
+    { label: fl("charan"), value: v(data.astro.charan) },
+    { label: fl("gana"), value: v(data.astro.gana) },
+    { label: fl("nadi"), value: v(data.astro.nadi) },
     {
-      label: f.manglik,
+      label: fl("manglik"),
       value: data.astro.manglik ? (o.manglik[data.astro.manglik] ?? "") : "",
     },
-    { label: f.motherTongue, value: v(data.astro.motherTongue) },
-    { label: f.kuldevta, value: v(data.astro.kuldevta) },
+    { label: fl("motherTongue"), value: v(data.astro.motherTongue) },
+    { label: fl("kuldevta"), value: v(data.astro.kuldevta) },
   ];
 
   const career: Row[] = [
-    { label: f.qualification, value: v(data.career.qualification) },
-    { label: f.college, value: v(data.career.college) },
-    { label: f.occupation, value: v(data.career.occupation) },
-    { label: f.company, value: v(data.career.company) },
-    { label: f.income, value: v(data.career.income) },
+    { label: fl("qualification"), value: v(data.career.qualification) },
+    { label: fl("college"), value: v(data.career.college) },
+    { label: fl("occupation"), value: v(data.career.occupation) },
+    { label: fl("company"), value: v(data.career.company) },
+    { label: fl("income"), value: v(data.career.income) },
   ];
 
   const phone = v(data.contact.phone);
@@ -107,30 +118,30 @@ export function buildSections(
     ? (o.phoneOwner[data.contact.phoneOwner] ?? "")
     : "";
   const contact: Row[] = [
-    { label: f.phone, value: phone && owner ? `${phone} (${owner})` : phone },
-    { label: f.fatherPhone, value: v(data.contact.fatherPhone) },
-    { label: f.motherPhone, value: v(data.contact.motherPhone) },
-    { label: f.email, value: v(data.contact.email) },
-    { label: f.address, value: v(data.contact.address) },
+    { label: fl("phone"), value: phone && owner ? `${phone} (${owner})` : phone },
+    { label: fl("fatherPhone"), value: v(data.contact.fatherPhone) },
+    { label: fl("motherPhone"), value: v(data.contact.motherPhone) },
+    { label: fl("email"), value: v(data.contact.email) },
+    { label: fl("address"), value: v(data.contact.address) },
   ];
 
   const family: Row[] = [
     {
-      label: f.father,
+      label: fl("father"),
       value: combine(v(data.family.fatherName), v(data.family.fatherOccupation)),
     },
     {
-      label: f.mother,
+      label: fl("mother"),
       value: combine(v(data.family.motherName), v(data.family.motherOccupation)),
     },
-    { label: f.siblings, value: v(data.family.siblings) },
-    { label: f.mama, value: v(data.family.mama) },
-    { label: f.grandfather, value: v(data.family.grandfather) },
+    { label: fl("siblings"), value: v(data.family.siblings) },
+    { label: fl("mama"), value: v(data.family.mama) },
+    { label: fl("grandfather"), value: v(data.family.grandfather) },
     {
-      label: f.familyType,
+      label: fl("familyType"),
       value: data.family.familyType ? (o.familyType[data.family.familyType] ?? "") : "",
     },
-    { label: f.nativePlace, value: v(data.family.nativePlace) },
+    { label: fl("nativePlace"), value: v(data.family.nativePlace) },
   ];
 
   const p = data.prefs;
@@ -140,19 +151,19 @@ export function buildSections(
       : "";
   const prefs: Row[] = p
     ? [
-        { label: f.prefAge, value: ageBand },
-        { label: f.prefEducation, value: v(p.education) },
-        { label: f.prefVeg, value: p.vegOnly ? (o.vegOnly[p.vegOnly] ?? "") : "" },
-        { label: f.prefKundli, value: p.kundli ? (o.kundli[p.kundli] ?? "") : "" },
+        { label: fl("prefAge"), value: ageBand },
+        { label: fl("prefEducation"), value: v(p.education) },
+        { label: fl("prefVeg"), value: p.vegOnly ? (o.vegOnly[p.vegOnly] ?? "") : "" },
+        { label: fl("prefKundli"), value: p.kundli ? (o.kundli[p.kundli] ?? "") : "" },
       ]
     : [];
 
   const out: SectionData[] = [
-    { key: "personal", title: s.personal, rows: personal },
-    { key: "astro", title: s.astro, rows: astro },
-    { key: "career", title: s.career, rows: career },
-    { key: "family", title: s.family, rows: family },
-    { key: "contact", title: s.contact, rows: contact },
+    { key: "personal", title: sl("personal"), rows: personal },
+    { key: "astro", title: sl("astro"), rows: astro },
+    { key: "career", title: sl("career"), rows: career },
+    { key: "family", title: sl("family"), rows: family },
+    { key: "contact", title: sl("contact"), rows: contact },
     ...(data.customSections ?? [])
       .filter((cs) => cs.title.trim() && cs.fields.length > 0)
       .map((cs) => ({
@@ -162,7 +173,7 @@ export function buildSections(
           .filter((f) => f.label.trim() && f.value.trim())
           .map((f) => ({ label: f.label.trim(), value: f.value.trim() })),
       })),
-    { key: "prefs", title: s.prefs, rows: prefs },
+    { key: "prefs", title: sl("prefs"), rows: prefs },
   ];
   // ── user overrides: hidden fields/sections, custom fields, order ──
   const hiddenFields = new Set(data.hiddenFields ?? []);

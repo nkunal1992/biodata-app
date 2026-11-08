@@ -463,3 +463,126 @@ export function DraftPicker() {
     </div>
   );
 }
+
+function ChipRow<K extends string>({
+  label,
+  value,
+  opts,
+  onPick,
+  swatch,
+}: {
+  label: string;
+  value: K;
+  opts: readonly K[];
+  onPick: (v: K) => void;
+  swatch?: Record<string, string>;
+}) {
+  const t = useTranslations("editor");
+  return (
+    <div className="mb-3">
+      <p className="mb-1.5 text-xs font-medium text-stone-600">{label}</p>
+      <div className="flex flex-wrap gap-1.5">
+        {opts.map((o) => (
+          <button
+            key={o}
+            type="button"
+            onClick={() => onPick(o)}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition",
+              value === o
+                ? "border-orange-500 bg-orange-50 text-orange-800"
+                : "border-stone-300 bg-white text-stone-600 hover:border-stone-400",
+            )}
+          >
+            {swatch?.[o] && (
+              <span
+                className="h-3.5 w-3.5 rounded-full border border-stone-300"
+                style={{ background: swatch[o] }}
+              />
+            )}
+            {t(`opt.${o}` as never)}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Design-studio card — per-template editable options. */
+export function CustomizeCard() {
+  const t = useTranslations("editor");
+  const data = useBiodataStore((s) => s.data);
+  const setTopLevel = useBiodataStore((s) => s.setTopLevel);
+  const PAL: Record<string, string> = {
+    template: "conic-gradient(#9f1239,#ea580c,#0f766e,#1e3a5f,#6d28d9,#9f1239)",
+    maroonGold: "linear-gradient(135deg,#9f1239 50%,#b45309 50%)",
+    saffron: "linear-gradient(135deg,#ea580c 50%,#9a3412 50%)",
+    tealGold: "linear-gradient(135deg,#0f766e 50%,#b45309 50%)",
+    navyGold: "linear-gradient(135deg,#1e3a5f 50%,#b45309 50%)",
+    plum: "linear-gradient(135deg,#6d28d9 50%,#a21caf 50%)",
+    forest: "linear-gradient(135deg,#166534 50%,#b45309 50%)",
+    charcoal: "linear-gradient(135deg,#334155 50%,#64748b 50%)",
+  };
+  return (
+    <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+      <p className="mb-3 text-xs font-semibold tracking-wide text-stone-500 uppercase">
+        {t("customize")}
+      </p>
+      <ChipRow
+        label={t("accentPalette")}
+        value={data.accentPalette ?? "template"}
+        opts={["template","maroonGold","saffron","tealGold","navyGold","plum","forest","charcoal"]}
+        swatch={PAL}
+        onPick={(v) => setTopLevel({ accentPalette: v })}
+      />
+      <ChipRow
+        label={t("density")}
+        value={data.density ?? "comfortable"}
+        opts={["compact","comfortable","spacious"]}
+        onPick={(v) => setTopLevel({ density: v })}
+      />
+      <ChipRow
+        label={t("bgTexture")}
+        value={data.bgTexture ?? "none"}
+        opts={["none","dots","buttis","paisley","weave"]}
+        onPick={(v) => setTopLevel({ bgTexture: v })}
+      />
+      <ChipRow
+        label={t("fontPair")}
+        value={data.fontPair ?? "serif"}
+        opts={["serif","modern","devanagari"]}
+        onPick={(v) => setTopLevel({ fontPair: v })}
+      />
+      <ChipRow
+        label={t("photoSize")}
+        value={data.photoSize ?? "regular"}
+        opts={["small","regular","large"]}
+        onPick={(v) => setTopLevel({ photoSize: v })}
+      />
+      <label className="flex items-center justify-between">
+        <span className="text-xs font-medium text-stone-600">
+          {t("bilingualLabels")}
+        </span>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={data.bilingualLabels ?? false}
+          onClick={() =>
+            setTopLevel({ bilingualLabels: !(data.bilingualLabels ?? false) })
+          }
+          className={cn(
+            "relative h-5 w-9 rounded-full transition",
+            data.bilingualLabels ? "bg-orange-600" : "bg-stone-300",
+          )}
+        >
+          <span
+            className={cn(
+              "absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition",
+              data.bilingualLabels ? "left-[18px]" : "left-0.5",
+            )}
+          />
+        </button>
+      </label>
+    </div>
+  );
+}

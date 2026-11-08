@@ -4,6 +4,8 @@ import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import { FieldRow, Invocation, PhotoFrame, scriptFont, SectionHeading, PageFrame, bgColor, titleFor,
   CoverPage,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 export function FloralTemplate({
@@ -15,7 +17,7 @@ export function FloralTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#9d174d", // rose
     accent: "#f9a8d4",
     ink: "#292524",
@@ -23,7 +25,7 @@ export function FloralTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -33,14 +35,14 @@ export function FloralTemplate({
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fff9f4"), padding: 20 }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="floral" color="#f9a8d4" color2="#f472b6" padding={18} style={{ margin: 20 }}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="floral" color="#f9a8d4" color2="#f472b6" padding={18} style={{ margin: 20 }} texture={data.bgTexture}>
           <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
           <View style={{ alignItems: "center", marginBottom: 4 }}>
             {data.photo && (
               <PhotoFrame
                 src={data.photo}
                   frame={data.photoFrame}
-                width={120}
+                width={photoWidth(data, 120)}
                 borderColor="#f472b6"
                 borderRadius={40}
                 padding={2}

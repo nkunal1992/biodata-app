@@ -21,6 +21,8 @@ import {
   titleFor,
   CoverPage,
   RibbonHeading,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 function PeacockFeather({ size = 40 }: { size?: number }) {
@@ -65,7 +67,7 @@ export function PeacockTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#0f766e", // deep teal
     accent: "#b45309", // gold
     ink: "#292524",
@@ -73,7 +75,7 @@ export function PeacockTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -83,7 +85,7 @@ export function PeacockTemplate({
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#f7fbf9"), padding: 24 }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="double" color="#0f766e" color2="#b45309" padding={16}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="double" color="#0f766e" color2="#b45309" padding={16} texture={data.bgTexture}>
         
             <View style={{ alignItems: "center" }}>
               <PeacockFeather size={34} />
@@ -109,7 +111,7 @@ export function PeacockTemplate({
                   <PhotoFrame
                     src={data.photo}
                   frame={data.photoFrame}
-                    width={72}
+                    width={photoWidth(data, 72)}
                     borderColor="#b45309"
                     padding={2}
                   />

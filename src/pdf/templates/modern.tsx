@@ -4,6 +4,8 @@ import type { DocLabels } from "../labels";
 import { buildSections } from "../rows";
 import { FieldRow, PhotoFrame, scriptFont, PageFrame , IconMark, bgColor, titleFor,
   CoverPage,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 export function ModernTemplate({
@@ -16,7 +18,7 @@ export function ModernTemplate({
   qr?: string;
 }) {
   const accent = data.accent || "#0d9488";
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#1c1917",
     accent,
     ink: "#292524",
@@ -24,7 +26,7 @@ export function ModernTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -34,7 +36,7 @@ export function ModernTemplate({
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff"), flexDirection: "row" }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="{accent}" padding={0}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="{accent}" padding={0} texture={data.bgTexture}>
         <View style={{ width: 10, backgroundColor: accent }} />
         <View style={{ flex: 1, padding: 30, paddingLeft: 26 }}>
           <View
@@ -84,7 +86,7 @@ export function ModernTemplate({
               <PhotoFrame
                 src={data.photo}
                   frame={data.photoFrame}
-                width={84}
+                width={photoWidth(data, 84)}
                 borderColor={accent}
                 padding={2}
               />

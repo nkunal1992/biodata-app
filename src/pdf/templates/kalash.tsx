@@ -18,6 +18,8 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 /** पूर्ण कलश — coconut + mango leaves over a decorated pot. */
@@ -30,7 +32,7 @@ export function KalashTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#b91c1c", // kumkum red
     accent: "#d97706", // turmeric gold
     ink: "#292524",
@@ -38,7 +40,7 @@ export function KalashTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const base = buildSections(data, labels);
   // Kundli-first: astro section leads for devotional families.
   const sections = [
@@ -54,7 +56,7 @@ export function KalashTemplate({
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffaf2"), padding: 24 }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#d97706" padding={16}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#d97706" padding={16} texture={data.bgTexture}>
           <View style={{ alignItems: "center" }}>
             <KalashMark size={52} />
             <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
@@ -74,7 +76,7 @@ export function KalashTemplate({
                 <PhotoFrame
                   src={data.photo}
                   frame={data.photoFrame}
-                  width={76}
+                  width={photoWidth(data, 76)}
                   borderColor="#d97706"
                   padding={2}
                   borderRadius={4}

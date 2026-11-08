@@ -13,6 +13,107 @@ export interface Theme {
   headingFont: string;
   textFont: string;
   valueFont: string;
+  /** Density scale applied to font sizes / spacing. */
+  scale?: number;
+}
+
+/** Curated accent palettes — swap a template's primary/accent pair. */
+export const ACCENT_PALETTES: Record<string, { primary: string; accent: string }> = {
+  template: { primary: "", accent: "" },
+  maroonGold: { primary: "#9f1239", accent: "#b45309" },
+  saffron: { primary: "#ea580c", accent: "#9a3412" },
+  tealGold: { primary: "#0f766e", accent: "#b45309" },
+  navyGold: { primary: "#1e3a5f", accent: "#b45309" },
+  plum: { primary: "#6d28d9", accent: "#a21caf" },
+  forest: { primary: "#166534", accent: "#b45309" },
+  charcoal: { primary: "#334155", accent: "#64748b" },
+};
+
+const FONT_PAIRS: Record<string, { heading: string; text: string; value: string }> = {
+  serif: { heading: "Display", text: "Serif", value: "Serif" },
+  modern: { heading: "Serif", text: "Serif", value: "Serif" },
+  devanagari: { heading: "DevanagariDisplay", text: "Devanagari", value: "Devanagari" },
+};
+
+const DENSITY_SCALE: Record<string, number> = {
+  compact: 0.88,
+  comfortable: 1,
+  spacious: 1.12,
+};
+
+/**
+ * Layer user design overrides onto a template's base theme —
+ * accent palette, font pairing, density. Every template calls this
+ * so all designs stay editable.
+ */
+export function resolveTheme(data: BiodataData, base: Theme): Theme {
+  const pal = ACCENT_PALETTES[data.accentPalette ?? "template"];
+  const fonts = FONT_PAIRS[data.fontPair ?? "serif"];
+  return {
+    ...base,
+    primary: pal?.primary || base.primary,
+    accent: pal?.accent || base.accent,
+    headingFont: fonts?.heading ?? base.headingFont,
+    textFont: fonts?.text ?? base.textFont,
+    valueFont: fonts?.value ?? base.valueFont,
+    scale: DENSITY_SCALE[data.density ?? "comfortable"],
+  };
+}
+
+/** Photo width multiplier for the photoSize option. */
+export function photoWidth(data: BiodataData, base: number): number {
+  const m = { small: 0.8, regular: 1, large: 1.25 }[data.photoSize ?? "regular"];
+  return base * m;
+}
+
+/** Subtle background motif — rendered behind content inside PageFrame. */
+export function TextureLayer({
+  tex,
+  color,
+}: {
+  tex?: string;
+  color: string;
+}) {
+  if (!tex || tex === "none") return null;
+  const items = [];
+  if (tex === "dots") {
+    for (let y = 0; y < 16; y++)
+      for (let x = 0; x < 12; x++)
+        items.push(<Circle key={`${x}-${y}`} cx={x * 48 + 18} cy={y * 52 + 20} r={1.1} />);
+  } else if (tex === "buttis") {
+    for (let y = 0; y < 12; y++)
+      for (let x = 0; x < 9; x++)
+        items.push(
+          <Path
+            key={`${x}-${y}`}
+            d={`M ${x * 66 + 30} ${y * 66 + 16} l 4 6 l -4 6 l -4 -6 Z`}
+          />,
+        );
+  } else if (tex === "weave") {
+    for (let i = 0; i < 14; i++)
+      items.push(
+        <Path key={i} d={`M ${i * 48} 0 L ${i * 48 - 200} 842`} strokeWidth={0.7} />,
+        <Path key={`r${i}`} d={`M ${i * 48 - 300} 0 L ${i * 48} 842`} strokeWidth={0.7} />,
+      );
+  } else if (tex === "paisley") {
+    for (let y = 0; y < 7; y++)
+      for (let x = 0; x < 5; x++)
+        items.push(
+          <Circle key={`${x}-${y}`} cx={x * 118 + 50} cy={y * 118 + 50} r={14} />,
+          <Circle key={`i${x}-${y}`} cx={x * 118 + 50} cy={y * 118 + 50} r={6} />,
+        );
+  }
+  return (
+    <Svg
+      style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+      viewBox="0 0 595 842"
+      fill={tex === "weave" ? "none" : color}
+      stroke={tex === "weave" ? color : "none"}
+      fillRule="evenodd"
+    >
+      {items}
+    </Svg>
+  );
 }
 
 export function FieldRow({
@@ -36,7 +137,7 @@ export function FieldRow({
           fontFamily: theme.textFont,
           fontWeight: 700,
           color: theme.primary,
-          fontSize,
+          fontSize: fontSize * (theme.scale ?? 1),
         }}
       >
         {label}
@@ -46,7 +147,7 @@ export function FieldRow({
           width: 12,
           fontFamily: theme.textFont,
           color: theme.muted,
-          fontSize,
+          fontSize: fontSize * (theme.scale ?? 1),
         }}
       >
         :
@@ -56,7 +157,7 @@ export function FieldRow({
           flex: 1,
           fontFamily: theme.valueFont,
           color: theme.ink,
-          fontSize,
+          fontSize: fontSize * (theme.scale ?? 1),
         }}
       >
         {value}
@@ -151,7 +252,7 @@ export function Invocation({
         {
           textAlign: "center",
           fontFamily: scriptFont(text, theme.headingFont),
-          fontSize,
+          fontSize: fontSize * (theme.scale ?? 1),
           color: theme.primary,
           marginBottom: 4,
         },
@@ -291,6 +392,7 @@ export function PageFrame({
   footer,
   children,
   style,
+  texture,
 }: {
   override?: PageBorderStyle;
   fallback?: PageBorderKind;
@@ -301,9 +403,11 @@ export function PageFrame({
   footer?: string;
   children: React.ReactNode;
   style?: Style;
+  texture?: string;
 }) {
   const deco = (
     <>
+      <TextureLayer tex={texture} color={color2 ?? color} />
       {qr && (
         <View style={{ position: "absolute", bottom: 6, right: 8, alignItems: "center" }}>
           {/* eslint-disable-next-line jsx-a11y/alt-text -- react-pdf Image has no alt prop */}

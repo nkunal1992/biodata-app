@@ -4,6 +4,8 @@ import type { DocLabels } from "../labels";
 import { buildSections, type Row } from "../rows";
 import { FieldRow, PhotoFrame, scriptFont, PageFrame , IconMark, bgColor, titleFor,
   CoverPage,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 function SidebarRow({
@@ -49,7 +51,7 @@ export function EmeraldTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#065f46",
     accent: "#10b981",
     ink: "#292524",
@@ -57,7 +59,7 @@ export function EmeraldTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const contact = sections.find((s) => s.key === "contact");
   const main = sections.filter((s) => s.key !== "contact");
@@ -85,7 +87,7 @@ export function EmeraldTemplate({
         size="A4"
         style={{ backgroundColor: bgColor(data, "#ffffff"), flexDirection: "row" }}
       >
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#065f46" padding={0}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#065f46" padding={0} texture={data.bgTexture}>
         <View
           style={{
             width: 175,
@@ -99,7 +101,7 @@ export function EmeraldTemplate({
               <PhotoFrame
                 src={data.photo}
                   frame={data.photoFrame}
-                width={105}
+                width={photoWidth(data, 105)}
                 borderColor="#a7f3d0"
                 padding={3}
               />
