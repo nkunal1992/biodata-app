@@ -35,10 +35,9 @@ export function ModernTemplate({
         {data.coverPage && (
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
-      <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff"), flexDirection: "row" }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="{accent}" padding={0} texture={data.bgTexture}>
-        <View style={{ width: 10, backgroundColor: accent }} />
-        <View style={{ flex: 1, padding: 30, paddingLeft: 26 }}>
+      <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff"), borderLeft: `10pt solid ${accent}` }}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color={accent} padding={30} texture={data.bgTexture}>
+        <>
           <View
             style={{
               flexDirection: "row",
@@ -72,7 +71,7 @@ export function ModernTemplate({
               {data.invocation.trim() ? (
                 <Text
                   style={{
-                    fontFamily: theme.valueFont,
+                    fontFamily: scriptFont(data.invocation, theme.valueFont),
                     fontSize: 9,
                     color: theme.muted,
                     marginTop: 5,
@@ -155,7 +154,7 @@ export function ModernTemplate({
               </View>
             );
           })}
-        </View>
+        </>
         </PageFrame>
       </Page>
     </Document>
