@@ -13,6 +13,8 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 export function RoyalTemplate({
@@ -24,7 +26,7 @@ export function RoyalTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#881337",
     accent: "#b45309", // antique gold
     ink: "#292524",
@@ -32,7 +34,7 @@ export function RoyalTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -42,7 +44,7 @@ export function RoyalTemplate({
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff") }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#6d0f2b" padding={0}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#6d0f2b" padding={0} texture={data.bgTexture}>
         <View
           style={{
             backgroundColor: "#6d0f2b",
@@ -96,7 +98,7 @@ export function RoyalTemplate({
             <PhotoFrame
               src={data.photo}
                   frame={data.photoFrame}
-              width={84}
+              width={photoWidth(data, 84)}
               borderColor="#fbbf24"
               padding={2}
             />

@@ -21,6 +21,8 @@ import {
   titleFor,
   CoverPage,
   NumberedHeading,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 /** A hanging toran strip — marigold circles + mango-leaf triangles. */
@@ -63,7 +65,7 @@ export function ToranTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#991b1b", // kumkum red
     accent: "#d97706", // marigold
     ink: "#292524",
@@ -71,7 +73,7 @@ export function ToranTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -81,7 +83,7 @@ export function ToranTemplate({
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fffdf4"), padding: 22 }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#d97706" padding={0}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="none" color="#d97706" padding={0} texture={data.bgTexture}>
         <View style={{ alignItems: "center" }}>
           <ToranStrip />
         </View>
@@ -104,7 +106,7 @@ export function ToranTemplate({
                 <PhotoFrame
                   src={data.photo}
                   frame={data.photoFrame}
-                  width={78}
+                  width={photoWidth(data, 78)}
                   borderColor="#d97706"
                   padding={2}
                   borderRadius={6}

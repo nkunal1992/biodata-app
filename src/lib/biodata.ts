@@ -204,6 +204,18 @@ export interface BiodataData {
   customFields?: CustomField[];
   /** Optional display order for the 5 core sections. */
   sectionOrder?: string[];
+  /** Accent color palette applied over the template's theme. */
+  accentPalette?: string;
+  /** Layout density — compact fits more, spacious breathes. */
+  density?: "compact" | "comfortable" | "spacious";
+  /** Subtle motif texture behind the content. */
+  bgTexture?: "none" | "buttis" | "dots" | "paisley" | "weave";
+  /** Heading/body font pairing. */
+  fontPair?: "serif" | "modern" | "devanagari";
+  /** Show labels in both languages, e.g. "नाम / Name". */
+  bilingualLabels?: boolean;
+  /** Photo size within the template's layout. */
+  photoSize?: "small" | "regular" | "large";
   /** User-defined extra sections rendered after core sections. */
   customSections?: CustomSection[];
   /** Render a dedicated cover page before the biodata. */
@@ -283,6 +295,12 @@ export const emptyBiodata: BiodataData = {
   sectionOrder: [],
   customSections: [],
   coverPage: false,
+  accentPalette: "template",
+  density: "comfortable",
+  bgTexture: "none",
+  fontPair: "serif",
+  bilingualLabels: false,
+  photoSize: "regular",
 };
 
 /** Friendly sample so the preview is never blank. */

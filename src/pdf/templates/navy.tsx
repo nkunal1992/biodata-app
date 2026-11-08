@@ -12,6 +12,8 @@ import {
   titleFor,
   CoverPage,
   MarginLabel,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 export function NavyTemplate({
@@ -23,7 +25,7 @@ export function NavyTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#1e3a8a", // midnight navy
     accent: "#b45309", // muted gold
     ink: "#292524",
@@ -31,7 +33,7 @@ export function NavyTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -41,7 +43,7 @@ export function NavyTemplate({
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#ffffff"), padding: 30 }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#b45309" padding={22}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#b45309" padding={22} texture={data.bgTexture}>
           <View
             style={{
               flexDirection: "row",
@@ -92,7 +94,7 @@ export function NavyTemplate({
               <PhotoFrame
                 src={data.photo}
                   frame={data.photoFrame}
-                width={86}
+                width={photoWidth(data, 86)}
                 borderColor="#b45309"
                 padding={3}
               />

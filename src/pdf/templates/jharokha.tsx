@@ -13,6 +13,8 @@ import {
   titleFor,
   CoverPage,
   CardSection,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 /** Repeating jaali-lattice band of tiny diamonds. */
@@ -42,7 +44,7 @@ export function JharokhaTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#7f1d1d", // deep maroon
     accent: "#b45309", // burnished gold
     ink: "#292524",
@@ -50,7 +52,7 @@ export function JharokhaTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -60,7 +62,7 @@ export function JharokhaTemplate({
           <CoverPage data={data} labels={labels} theme={theme} />
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#faf3e3"), padding: 24 }}>
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#b45309" padding={16}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="line" color="#b45309" padding={16} texture={data.bgTexture}>
           <JaaliBand color="#b45309" />
           <View style={{ alignItems: "center", marginBottom: 4 }}>
             <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
@@ -96,7 +98,7 @@ export function JharokhaTemplate({
                     {titleFor(labels, data)}
                   </Text>
                 </View>
-                <PhotoFrame src={data.photo} width={84} borderColor="#b45309" padding={3} frame={data.photoFrame ?? "arch"} />
+                <PhotoFrame src={data.photo} width={photoWidth(data, 84)} borderColor="#b45309" padding={3} frame={data.photoFrame ?? "arch"} />
               </View>
             ) : (
               <View style={{ alignItems: "center" }}>

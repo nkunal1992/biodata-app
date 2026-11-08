@@ -14,6 +14,7 @@ import { SectionBody, type SectionKey } from "./sections";
 import {
   OutputLocaleToggle,
   CoverToggle,
+  CustomizeCard,
   PageBgPicker,
   PageBorderPicker,
   TemplatePicker,

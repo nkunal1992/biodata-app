@@ -57,6 +57,12 @@ interface BiodataStore {
         | "sectionOrder"
         | "customSections"
         | "coverPage"
+        | "accentPalette"
+        | "density"
+        | "bgTexture"
+        | "fontPair"
+        | "bilingualLabels"
+        | "photoSize"
       >
     >,
   ) => void;

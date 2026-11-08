@@ -12,6 +12,8 @@ import {
   bgColor,
   titleFor,
   CoverPage,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 export function TraditionalTemplate({
@@ -23,7 +25,7 @@ export function TraditionalTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#881337", // maroon
     accent: "#c2410c", // saffron
     ink: "#292524",
@@ -31,7 +33,7 @@ export function TraditionalTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -44,7 +46,7 @@ export function TraditionalTemplate({
         size="A4"
         style={{ backgroundColor: bgColor(data, "#fffdf5"), padding: 22, display: "flex" }}
       >
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="double" color="#b45309" color2="#b45309" padding={16}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="double" color="#b45309" color2="#b45309" padding={16} texture={data.bgTexture}>
           <Invocation text={data.invocation} theme={theme} icon={data.invocationIcon} />
           <View
             style={{
@@ -77,7 +79,7 @@ export function TraditionalTemplate({
             </View>
             {data.photo && (
               <PhotoFrame src={data.photo}
-                  frame={data.photoFrame} width={86} borderColor="#b45309" />
+                  frame={data.photoFrame} width={photoWidth(data, 86)} borderColor="#b45309" />
             )}
           </View>
           {sections.map((sec) => (

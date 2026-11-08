@@ -13,6 +13,8 @@ import {
   titleFor,
   CoverPage,
   TwoColRows,
+  resolveTheme,
+  photoWidth,
 } from "../components";
 
 /** Zari butti strip — small gold paisley-dots row, like Banarasi brocade. */
@@ -53,7 +55,7 @@ export function BanarasiTemplate({
   labels: DocLabels;
   qr?: string;
 }) {
-  const theme = {
+  const theme = resolveTheme(data, {
     primary: "#4c1d95", // deep banarasi purple
     accent: "#a16207", // zari gold
     ink: "#292524",
@@ -61,7 +63,7 @@ export function BanarasiTemplate({
     headingFont: labels.fonts.heading,
     textFont: labels.fonts.text,
     valueFont: labels.fonts.value,
-  };
+  });;
   const sections = buildSections(data, labels);
   const name = data.personal.name.trim() || labels.fields.name;
 
@@ -72,7 +74,7 @@ export function BanarasiTemplate({
         )}
       <Page size="A4" style={{ backgroundColor: bgColor(data, "#fdfbf5"), padding: 22 }}>
         {/* zari double border */}
-        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="ornate" color="#4c1d95" color2="#a16207" padding={15}>
+        <PageFrame qr={qr} footer={data.biodataNo} override={data.pageBorder} fallback="ornate" color="#4c1d95" color2="#a16207" padding={15} texture={data.bgTexture}>
         
             <ButtiRow color="#a16207" />
             <View style={{ alignItems: "center", marginBottom: 2 }}>
@@ -93,7 +95,7 @@ export function BanarasiTemplate({
                   <PhotoFrame
                     src={data.photo}
                   frame={data.photoFrame}
-                    width={76}
+                    width={photoWidth(data, 76)}
                     borderColor="#a16207"
                     padding={2}
                   />
