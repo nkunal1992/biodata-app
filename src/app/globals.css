@@ -3,17 +3,40 @@
 @theme {
   --font-sans: "Noto Sans", "Noto Sans Devanagari", ui-sans-serif, system-ui,
     -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Warm stone scale — overrides Tailwind's cool grays so every
+     `stone-*` class reads as warm ivory/sand throughout the app. */
+  --color-stone-50: #fbf8f3;
+  --color-stone-100: #f4efe6;
+  --color-stone-200: #e9e0d1;
+  --color-stone-300: #d9cbb2;
+  --color-stone-400: #bfae8f;
+  --color-stone-500: #a08c6c;
+  --color-stone-600: #7d6b50;
+  --color-stone-700: #63553f;
+  --color-stone-800: #4a3e2f;
+  --color-stone-900: #332b20;
+  --color-stone-950: #201a12;
+
+  /* Brand accents */
   --color-saffron-50: #fff7ed;
   --color-saffron-100: #ffedd5;
   --color-saffron-200: #fed7aa;
   --color-saffron-500: #f97316;
   --color-saffron-600: #ea580c;
   --color-saffron-700: #c2410c;
+  --color-saffron-800: #9a3412;
   --color-maroon-600: #9f1239;
   --color-maroon-700: #881337;
   --color-maroon-800: #6d0f2b;
+
+  --shadow-warm-sm: 0 1px 2px rgb(51 43 32 / 0.06);
+  --shadow-warm-md: 0 4px 14px -2px rgb(51 43 32 / 0.1),
+    0 2px 4px -1px rgb(51 43 32 / 0.06);
 }
 
 body {
   font-family: var(--font-sans);
+  background-color: var(--color-stone-100);
+  color: var(--color-stone-900);
 }

@@ -53,25 +53,40 @@ export default async function LandingPage({
               "radial-gradient(circle at 20% 30%, #ea580c 0, transparent 40%), radial-gradient(circle at 80% 70%, #9f1239 0, transparent 40%)",
           }}
         />
-        <div className="mx-auto max-w-5xl px-4 pt-16 pb-14 text-center sm:pt-24">
-          <p className="mb-4 inline-block rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-700">
-            {t("badge")}
-          </p>
-          <h1 className="mx-auto max-w-3xl text-4xl font-extrabold tracking-tight text-stone-900 sm:text-5xl">
-            {t("heroTitle")}
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-stone-600 sm:text-lg">
-            {t("heroSubtitle")}
-          </p>
-          <div className="mt-8 flex items-center justify-center gap-3">
-            <Link
-              href="/create"
-              className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-orange-700"
-            >
-              {t("cta")} <ArrowRight size={17} />
-            </Link>
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-14 pb-16 sm:pt-20 lg:grid-cols-2">
+          <div className="text-center lg:text-left">
+            <p className="mb-4 inline-block rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-700">
+              {t("badge")}
+            </p>
+            <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 sm:text-5xl">
+              {t("heroTitle")}
+            </h1>
+            <p className="mt-4 max-w-xl text-base text-stone-600 sm:text-lg">
+              {t("heroSubtitle")}
+            </p>
+            <div className="mt-8 flex items-center justify-center gap-3 lg:justify-start">
+              <Link
+                href="/create"
+                className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-6 py-3 text-base font-semibold text-white shadow-md shadow-orange-600/20 transition hover:bg-orange-700 hover:shadow-lg"
+              >
+                {t("cta")} <ArrowRight size={17} />
+              </Link>
+              <Link
+                href="#templates"
+                className="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-6 py-3 text-base font-semibold text-stone-700 hover:bg-stone-50"
+              >
+                {t("viewTemplates")}
+              </Link>
+            </div>
+            <p className="mt-6 text-xl text-stone-400">॥ श्री गणेशाय नमः ॥</p>
           </div>
-          <p className="mt-6 text-2xl text-stone-400">॥ श्री गणेशाय नमः ॥</p>
+          <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
+            <div
+              aria-hidden
+              className="absolute -inset-3 rotate-2 rounded-2xl bg-gradient-to-br from-saffron-200 to-maroon-700/20 opacity-60"
+            />
+            <HeroBiodata t={t} />
+          </div>
         </div>
       </section>
 
@@ -100,7 +115,7 @@ export default async function LandingPage({
       </section>
 
       {/* Templates strip */}
-      <section className="py-14">
+      <section id="templates" className="py-14">
         <div className="mx-auto max-w-5xl px-4">
           <h2 className="text-center text-2xl font-bold text-stone-900">
             {t("templatesTitle")}
@@ -161,7 +176,7 @@ export default async function LandingPage({
           </div>
         </div>
       </section>
-      <section className="py-14">
+      <section id="templates" className="py-14">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
             <Lock size={22} />
@@ -192,6 +207,46 @@ export default async function LandingPage({
           </a>
         </div>
       </footer>
+    </div>
+  );
+}
+
+
+/** Stylized mini-biodata card for the hero — pure JSX, no raster assets. */
+function HeroBiodata({ t }: { t: (k: string) => string }) {
+  const rows: [string, string][] = [
+    [t("mockName"), "Aarav Sharma"],
+    [t("mockDob"), "15 March 1995"],
+    [t("mockGotra"), "Kaushik"],
+    [t("mockEdu"), "B.Tech, IIT Delhi"],
+    [t("mockOcc"), "Senior Software Engineer"],
+    [t("mockFam"), "Sharma Parivar, Jaipur"],
+  ];
+  return (
+    <div className="relative rounded-xl border-2 border-maroon-700/80 bg-[#fffdf6] p-1.5 shadow-warm-md">
+      <div className="rounded-lg border border-saffron-500/50 px-6 py-8">
+        <p className="text-center text-[10px] tracking-[0.2em] text-maroon-700">
+          ॥ श्री गणेशाय नमः ॥
+        </p>
+        <div className="mx-auto mt-4 h-14 w-11 rounded-t-full border-2 border-saffron-600/60 bg-saffron-50" />
+        <h3 className="mt-3 text-center font-serif text-xl font-bold text-maroon-800">
+          {t("mockTitle")}
+        </h3>
+        <div className="mx-auto mt-2 h-px w-24 bg-saffron-500/60" />
+        <dl className="mt-5 space-y-2.5">
+          {rows.map(([k, v]) => (
+            <div key={k} className="flex gap-3 text-[11px]">
+              <dt className="w-20 shrink-0 font-semibold text-stone-500">{k}</dt>
+              <dd className="text-stone-800">{v}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="mt-6 flex justify-center gap-1">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <span key={i} className="h-1 w-1 rounded-full bg-saffron-500/70" />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

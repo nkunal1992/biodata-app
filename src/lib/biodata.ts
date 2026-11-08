@@ -376,3 +376,22 @@ export function normalizeData(d: Partial<BiodataData> | undefined | null): Bioda
   }
   return out;
 }
+
+/** Whether a core editor section has any non-empty content. */
+export function sectionHasData(data: BiodataData, section: string): boolean {
+  const has = (o: object | undefined) =>
+    !!o && Object.values(o).some((v) => typeof v === "string" && v.trim().length > 0);
+  switch (section) {
+    case "photo": return !!data.photo || !!data.invocation.trim();
+    case "personal": return has(data.personal);
+    case "astro": return has(data.astro);
+    case "career": return has(data.career);
+    case "family": return has(data.family);
+    case "contact": return has(data.contact);
+    case "extras":
+      return !!(data.aboutMe.trim() || data.expectations.trim() ||
+        data.familyAbout?.trim() || data.familyExpectations?.trim() ||
+        (data.prefs && Object.values(data.prefs).some((v) => typeof v === "string" && v.trim())));
+    default: return false;
+  }
+}
