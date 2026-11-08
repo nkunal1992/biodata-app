@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import { ChevronDown, Eye, EyeOff, Heart, Home, ArrowUp, ArrowDown } from "lucide-react";
 import { useBiodataStore } from "@/store/biodata-store";
+import { sectionHasData } from "@/lib/biodata";
 import { decodeShareHash } from "@/lib/share";
 import { cn } from "@/lib/cn";
 import { Link } from "@/i18n/navigation";
@@ -16,7 +17,8 @@ import {
   PageBgPicker,
   PageBorderPicker,
   TemplatePicker,
-  Toolbar,
+  ActionBar,
+  DraftRow,
 } from "./controls";
 
 const PdfPreview = dynamic(() => import("@/components/PdfPreview"), {
@@ -48,6 +50,7 @@ function StepperSection({
   isCore: boolean;
 }) {
   const t = useTranslations("editor");
+  const done = useBiodataStore((s) => sectionHasData(s.data, sectionKey));
   const hidden = useBiodataStore((s) =>
     (s.data.hiddenSections ?? []).includes(sectionKey),
   );
@@ -76,10 +79,14 @@ function StepperSection({
         <span
           className={cn(
             "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold",
-            open ? "bg-orange-600 text-white" : "bg-stone-200 text-stone-600",
+            done && !open
+              ? "bg-green-600 text-white"
+              : open
+                ? "bg-orange-600 text-white"
+                : "bg-stone-200 text-stone-600",
           )}
         >
-          {index + 1}
+          {done ? "✓" : index + 1}
         </span>
         <span className={cn("flex-1", hidden && "opacity-40")}>
           <span className="block text-sm font-semibold text-stone-800">
@@ -157,6 +164,7 @@ export default function EditorShell() {
   const sectionOrder = useBiodataStore((s) => s.data.sectionOrder);
   const [open, setOpen] = useState<SectionKey | null>("photo");
   const [showMobilePreview, setShowMobilePreview] = useState(false);
+  const [tab, setTab] = useState<"details" | "design">("details");
   const [shared, setShared] = useState(false);
 
   // Hydrate from a #d= share hash once, then strip it.
@@ -186,7 +194,7 @@ export default function EditorShell() {
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <Heart size={18} className="text-orange-600" fill="currentColor" />
-            <span className="text-base font-bold text-stone-900">
+            <span className="whitespace-nowrap text-base font-bold text-stone-900">
               {nav("brand")}
             </span>
           </Link>
@@ -201,6 +209,9 @@ export default function EditorShell() {
           </span>
         </div>
         <div className="flex items-center gap-2">
+          <div className="hidden xl:block">
+            <ActionBar compact />
+          </div>
           <LocaleSwitcher compact />
           <button
             type="button"
@@ -219,25 +230,50 @@ export default function EditorShell() {
               ✓ {t("sharedLoaded")}
             </p>
           )}
-          <div className="space-y-4 rounded-xl border border-stone-200 bg-white p-4">
-            <TemplatePicker />
-            <div className="border-t border-stone-100 pt-4">
-              <OutputLocaleToggle />
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex rounded-lg bg-stone-200/70 p-1">
+              {(["details", "design"] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setTab(v)}
+                  className={cn(
+                    "rounded-md px-4 py-1.5 text-sm font-semibold transition",
+                    tab === v
+                      ? "bg-white text-stone-900 shadow-sm"
+                      : "text-stone-600 hover:text-stone-800",
+                  )}
+                >
+                  {t(v)}
+                </button>
+              ))}
             </div>
-            <div className="border-t border-stone-100 pt-4">
-              <PageBgPicker />
-            </div>
-            <div className="border-t border-stone-100 pt-4">
-              <PageBorderPicker />
-            </div>
-            <div className="border-t border-stone-100 pt-4">
-              <CoverToggle />
-            </div>
-            <div className="border-t border-stone-100 pt-4">
-              <Toolbar />
-            </div>
+            <DraftRow />
           </div>
 
+          <div className="hidden lg:block xl:hidden">
+            <ActionBar compact />
+          </div>
+
+          {tab === "design" && (
+            <div className="space-y-4 rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+              <TemplatePicker />
+              <div className="border-t border-stone-100 pt-4">
+                <OutputLocaleToggle />
+              </div>
+              <div className="border-t border-stone-100 pt-4">
+                <PageBgPicker />
+              </div>
+              <div className="border-t border-stone-100 pt-4">
+                <PageBorderPicker />
+              </div>
+              <div className="border-t border-stone-100 pt-4">
+                <CoverToggle />
+              </div>
+            </div>
+          )}
+
+          {tab === "details" && (
           <div className="space-y-2.5">
             {(() => {
               const core =
@@ -259,6 +295,7 @@ export default function EditorShell() {
               ));
             })()}
           </div>
+          )}
         </div>
 
         {showMobilePreview && (
@@ -270,6 +307,10 @@ export default function EditorShell() {
         <aside className="sticky top-0 hidden h-screen flex-1 lg:order-2 lg:block">
           <PdfPreview />
         </aside>
+      </div>
+
+      <div className="sticky bottom-0 z-10 border-t border-stone-200 bg-white/95 px-4 py-2.5 backdrop-blur lg:hidden">
+        <ActionBar compact />
       </div>
     </div>
   );

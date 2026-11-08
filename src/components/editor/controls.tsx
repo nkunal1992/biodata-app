@@ -269,7 +269,7 @@ export function OutputLocaleToggle() {
   );
 }
 
-export function Toolbar() {
+export function ActionBar({ compact = false }: { compact?: boolean }) {
   const t = useTranslations("editor");
   const uiLocale = useLocale();
   const data = useBiodataStore((s) => s.data);
@@ -346,15 +346,17 @@ export function Toolbar() {
     setTimeout(() => setCopied(false), 2500);
   }
 
+  const pad = compact ? "px-3 py-1.5" : "px-4 py-2";
+  const sz = compact ? "text-xs" : "text-sm";
   return (
     <div className="flex flex-wrap items-center gap-2">
       <button
         type="button"
         onClick={download}
         disabled={busy}
-        className="inline-flex items-center gap-2 rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-700 disabled:opacity-60"
+        className={`inline-flex items-center gap-1.5 rounded-lg bg-orange-600 ${pad} ${sz} font-semibold text-white shadow-sm hover:bg-orange-700 disabled:opacity-60`}
       >
-        <Download size={16} />
+        <Download size={compact ? 14 : 16} />
         {busy ? t("downloading") : t("download")}
       </button>
       <button
@@ -362,17 +364,17 @@ export function Toolbar() {
         onClick={downloadPng}
         disabled={imgBusy}
         title={t("downloadPngHint")}
-        className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 disabled:opacity-60"
+        className={`inline-flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white ${pad} ${sz} font-medium text-stone-700 hover:bg-stone-100 disabled:opacity-60`}
       >
-        <FileImage size={16} /> {imgBusy ? t("downloading") : t("downloadPng")}
+        <FileImage size={compact ? 14 : 16} /> {imgBusy ? t("downloading") : t("downloadPng")}
       </button>
       <button
         type="button"
         onClick={share}
         title={t("shareHint")}
-        className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100"
+        className={`inline-flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white ${pad} ${sz} font-medium text-stone-700 hover:bg-stone-100`}
       >
-        {copied ? <Check size={16} className="text-green-600" /> : <Link2 size={16} />}
+        {copied ? <Check size={compact ? 14 : 16} className="text-green-600" /> : <Link2 size={compact ? 14 : 16} />}
         {copied ? t("copied") : t("share")}
       </button>
       <button
@@ -380,19 +382,29 @@ export function Toolbar() {
         onClick={undo}
         disabled={!hasPast}
         title="Ctrl+Z"
-        className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-600 hover:bg-stone-100 disabled:opacity-40"
+        className={`inline-flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 ${compact ? "py-1.5" : "py-2"} ${sz} text-stone-600 hover:bg-stone-100 disabled:opacity-40`}
       >
-        <Undo2 size={15} /> {t("undo")}
+        <Undo2 size={compact ? 13 : 15} /> {t("undo")}
       </button>
+    </div>
+  );
+}
+
+/** Draft switcher + reset — lives inside the Details tab. */
+export function DraftRow() {
+  const t = useTranslations("editor");
+  const reset = useBiodataStore((s) => s.reset);
+  return (
+    <div className="flex items-center gap-2">
       <DraftPicker />
       <button
         type="button"
         onClick={() => {
           if (window.confirm(t("resetConfirm"))) reset();
         }}
-        className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-600 hover:bg-stone-100"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-xs text-stone-600 hover:bg-stone-100"
       >
-        <RotateCcw size={15} /> {t("reset")}
+        <RotateCcw size={13} /> {t("reset")}
       </button>
     </div>
   );

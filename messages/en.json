@@ -44,7 +44,15 @@
     "why2Title": "12 premium templates",
     "why2Text": "Traditional, royal, modern and regional styles in English and Hindi.",
     "why3Title": "Made for WhatsApp",
-    "why3Text": "One-tap PDF + PNG download, ready to forward to the family group."
+    "why3Text": "One-tap PDF + PNG download, ready to forward to the family group.",
+    "viewTemplates": "View templates",
+    "mockTitle": "Marriage Biodata",
+    "mockName": "Name",
+    "mockDob": "Date of birth",
+    "mockGotra": "Gotra",
+    "mockEdu": "Education",
+    "mockOcc": "Occupation",
+    "mockFam": "Family"
   },
   "editor": {
     "title": "Create your biodata",
@@ -306,7 +314,9 @@
     "customSections": "Custom sections",
     "customSectionTitle": "Section title",
     "addSection": "Add section",
-    "applyCrop": "Apply crop"
+    "applyCrop": "Apply crop",
+    "details": "Details",
+    "design": "Design"
   },
   "templates": {
     "traditional": "Traditional",
